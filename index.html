@@ -1283,87 +1283,71 @@ function selectGame(index){
     under
       ? "U " + under.point
       : "—";
-  const movementEl =
+   const movementEl =
     document.getElementById("lineMovement");
 
-  if(book && book.lineHistory){
+  let bestMove = null;
 
-    const awayHistory =
-      book.lineHistory[game.awayTeam];
+  (game.bookmakers || []).forEach(bookItem => {
 
-    const homeHistory =
-      book.lineHistory[game.homeTeam];
+    const histories =
+      bookItem.lineHistory || {};
 
-    if(
-      awayHistory &&
-      awayHistory.firstTrackedSpread !== null &&
-      awayHistory.currentSpread !== null
-    ){
+    [game.awayTeam, game.homeTeam].forEach(team => {
 
-      const first =
-        awayHistory.firstTrackedSpread;
+      const history =
+        histories[team];
 
-      const current =
-        awayHistory.currentSpread;
-
-      const amount =
-        awayHistory.movementAmount;
-
-      if(amount > 0){
-
-        movementEl.textContent =
-          game.awayTeam +
-          " " +
-          formatSpread(first) +
-          " → " +
-          formatSpread(current) +
-          " (" +
-          amount +
-          " pt)";
-
-      } else {
-
-        movementEl.textContent =
-          "No spread movement";
+      if(
+        !history ||
+        history.firstTrackedSpread === null ||
+        history.currentSpread === null ||
+        !history.movementAmount ||
+        history.movementAmount <= 0
+      ){
+        return;
       }
 
-    } else if(
-      homeHistory &&
-      homeHistory.firstTrackedSpread !== null &&
-      homeHistory.currentSpread !== null
-    ){
+      if(
+        !bestMove ||
+        history.movementAmount > bestMove.amount
+      ){
 
-      const first =
-        homeHistory.firstTrackedSpread;
-
-      const current =
-        homeHistory.currentSpread;
-
-      const amount =
-        homeHistory.movementAmount;
-
-      if(amount > 0){
-
-        movementEl.textContent =
-          game.homeTeam +
-          " " +
-          formatSpread(first) +
-          " → " +
-          formatSpread(current) +
-          " (" +
-          amount +
-          " pt)";
-
-      } else {
-
-        movementEl.textContent =
-          "No spread movement";
+        bestMove = {
+          bookmaker: bookItem.bookmaker,
+          team: team,
+          first: history.firstTrackedSpread,
+          current: history.currentSpread,
+          amount: history.movementAmount
+        };
       }
+    });
+  });
 
-    } else {
+  if(bestMove){
 
-      movementEl.textContent = "—";
-    }
+    const direction =
+      bestMove.current < bestMove.first
+        ? "toward " + bestMove.team
+        : "away from " + bestMove.team;
+
+    movementEl.innerHTML =
+      bestMove.bookmaker +
+      ": " +
+      formatSpread(bestMove.first) +
+      " → " +
+      formatSpread(bestMove.current) +
+      "<br><small>" +
+      bestMove.amount +
+      " pt " +
+      direction +
+      "</small>";
+
+  } else {
+
+    movementEl.textContent =
+      "No spread movement";
+  }
 
   } else {
 
