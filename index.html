@@ -3,56 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MarketSignal | Betting Market Intelligence</title>
 
 <style>
+
 :root{
   --bg:#050a10;
-  --sidebar:#07111a;
+  --side:#07111a;
   --panel:#0b1620;
   --panel2:#0e1b27;
-  --border:#1c2d3a;
-  --text:#edf4f8;
-  --muted:#708593;
+  --border:#1d303d;
+  --text:#edf5f8;
+  --muted:#708692;
 
   --green:#27e1a9;
-  --greenbg:rgba(39,225,169,.12);
-
   --blue:#55aaff;
-  --bluebg:rgba(85,170,255,.12);
-
   --purple:#b58cff;
-  --purplebg:rgba(181,140,255,.12);
-
   --orange:#ffad4d;
-  --orangebg:rgba(255,173,77,.12);
-
   --yellow:#ffd166;
-  --yellowbg:rgba(255,209,102,.12);
-
   --red:#ff6f7d;
-  --redbg:rgba(255,111,125,.12);
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
   background:
-    radial-gradient(circle at 70% 0%,rgba(85,170,255,.06),transparent 25%),
-    radial-gradient(circle at 0% 100%,rgba(39,225,169,.04),transparent 25%),
+    radial-gradient(circle at 70% 0%,rgba(85,170,255,.07),transparent 30%),
+    radial-gradient(circle at 0% 100%,rgba(39,225,169,.05),transparent 30%),
     var(--bg);
+
   color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
   font-size:13px;
 }
 
-button{font-family:inherit}
+button{
+  font-family:inherit;
+}
 
 .app{
   min-height:100vh;
   display:grid;
-  grid-template-columns:210px minmax(570px,1fr) 380px;
+  grid-template-columns:205px minmax(650px,1fr) 390px;
 }
 
 /* SIDEBAR */
@@ -65,22 +61,30 @@ button{font-family:inherit}
 
 .logoWrap{
   display:flex;
-  align-items:center;
   gap:10px;
+  align-items:center;
   padding:0 7px 20px;
   border-bottom:1px solid var(--border);
 }
 
 .logo{
-  width:38px;
-  height:38px;
+  width:39px;
+  height:39px;
   border-radius:9px;
   display:grid;
   place-items:center;
+
+  background:linear-gradient(
+    135deg,
+    var(--green),
+    #6bf0c8
+  );
+
+  color:#032019;
   font-weight:900;
-  color:#031b14;
-  background:linear-gradient(135deg,var(--green),#61f0c5);
-  box-shadow:0 0 22px rgba(39,225,169,.18);
+
+  box-shadow:
+    0 0 25px rgba(39,225,169,.18);
 }
 
 .logoText strong{
@@ -97,7 +101,7 @@ button{font-family:inherit}
 }
 
 .navLabel{
-  color:#4f6573;
+  color:#506674;
   font-size:8px;
   font-weight:900;
   letter-spacing:1.5px;
@@ -125,7 +129,13 @@ button{font-family:inherit}
 
 .sportBtn.active{
   color:var(--green);
-  background:linear-gradient(90deg,rgba(39,225,169,.17),rgba(85,170,255,.04));
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(39,225,169,.17),
+      rgba(85,170,255,.04)
+    );
 }
 
 .sportDot{
@@ -146,7 +156,7 @@ button{font-family:inherit}
   margin:8px 9px;
   color:#647986;
   font-size:9px;
-  line-height:1.6;
+  line-height:1.8;
 }
 
 .liveDot{
@@ -155,13 +165,15 @@ button{font-family:inherit}
 
 /* MAIN */
 
-.center{min-width:0}
+.center{
+  min-width:0;
+}
 
 .topbar{
   height:65px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   padding:0 22px;
   border-bottom:1px solid var(--border);
 }
@@ -179,11 +191,11 @@ button{font-family:inherit}
 }
 
 .liveBadge{
-  border:1px solid #295143;
-  background:var(--greenbg);
-  color:var(--green);
-  padding:6px 10px;
+  padding:7px 11px;
   border-radius:20px;
+  border:1px solid #295143;
+  background:rgba(39,225,169,.10);
+  color:var(--green);
   font-size:8px;
   letter-spacing:1px;
 }
@@ -196,7 +208,7 @@ button{font-family:inherit}
   display:flex;
   justify-content:space-between;
   align-items:flex-end;
-  margin-bottom:16px;
+  margin-bottom:15px;
 }
 
 .boardHead h1{
@@ -229,31 +241,29 @@ button{font-family:inherit}
 /* STATUS */
 
 .status{
-  margin-bottom:12px;
   padding:10px 12px;
+  margin-bottom:12px;
   border-radius:7px;
   border:1px solid var(--border);
-  background:#09151e;
-  color:#7e939f;
   font-size:9px;
 }
 
 .status.loading{
   color:var(--blue);
   border-color:#23466a;
-  background:var(--bluebg);
+  background:rgba(85,170,255,.10);
 }
 
 .status.success{
   color:var(--green);
   border-color:#245743;
-  background:var(--greenbg);
+  background:rgba(39,225,169,.10);
 }
 
 .status.error{
   color:var(--red);
   border-color:#65353b;
-  background:var(--redbg);
+  background:rgba(255,111,125,.10);
 }
 
 /* TABLE */
@@ -263,18 +273,27 @@ button{font-family:inherit}
   border-radius:10px;
   overflow:hidden;
   background:var(--panel);
-  box-shadow:0 14px 35px rgba(0,0,0,.18);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.18);
 }
 
 .tableHeader,
 .gameRow{
   display:grid;
-  grid-template-columns:minmax(220px,2fr) 82px 72px 72px 95px;
+
+  grid-template-columns:
+    minmax(215px,2fr)
+    82px
+    88px
+    78px
+    92px;
+
   align-items:center;
 }
 
 .tableHeader{
-  min-height:36px;
+  min-height:37px;
   background:#07121b;
   color:#526977;
   font-size:7px;
@@ -287,23 +306,48 @@ button{font-family:inherit}
   padding:0 10px;
 }
 
-.ticketHeader{color:var(--blue)}
-.moneyHeader{color:var(--purple)}
-.bookHeader{color:var(--orange)}
+.spreadHeader{
+  color:var(--green);
+}
+
+.mlHeader{
+  color:var(--blue);
+}
+
+.totalHeader{
+  color:var(--purple);
+}
+
+.bookHeader{
+  color:var(--orange);
+}
 
 .gameRow{
-  min-height:88px;
+  min-height:90px;
   border-top:1px solid var(--border);
   cursor:pointer;
 }
 
 .gameRow:hover{
-  background:linear-gradient(90deg,rgba(85,170,255,.07),rgba(181,140,255,.025));
+  background:
+    linear-gradient(
+      90deg,
+      rgba(85,170,255,.07),
+      rgba(181,140,255,.025)
+    );
 }
 
 .gameRow.selected{
-  background:linear-gradient(90deg,rgba(39,225,169,.13),rgba(85,170,255,.04),transparent);
-  box-shadow:inset 3px 0 var(--green);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(39,225,169,.13),
+      rgba(85,170,255,.04),
+      transparent
+    );
+
+  box-shadow:
+    inset 3px 0 var(--green);
 }
 
 .gameTime{
@@ -325,8 +369,10 @@ button{font-family:inherit}
   border-radius:5px;
   display:grid;
   place-items:center;
+
   background:#172734;
   border:1px solid #243a48;
+
   color:#b5c5ce;
   font-size:7px;
   font-weight:900;
@@ -343,33 +389,43 @@ button{font-family:inherit}
   font-weight:900;
 }
 
-.unavailable{
-  color:#4d616d;
-  font-size:13px;
+.moneyline{
+  color:var(--blue);
+  font-size:11px;
+  font-weight:900;
+}
+
+.total{
+  color:var(--purple);
+  font-size:11px;
+  font-weight:900;
 }
 
 .bookName{
   color:var(--orange);
   font-size:9px;
-  font-weight:700;
+  font-weight:800;
 }
 
-/* INFO STRIP */
+/* INSIGHT */
 
 .insight{
   margin-top:14px;
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
   padding:14px 16px;
+
+  display:flex;
+  gap:12px;
+
   border:1px solid #25453f;
   border-radius:9px;
-  background:linear-gradient(
-    90deg,
-    rgba(39,225,169,.11),
-    rgba(85,170,255,.055),
-    rgba(181,140,255,.035)
-  );
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(39,225,169,.11),
+      rgba(85,170,255,.055),
+      rgba(181,140,255,.035)
+    );
 }
 
 .insightIcon{
@@ -384,7 +440,7 @@ button{font-family:inherit}
 .insight p{
   margin:5px 0 0;
   color:#849a99;
-  line-height:1.45;
+  line-height:1.5;
   font-size:9px;
 }
 
@@ -393,7 +449,13 @@ button{font-family:inherit}
 .details{
   min-height:100vh;
   border-left:1px solid var(--border);
-  background:linear-gradient(180deg,#09151f,#071019);
+
+  background:
+    linear-gradient(
+      180deg,
+      #09151f,
+      #071019
+    );
 }
 
 .detailHeader{
@@ -437,6 +499,55 @@ button{font-family:inherit}
   letter-spacing:1.4px;
 }
 
+/* CONSENSUS */
+
+.consensusGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+
+.consensusCard{
+  border:1px solid var(--border);
+  background:#0c1822;
+  padding:11px;
+  border-radius:8px;
+}
+
+.consensusCard span{
+  display:block;
+  color:#647b89;
+  font-size:7px;
+}
+
+.consensusCard strong{
+  display:block;
+  margin-top:6px;
+  font-size:15px;
+}
+
+.greenText{
+  color:var(--green);
+}
+
+.blueText{
+  color:var(--blue);
+}
+
+.purpleText{
+  color:var(--purple);
+}
+
+.orangeText{
+  color:var(--orange);
+}
+
+.yellowText{
+  color:var(--yellow);
+}
+
+/* SPORTSBOOK TABLE */
+
 .oddsCard{
   border:1px solid var(--border);
   border-radius:8px;
@@ -447,9 +558,16 @@ button{font-family:inherit}
 .oddsHeader,
 .oddsRow{
   display:grid;
-  grid-template-columns:1.4fr 1fr 1fr;
+
+  grid-template-columns:
+    1.25fr
+    .9fr
+    .9fr
+    .8fr;
+
   align-items:center;
-  padding:9px 11px;
+
+  padding:9px 10px;
 }
 
 .oddsHeader{
@@ -461,7 +579,7 @@ button{font-family:inherit}
 
 .oddsRow{
   border-top:1px solid #192a35;
-  font-size:10px;
+  font-size:9px;
 }
 
 .oddsBook{
@@ -469,55 +587,63 @@ button{font-family:inherit}
   font-weight:800;
 }
 
-.oddsPoint{
+.oddsSpread{
   color:var(--green);
   font-weight:900;
 }
 
-.oddsPrice{
+.oddsML{
   color:var(--blue);
   font-weight:900;
 }
 
-.noticeCard{
-  margin-top:10px;
-  padding:11px;
-  border-left:2px solid var(--purple);
-  background:var(--purplebg);
-  color:#a893c6;
-  font-size:9px;
-  line-height:1.55;
+.oddsTotal{
+  color:var(--purple);
+  font-weight:900;
 }
 
-.dataGrid{
+/* UPCOMING SIGNAL DATA */
+
+.signalGrid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:9px;
 }
 
-.dataCard{
+.signalCard{
   padding:12px;
   border:1px solid var(--border);
   border-radius:8px;
   background:#0c1822;
 }
 
-.dataCard span{
+.signalCard span{
   display:block;
   color:#687e8c;
   font-size:7px;
 }
 
-.dataCard strong{
+.signalCard strong{
   display:block;
   margin-top:6px;
-  font-size:16px;
+  font-size:15px;
+  color:#526773;
 }
 
-.blueText{color:var(--blue)}
-.purpleText{color:var(--purple)}
-.orangeText{color:var(--orange)}
-.greenText{color:var(--green)}
+.noticeCard{
+  margin-top:10px;
+  padding:11px;
+
+  border-left:
+    2px solid var(--yellow);
+
+  background:
+    rgba(255,209,102,.07);
+
+  color:#a99b72;
+  font-size:9px;
+  line-height:1.55;
+}
 
 .loadingRows{
   padding:35px;
@@ -527,9 +653,12 @@ button{font-family:inherit}
 
 /* MOBILE */
 
-@media(max-width:1100px){
+@media(max-width:1150px){
+
   .app{
-    grid-template-columns:190px 1fr;
+    grid-template-columns:
+      190px
+      1fr;
   }
 
   .details{
@@ -537,8 +666,11 @@ button{font-family:inherit}
   }
 }
 
-@media(max-width:730px){
-  .app{display:block}
+@media(max-width:760px){
+
+  .app{
+    display:block;
+  }
 
   .sidebar{
     min-height:auto;
@@ -552,7 +684,8 @@ button{font-family:inherit}
     padding-bottom:12px;
   }
 
-  .navLabel,.navInfo{
+  .navLabel,
+  .navInfo{
     display:none;
   }
 
@@ -577,9 +710,10 @@ button{font-family:inherit}
 
   .tableHeader,
   .gameRow{
-    min-width:650px;
+    min-width:680px;
   }
 }
+
 </style>
 </head>
 
@@ -591,121 +725,216 @@ button{font-family:inherit}
 
 <aside class="sidebar">
 
-  <div class="logoWrap">
-    <div class="logo">MS</div>
+<div class="logoWrap">
 
-    <div class="logoText">
-      <strong>MarketSignal</strong>
-      <span>BETTING INTELLIGENCE</span>
-    </div>
-  </div>
+<div class="logo">
+MS
+</div>
 
-  <div class="navLabel">SPORTS</div>
+<div class="logoText">
 
-  <button class="sportBtn active" data-sport="NFL">
-    <span class="sportDot"></span>NFL
-  </button>
+<strong>
+MarketSignal
+</strong>
 
-  <button class="sportBtn" data-sport="NBA">
-    <span class="sportDot"></span>NBA
-  </button>
+<span>
+BETTING INTELLIGENCE
+</span>
 
-  <button class="sportBtn" data-sport="MLB">
-    <span class="sportDot"></span>MLB
-  </button>
+</div>
 
-  <button class="sportBtn" data-sport="NHL">
-    <span class="sportDot"></span>NHL
-  </button>
+</div>
 
-  <button class="sportBtn" data-sport="NCAAF">
-    <span class="sportDot"></span>NCAAF
-  </button>
+<div class="navLabel">
+SPORTS
+</div>
 
-  <button class="sportBtn" data-sport="NCAAB">
-    <span class="sportDot"></span>NCAAB
-  </button>
+<button class="sportBtn active" data-sport="NFL">
+<span class="sportDot"></span>
+NFL
+</button>
 
-  <div class="navLabel">DATA STATUS</div>
+<button class="sportBtn" data-sport="NBA">
+<span class="sportDot"></span>
+NBA
+</button>
 
-  <div class="navInfo">
-    <span class="liveDot">●</span> NFL Odds — LIVE<br>
-    <span style="color:#586d79">●</span> Ticket % — Not connected<br>
-    <span style="color:#586d79">●</span> Money % — Not connected<br>
-    <span style="color:#586d79">●</span> ATS — Not connected
-  </div>
+<button class="sportBtn" data-sport="MLB">
+<span class="sportDot"></span>
+MLB
+</button>
+
+<button class="sportBtn" data-sport="NHL">
+<span class="sportDot"></span>
+NHL
+</button>
+
+<button class="sportBtn" data-sport="NCAAF">
+<span class="sportDot"></span>
+NCAAF
+</button>
+
+<button class="sportBtn" data-sport="NCAAB">
+<span class="sportDot"></span>
+NCAAB
+</button>
+
+<div class="navLabel">
+LIVE DATA
+</div>
+
+<div class="navInfo">
+
+<span class="liveDot">●</span>
+Spreads — LIVE
+
+<br>
+
+<span class="liveDot">●</span>
+Moneylines — LIVE
+
+<br>
+
+<span class="liveDot">●</span>
+Totals — LIVE
+
+<br>
+
+<span style="color:#586d79">●</span>
+Ticket % — Pending
+
+<br>
+
+<span style="color:#586d79">●</span>
+Money % — Pending
+
+<br>
+
+<span style="color:#586d79">●</span>
+Line History — Pending
+
+</div>
 
 </aside>
 
-<!-- CENTER -->
+<!-- MAIN -->
 
 <main class="center">
 
-  <header class="topbar">
+<header class="topbar">
 
-    <div class="pageTitle">
-      <strong id="topLeague">NFL</strong>
-      <span>MARKET SIGNAL DASHBOARD</span>
-    </div>
+<div class="pageTitle">
 
-    <div class="liveBadge" id="liveBadge">
-      ● LIVE ODDS
-    </div>
+<strong>
+NFL
+</strong>
 
-  </header>
+<span>
+MARKET SIGNAL DASHBOARD
+</span>
 
-  <section class="board">
+</div>
 
-    <div class="boardHead">
+<div class="liveBadge">
+● LIVE NFL ODDS
+</div>
 
-      <div>
-        <h1 id="boardTitle">NFL Live Odds</h1>
-        <p>Current sportsbook spreads via the MarketSignal data feed</p>
-      </div>
+</header>
 
-      <button class="refreshBtn" id="refreshBtn">
-        ↻ Refresh Odds
-      </button>
+<section class="board">
 
-    </div>
+<div class="boardHead">
 
-    <div id="status" class="status loading">
-      Connecting to MarketSignal live NFL feed...
-    </div>
+<div>
 
-    <div class="gameTable">
+<h1>
+NFL Market Board
+</h1>
 
-      <div class="tableHeader">
-        <div>MATCHUP</div>
-        <div>SPREAD</div>
-        <div class="ticketHeader">TICKETS</div>
-        <div class="moneyHeader">MONEY</div>
-        <div class="bookHeader">SOURCE</div>
-      </div>
+<p>
+Live sportsbook spread, moneyline and total data
+</p>
 
-      <div id="gameRows">
-        <div class="loadingRows">Loading live NFL odds...</div>
-      </div>
+</div>
 
-    </div>
+<button
+class="refreshBtn"
+id="refreshBtn">
 
-    <div class="insight">
+↻ Refresh Odds
 
-      <div class="insightIcon">⚡</div>
+</button>
 
-      <div>
-        <strong>Phase 1 Live Data</strong>
+</div>
 
-        <p>
-          NFL games and spreads are now being pulled from a live betting-odds feed.
-          Ticket share, money share, ATS trends and MarketSignal scores will remain
-          unavailable until their respective data sources are connected.
-        </p>
-      </div>
+<div
+id="status"
+class="status loading">
 
-    </div>
+Connecting to MarketSignal feed...
 
-  </section>
+</div>
+
+<div class="gameTable">
+
+<div class="tableHeader">
+
+<div>
+MATCHUP
+</div>
+
+<div class="spreadHeader">
+SPREAD
+</div>
+
+<div class="mlHeader">
+MONEYLINE
+</div>
+
+<div class="totalHeader">
+TOTAL
+</div>
+
+<div class="bookHeader">
+SOURCE
+</div>
+
+</div>
+
+<div id="gameRows">
+
+<div class="loadingRows">
+Loading NFL markets...
+</div>
+
+</div>
+
+</div>
+
+<div class="insight">
+
+<div class="insightIcon">
+⚡
+</div>
+
+<div>
+
+<strong>
+MarketSignal Live Market Layer
+</strong>
+
+<p>
+Spread, moneyline and totals are now live.
+The next layers will add line movement,
+betting percentages, ATS data and the
+MarketSignal scoring engine.
+</p>
+
+</div>
+
+</div>
+
+</section>
 
 </main>
 
@@ -713,76 +942,184 @@ button{font-family:inherit}
 
 <aside class="details">
 
-  <div class="detailHeader">
-    <strong>GAME DETAILS</strong>
-    <span>Live sportsbook spread comparison</span>
-  </div>
+<div class="detailHeader">
 
-  <div class="detailBody">
+<strong>
+GAME INTELLIGENCE
+</strong>
 
-    <div class="matchTitle">
-      <h2 id="detailTeams">
-        Select a live NFL matchup
-      </h2>
+<span>
+Sportsbook market comparison
+</span>
 
-      <p id="detailTime">
-        Live data will appear here.
-      </p>
-    </div>
+</div>
 
-    <div class="sectionTitle">
-      SPORTSBOOK SPREADS
-    </div>
+<div class="detailBody">
 
-    <div class="oddsCard">
+<div class="matchTitle">
 
-      <div class="oddsHeader">
-        <div>SPORTSBOOK</div>
-        <div>AWAY</div>
-        <div>HOME</div>
-      </div>
+<h2 id="detailTeams">
+Select an NFL matchup
+</h2>
 
-      <div id="bookRows">
-        <div class="loadingRows">Select a matchup</div>
-      </div>
+<p id="detailTime">
+Live market data will appear here.
+</p>
 
-    </div>
+</div>
 
-    <div class="sectionTitle">
-      MARKET DATA
-    </div>
+<div class="sectionTitle">
+PRIMARY MARKET
+</div>
 
-    <div class="dataGrid">
+<div class="consensusGrid">
 
-      <div class="dataCard">
-        <span>TICKET SHARE</span>
-        <strong class="blueText">—</strong>
-      </div>
+<div class="consensusCard">
 
-      <div class="dataCard">
-        <span>MONEY SHARE</span>
-        <strong class="purpleText">—</strong>
-      </div>
+<span>
+SPREAD
+</span>
 
-      <div class="dataCard">
-        <span>LINE HISTORY</span>
-        <strong class="orangeText">—</strong>
-      </div>
+<strong
+id="primarySpread"
+class="greenText">
+—
+</strong>
 
-      <div class="dataCard">
-        <span>SIGNAL SCORE</span>
-        <strong class="greenText">—</strong>
-      </div>
+</div>
 
-    </div>
+<div class="consensusCard">
 
-    <div class="noticeCard">
-      These fields are intentionally blank. MarketSignal will not display simulated
-      betting percentages or signal scores alongside live odds. We'll populate each
-      field only after connecting a real data source or calculating it from real data.
-    </div>
+<span>
+MONEYLINE
+</span>
 
-  </div>
+<strong
+id="primaryML"
+class="blueText">
+—
+</strong>
+
+</div>
+
+<div class="consensusCard">
+
+<span>
+TOTAL
+</span>
+
+<strong
+id="primaryTotal"
+class="purpleText">
+—
+</strong>
+
+</div>
+
+</div>
+
+<div class="sectionTitle">
+SPORTSBOOK COMPARISON
+</div>
+
+<div class="oddsCard">
+
+<div class="oddsHeader">
+
+<div>
+BOOK
+</div>
+
+<div>
+SPREAD
+</div>
+
+<div>
+ML
+</div>
+
+<div>
+TOTAL
+</div>
+
+</div>
+
+<div id="bookRows">
+
+<div class="loadingRows">
+Select a matchup
+</div>
+
+</div>
+
+</div>
+
+<div class="sectionTitle">
+SIGNAL ENGINE DATA
+</div>
+
+<div class="signalGrid">
+
+<div class="signalCard">
+
+<span>
+TICKET SHARE
+</span>
+
+<strong>
+—
+</strong>
+
+</div>
+
+<div class="signalCard">
+
+<span>
+MONEY SHARE
+</span>
+
+<strong>
+—
+</strong>
+
+</div>
+
+<div class="signalCard">
+
+<span>
+LINE MOVEMENT
+</span>
+
+<strong>
+—
+</strong>
+
+</div>
+
+<div class="signalCard">
+
+<span>
+MARKET SIGNAL
+</span>
+
+<strong>
+—
+</strong>
+
+</div>
+
+</div>
+
+<div class="noticeCard">
+
+These fields are intentionally blank.
+MarketSignal will only generate market
+signals after the required real data
+sources are connected.
+
+</div>
+
+</div>
 
 </aside>
 
@@ -790,468 +1127,683 @@ button{font-family:inherit}
 
 <script>
 
-/* =============================================
-   YOUR CLOUDFLARE WORKER
-============================================= */
+/* =======================================
+   MARKET SIGNAL API
+======================================= */
 
 const WORKER_URL =
-  "https://market-signal-api.kidflipz13.workers.dev/";
-
-/* =============================================
-   STATE
-============================================= */
+"https://market-signal-api.kidflipz13.workers.dev/";
 
 let games = [];
+
 let selectedGame = null;
 
-/* =============================================
-   LOAD LIVE NFL ODDS
-============================================= */
+/* =======================================
+   LOAD NFL
+======================================= */
 
 async function loadNFL(){
 
-  const status =
-    document.getElementById("status");
+const status =
+document.getElementById("status");
 
-  const rows =
-    document.getElementById("gameRows");
+const rows =
+document.getElementById("gameRows");
 
-  status.className =
-    "status loading";
+status.className =
+"status loading";
 
-  status.textContent =
-    "Connecting to MarketSignal live NFL feed...";
+status.textContent =
+"Connecting to MarketSignal live NFL feed...";
 
-  rows.innerHTML =
-    '<div class="loadingRows">Loading live NFL odds...</div>';
+rows.innerHTML =
+'<div class="loadingRows">Loading NFL markets...</div>';
 
-  try{
+try{
 
-    const response =
-      await fetch(WORKER_URL + "?t=" + Date.now());
+const response =
+await fetch(
+WORKER_URL +
+"?t=" +
+Date.now()
+);
 
-    if(!response.ok){
-      throw new Error(
-        "Feed returned HTTP " + response.status
-      );
-    }
+if(!response.ok){
 
-    const data =
-      await response.json();
+throw new Error(
+"HTTP " +
+response.status
+);
 
-    if(!data.success){
-      throw new Error(
-        data.error || "Odds feed returned an error."
-      );
-    }
-
-    games =
-      data.games || [];
-
-    status.className =
-      "status success";
-
-    status.textContent =
-      "● LIVE — " +
-      games.length +
-      " upcoming NFL games loaded.";
-
-    renderGames();
-
-    if(games.length > 0){
-      selectGame(0);
-    }
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    status.className =
-      "status error";
-
-    status.textContent =
-      "Unable to load live odds: " +
-      error.message;
-
-    rows.innerHTML =
-      '<div class="loadingRows">Live odds unavailable.</div>';
-  }
 }
 
-/* =============================================
-   FIND DISPLAY SPREAD
-============================================= */
+const data =
+await response.json();
+
+if(!data.success){
+
+throw new Error(
+data.error ||
+"Feed error"
+);
+
+}
+
+games =
+data.games || [];
+
+status.className =
+"status success";
+
+status.textContent =
+"● LIVE — " +
+games.length +
+" NFL games loaded with spread, moneyline and totals.";
+
+renderGames();
+
+if(games.length){
+
+selectGame(0);
+
+}
+
+}
+
+catch(error){
+
+console.error(error);
+
+status.className =
+"status error";
+
+status.textContent =
+"Unable to load live NFL data: " +
+error.message;
+
+rows.innerHTML =
+'<div class="loadingRows">Live markets unavailable.</div>';
+
+}
+
+}
+
+/* =======================================
+   PRIMARY SPORTSBOOK
+======================================= */
 
 function getPrimaryBook(game){
 
-  if(!game.bookmakers ||
-     game.bookmakers.length === 0){
+if(
+!game.bookmakers ||
+!game.bookmakers.length
+){
 
-    return null;
-  }
+return null;
 
-  return game.bookmakers.find(
-    book => book.spreads &&
-            book.spreads.length > 0
-  ) || null;
 }
 
-function findTeamSpread(book,team){
+const preferred = [
+"DraftKings",
+"FanDuel",
+"BetMGM",
+"Caesars"
+];
 
-  if(!book ||
-     !book.spreads){
+for(
+const name of preferred
+){
 
-    return null;
-  }
+const found =
+game.bookmakers.find(
+book =>
+book.bookmaker === name
+);
 
-  return book.spreads.find(
-    spread => spread.team === team
-  ) || null;
+if(found){
+
+return found;
+
 }
 
-function formatSpread(point){
-
-  if(point === undefined ||
-     point === null){
-
-    return "—";
-  }
-
-  if(point > 0){
-    return "+" + point;
-  }
-
-  return String(point);
 }
 
-/* =============================================
-   RENDER GAME BOARD
-============================================= */
+return game.bookmakers[0];
+
+}
+
+/* =======================================
+   MARKET HELPERS
+======================================= */
+
+function findSpread(
+book,
+team
+){
+
+if(
+!book ||
+!book.spreads
+){
+
+return null;
+
+}
+
+return (
+book.spreads.find(
+x =>
+x.team === team
+) || null
+);
+
+}
+
+function findML(
+book,
+team
+){
+
+if(
+!book ||
+!book.moneylines
+){
+
+return null;
+
+}
+
+return (
+book.moneylines.find(
+x =>
+x.team === team
+) || null
+);
+
+}
+
+function findTotal(
+book,
+name
+){
+
+if(
+!book ||
+!book.totals
+){
+
+return null;
+
+}
+
+return (
+book.totals.find(
+x =>
+x.name.toLowerCase() ===
+name.toLowerCase()
+) || null
+);
+
+}
+
+function formatSpread(value){
+
+if(
+value === null ||
+value === undefined
+){
+
+return "—";
+
+}
+
+return value > 0
+? "+" + value
+: String(value);
+
+}
+
+function formatAmerican(value){
+
+if(
+value === null ||
+value === undefined
+){
+
+return "—";
+
+}
+
+return value > 0
+? "+" + value
+: String(value);
+
+}
+
+/* =======================================
+   GAME BOARD
+======================================= */
 
 function renderGames(){
 
-  const rows =
-    document.getElementById("gameRows");
+const container =
+document.getElementById(
+"gameRows"
+);
 
-  rows.innerHTML = "";
+container.innerHTML = "";
 
-  if(games.length === 0){
+if(!games.length){
 
-    rows.innerHTML =
-      '<div class="loadingRows">No upcoming NFL games returned by the feed.</div>';
+container.innerHTML =
+'<div class="loadingRows">No upcoming NFL games returned.</div>';
 
-    return;
-  }
+return;
 
-  games.forEach((game,index)=>{
-
-    const book =
-      getPrimaryBook(game);
-
-    const awaySpread =
-      findTeamSpread(
-        book,
-        game.awayTeam
-      );
-
-    const row =
-      document.createElement("div");
-
-    row.className =
-      "gameRow " +
-      (selectedGame === index
-        ? "selected"
-        : "");
-
-    row.onclick = () =>
-      selectGame(index);
-
-    const start =
-      new Date(game.startTime);
-
-    const formattedTime =
-      start.toLocaleString(
-        [],
-        {
-          weekday:"short",
-          month:"short",
-          day:"numeric",
-          hour:"numeric",
-          minute:"2-digit"
-        }
-      );
-
-    const awayInitials =
-      makeInitials(game.awayTeam);
-
-    const homeInitials =
-      makeInitials(game.homeTeam);
-
-    row.innerHTML = `
-
-      <div>
-
-        <div class="gameTime">
-          ${formattedTime}
-        </div>
-
-        <div class="teamLine">
-          <div class="teamIcon">
-            ${awayInitials}
-          </div>
-
-          <div class="teamName">
-            ${game.awayTeam}
-          </div>
-        </div>
-
-        <div class="teamLine">
-          <div class="teamIcon">
-            ${homeInitials}
-          </div>
-
-          <div class="teamName">
-            ${game.homeTeam}
-          </div>
-        </div>
-
-      </div>
-
-      <div class="spread">
-        ${
-          awaySpread
-            ? formatSpread(awaySpread.point)
-            : "—"
-        }
-      </div>
-
-      <div class="unavailable">—</div>
-
-      <div class="unavailable">—</div>
-
-      <div class="bookName">
-        ${
-          book
-            ? book.bookmaker
-            : "—"
-        }
-      </div>
-    `;
-
-    rows.appendChild(row);
-  });
 }
 
-/* =============================================
+games.forEach(
+(game,index)=>{
+
+const book =
+getPrimaryBook(game);
+
+const awaySpread =
+findSpread(
+book,
+game.awayTeam
+);
+
+const awayML =
+findML(
+book,
+game.awayTeam
+);
+
+const over =
+findTotal(
+book,
+"Over"
+);
+
+const start =
+new Date(
+game.startTime
+);
+
+const formatted =
+start.toLocaleString(
+[],
+{
+weekday:"short",
+month:"short",
+day:"numeric",
+hour:"numeric",
+minute:"2-digit"
+}
+);
+
+const row =
+document.createElement(
+"div"
+);
+
+row.className =
+"gameRow " +
+(
+selectedGame === index
+? "selected"
+: ""
+);
+
+row.onclick =
+()=>selectGame(index);
+
+row.innerHTML = `
+
+<div>
+
+<div class="gameTime">
+${formatted}
+</div>
+
+<div class="teamLine">
+
+<div class="teamIcon">
+${makeInitials(game.awayTeam)}
+</div>
+
+<div class="teamName">
+${game.awayTeam}
+</div>
+
+</div>
+
+<div class="teamLine">
+
+<div class="teamIcon">
+${makeInitials(game.homeTeam)}
+</div>
+
+<div class="teamName">
+${game.homeTeam}
+</div>
+
+</div>
+
+</div>
+
+<div class="spread">
+
+${
+awaySpread
+? formatSpread(
+awaySpread.point
+)
+: "—"
+}
+
+</div>
+
+<div class="moneyline">
+
+${
+awayML
+? formatAmerican(
+awayML.price
+)
+: "—"
+}
+
+</div>
+
+<div class="total">
+
+${
+over
+? over.point
+: "—"
+}
+
+</div>
+
+<div class="bookName">
+
+${
+book
+? book.bookmaker
+: "—"
+}
+
+</div>
+
+`;
+
+container.appendChild(
+row
+);
+
+}
+);
+
+}
+
+/* =======================================
    SELECT GAME
-============================================= */
+======================================= */
 
 function selectGame(index){
 
-  selectedGame = index;
+selectedGame =
+index;
 
-  renderGames();
+renderGames();
 
-  const game =
-    games[index];
+const game =
+games[index];
 
-  document.getElementById(
-    "detailTeams"
-  ).innerHTML =
-    game.awayTeam +
-    "<br>@ " +
-    game.homeTeam;
+const book =
+getPrimaryBook(game);
 
-  const start =
-    new Date(game.startTime);
+document.getElementById(
+"detailTeams"
+).innerHTML =
+game.awayTeam +
+"<br>@ " +
+game.homeTeam;
 
-  document.getElementById(
-    "detailTime"
-  ).textContent =
-    start.toLocaleString();
+document.getElementById(
+"detailTime"
+).textContent =
+new Date(
+game.startTime
+).toLocaleString();
 
-  renderBooks(game);
+const spread =
+findSpread(
+book,
+game.awayTeam
+);
+
+const ml =
+findML(
+book,
+game.awayTeam
+);
+
+const over =
+findTotal(
+book,
+"Over"
+);
+
+document.getElementById(
+"primarySpread"
+).textContent =
+spread
+? formatSpread(
+spread.point
+)
+: "—";
+
+document.getElementById(
+"primaryML"
+).textContent =
+ml
+? formatAmerican(
+ml.price
+)
+: "—";
+
+document.getElementById(
+"primaryTotal"
+).textContent =
+over
+? over.point
+: "—";
+
+renderBooks(game);
+
 }
 
-/* =============================================
+/* =======================================
    SPORTSBOOK COMPARISON
-============================================= */
+======================================= */
 
 function renderBooks(game){
 
-  const container =
-    document.getElementById("bookRows");
+const container =
+document.getElementById(
+"bookRows"
+);
 
-  container.innerHTML = "";
+container.innerHTML = "";
 
-  const books =
-    (game.bookmakers || [])
-    .filter(
-      book =>
-        book.spreads &&
-        book.spreads.length
-    );
+const books =
+(game.bookmakers || [])
+.filter(
+book =>
+book.spreads?.length ||
+book.moneylines?.length ||
+book.totals?.length
+);
 
-  if(books.length === 0){
+if(!books.length){
 
-    container.innerHTML =
-      '<div class="loadingRows">No spread data available.</div>';
+container.innerHTML =
+'<div class="loadingRows">No sportsbook markets available.</div>';
 
-    return;
-  }
+return;
 
-  books.forEach(book=>{
-
-    const away =
-      findTeamSpread(
-        book,
-        game.awayTeam
-      );
-
-    const home =
-      findTeamSpread(
-        book,
-        game.homeTeam
-      );
-
-    const row =
-      document.createElement("div");
-
-    row.className =
-      "oddsRow";
-
-    row.innerHTML = `
-
-      <div class="oddsBook">
-        ${book.bookmaker}
-      </div>
-
-      <div class="oddsPoint">
-        ${
-          away
-            ? formatSpread(away.point)
-            : "—"
-        }
-
-        <span class="oddsPrice">
-          ${
-            away
-              ? " (" +
-                formatAmerican(
-                  away.price
-                ) +
-                ")"
-              : ""
-          }
-        </span>
-      </div>
-
-      <div class="oddsPoint">
-        ${
-          home
-            ? formatSpread(home.point)
-            : "—"
-        }
-
-        <span class="oddsPrice">
-          ${
-            home
-              ? " (" +
-                formatAmerican(
-                  home.price
-                ) +
-                ")"
-              : ""
-          }
-        </span>
-      </div>
-    `;
-
-    container.appendChild(row);
-  });
 }
 
-/* =============================================
-   HELPERS
-============================================= */
+books.forEach(
+book=>{
 
-function formatAmerican(price){
+const spread =
+findSpread(
+book,
+game.awayTeam
+);
 
-  if(price === undefined ||
-     price === null){
+const ml =
+findML(
+book,
+game.awayTeam
+);
 
-    return "";
-  }
+const over =
+findTotal(
+book,
+"Over"
+);
 
-  return price > 0
-    ? "+" + price
-    : String(price);
+const row =
+document.createElement(
+"div"
+);
+
+row.className =
+"oddsRow";
+
+row.innerHTML = `
+
+<div class="oddsBook">
+
+${book.bookmaker}
+
+</div>
+
+<div class="oddsSpread">
+
+${
+spread
+? formatSpread(
+spread.point
+)
+: "—"
 }
+
+</div>
+
+<div class="oddsML">
+
+${
+ml
+? formatAmerican(
+ml.price
+)
+: "—"
+}
+
+</div>
+
+<div class="oddsTotal">
+
+${
+over
+? over.point
+: "—"
+}
+
+</div>
+
+`;
+
+container.appendChild(
+row
+);
+
+}
+);
+
+}
+
+/* =======================================
+   TEAM INITIALS
+======================================= */
 
 function makeInitials(team){
 
-  return team
-    .split(" ")
-    .map(word=>word[0])
-    .slice(-2)
-    .join("")
-    .toUpperCase();
+return team
+.split(" ")
+.map(
+word =>
+word[0]
+)
+.slice(-2)
+.join("")
+.toUpperCase();
+
 }
 
-/* =============================================
+/* =======================================
    REFRESH
-============================================= */
+======================================= */
 
 document.getElementById(
-  "refreshBtn"
+"refreshBtn"
 ).addEventListener(
-  "click",
-  loadNFL
+"click",
+loadNFL
 );
 
-/* =============================================
-   OTHER SPORTS
-============================================= */
+/* =======================================
+   OTHER LEAGUES
+======================================= */
 
 document.querySelectorAll(
-  ".sportBtn"
-).forEach(button=>{
+".sportBtn"
+).forEach(
+button=>{
 
-  button.addEventListener(
-    "click",
-    ()=>{
+button.addEventListener(
+"click",
+()=>{
 
-      if(button.dataset.sport !== "NFL"){
+if(
+button.dataset.sport !==
+"NFL"
+){
 
-        alert(
-          button.dataset.sport +
-          " live odds will be connected after we confirm the NFL feed is working correctly."
-        );
+alert(
+button.dataset.sport +
+" will be connected after the NFL data layer is completed."
+);
 
-        return;
-      }
+return;
 
-      document.querySelectorAll(
-        ".sportBtn"
-      ).forEach(
-        btn =>
-          btn.classList.remove(
-            "active"
-          )
-      );
+}
 
-      button.classList.add(
-        "active"
-      );
-    }
-  );
+}
+);
 
-});
+}
+);
 
-/* =============================================
+/* =======================================
    START
-============================================= */
+======================================= */
 
 loadNFL();
 
