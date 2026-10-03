@@ -825,7 +825,7 @@ button{font-family:inherit}
 
       <div class="signalCard">
         <span>LINE MOVEMENT</span>
-        <strong>—</strong>
+        <strong id="lineMovement">—</strong>
       </div>
 
       <div class="signalCard">
@@ -1283,7 +1283,92 @@ function selectGame(index){
     under
       ? "U " + under.point
       : "—";
+  const movementEl =
+    document.getElementById("lineMovement");
 
+  if(book && book.lineHistory){
+
+    const awayHistory =
+      book.lineHistory[game.awayTeam];
+
+    const homeHistory =
+      book.lineHistory[game.homeTeam];
+
+    if(
+      awayHistory &&
+      awayHistory.firstTrackedSpread !== null &&
+      awayHistory.currentSpread !== null
+    ){
+
+      const first =
+        awayHistory.firstTrackedSpread;
+
+      const current =
+        awayHistory.currentSpread;
+
+      const amount =
+        awayHistory.movementAmount;
+
+      if(amount > 0){
+
+        movementEl.textContent =
+          game.awayTeam +
+          " " +
+          formatSpread(first) +
+          " → " +
+          formatSpread(current) +
+          " (" +
+          amount +
+          " pt)";
+
+      } else {
+
+        movementEl.textContent =
+          "No spread movement";
+      }
+
+    } else if(
+      homeHistory &&
+      homeHistory.firstTrackedSpread !== null &&
+      homeHistory.currentSpread !== null
+    ){
+
+      const first =
+        homeHistory.firstTrackedSpread;
+
+      const current =
+        homeHistory.currentSpread;
+
+      const amount =
+        homeHistory.movementAmount;
+
+      if(amount > 0){
+
+        movementEl.textContent =
+          game.homeTeam +
+          " " +
+          formatSpread(first) +
+          " → " +
+          formatSpread(current) +
+          " (" +
+          amount +
+          " pt)";
+
+      } else {
+
+        movementEl.textContent =
+          "No spread movement";
+      }
+
+    } else {
+
+      movementEl.textContent = "—";
+    }
+
+  } else {
+
+    movementEl.textContent = "—";
+  }
   renderBooks(game);
 }
 
