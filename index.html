@@ -11,35 +11,30 @@
   --sidebar:#07111a;
   --panel:#0b1620;
   --panel2:#0e1b27;
-  --panel3:#101f2c;
   --border:#1c2d3a;
-  --border2:#29404f;
-
   --text:#edf4f8;
   --muted:#708593;
 
   --green:#27e1a9;
-  --green-bg:rgba(39,225,169,.12);
+  --greenbg:rgba(39,225,169,.12);
 
   --blue:#55aaff;
-  --blue-bg:rgba(85,170,255,.12);
+  --bluebg:rgba(85,170,255,.12);
 
   --purple:#b58cff;
-  --purple-bg:rgba(181,140,255,.12);
+  --purplebg:rgba(181,140,255,.12);
 
   --orange:#ffad4d;
-  --orange-bg:rgba(255,173,77,.12);
+  --orangebg:rgba(255,173,77,.12);
 
   --yellow:#ffd166;
-  --yellow-bg:rgba(255,209,102,.12);
+  --yellowbg:rgba(255,209,102,.12);
 
   --red:#ff6f7d;
-  --red-bg:rgba(255,111,125,.12);
+  --redbg:rgba(255,111,125,.12);
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -52,23 +47,15 @@ body{
   font-size:13px;
 }
 
-button{
-  font-family:inherit;
-}
-
-/* ======================================================
-   MAIN APP
-====================================================== */
+button{font-family:inherit}
 
 .app{
   min-height:100vh;
   display:grid;
-  grid-template-columns:210px minmax(560px,1fr) 375px;
+  grid-template-columns:210px minmax(570px,1fr) 380px;
 }
 
-/* ======================================================
-   SIDEBAR
-====================================================== */
+/* SIDEBAR */
 
 .sidebar{
   background:linear-gradient(180deg,#08131c,#050c13);
@@ -129,21 +116,16 @@ button{
   cursor:pointer;
   font-size:11px;
   font-weight:800;
-  transition:.15s;
 }
 
 .sportBtn:hover{
   background:#0d1c27;
-  color:white;
+  color:#fff;
 }
 
 .sportBtn.active{
   color:var(--green);
-  background:linear-gradient(
-    90deg,
-    rgba(39,225,169,.17),
-    rgba(85,170,255,.04)
-  );
+  background:linear-gradient(90deg,rgba(39,225,169,.17),rgba(85,170,255,.04));
 }
 
 .sportDot{
@@ -160,29 +142,20 @@ button{
   box-shadow:0 0 9px var(--green);
 }
 
-.filter{
-  padding:4px 9px;
+.navInfo{
+  margin:8px 9px;
+  color:#647986;
+  font-size:9px;
+  line-height:1.6;
 }
 
-.filter label{
-  display:flex;
-  justify-content:space-between;
-  padding:7px 0;
-  color:#718693;
-  font-size:10px;
+.liveDot{
+  color:var(--green);
 }
 
-.filter input{
-  accent-color:var(--green);
-}
+/* MAIN */
 
-/* ======================================================
-   CENTER
-====================================================== */
-
-.center{
-  min-width:0;
-}
+.center{min-width:0}
 
 .topbar{
   height:65px;
@@ -191,7 +164,6 @@ button{
   justify-content:space-between;
   padding:0 22px;
   border-bottom:1px solid var(--border);
-  background:rgba(5,11,17,.75);
 }
 
 .pageTitle strong{
@@ -206,9 +178,9 @@ button{
   letter-spacing:1.2px;
 }
 
-.sampleBadge{
+.liveBadge{
   border:1px solid #295143;
-  background:var(--green-bg);
+  background:var(--greenbg);
   color:var(--green);
   padding:6px 10px;
   border-radius:20px;
@@ -238,29 +210,53 @@ button{
   font-size:10px;
 }
 
-.legend{
-  display:flex;
-  gap:13px;
-  color:#718591;
-  font-size:8px;
+.refreshBtn{
+  border:1px solid #29404f;
+  background:#0c1923;
+  color:#91a5b1;
+  padding:8px 12px;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:9px;
+  font-weight:800;
 }
 
-.legend span::before{
-  content:"";
-  display:inline-block;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  margin-right:5px;
+.refreshBtn:hover{
+  color:var(--green);
+  border-color:#28604f;
 }
 
-.legend .lgGreen::before{background:var(--green)}
-.legend .lgYellow::before{background:var(--yellow)}
-.legend .lgRed::before{background:var(--red)}
+/* STATUS */
 
-/* ======================================================
-   GAME BOARD
-====================================================== */
+.status{
+  margin-bottom:12px;
+  padding:10px 12px;
+  border-radius:7px;
+  border:1px solid var(--border);
+  background:#09151e;
+  color:#7e939f;
+  font-size:9px;
+}
+
+.status.loading{
+  color:var(--blue);
+  border-color:#23466a;
+  background:var(--bluebg);
+}
+
+.status.success{
+  color:var(--green);
+  border-color:#245743;
+  background:var(--greenbg);
+}
+
+.status.error{
+  color:var(--red);
+  border-color:#65353b;
+  background:var(--redbg);
+}
+
+/* TABLE */
 
 .gameTable{
   border:1px solid var(--border);
@@ -273,7 +269,7 @@ button{
 .tableHeader,
 .gameRow{
   display:grid;
-  grid-template-columns:minmax(205px,2fr) 70px 72px 72px 90px 74px;
+  grid-template-columns:minmax(220px,2fr) 82px 72px 72px 95px;
   align-items:center;
 }
 
@@ -286,54 +282,34 @@ button{
   font-weight:900;
 }
 
-.tableHeader > div,
-.gameRow > div{
+.tableHeader>div,
+.gameRow>div{
   padding:0 10px;
 }
 
-.ticketHeader{
-  color:var(--blue);
-}
-
-.moneyHeader{
-  color:var(--purple);
-}
-
-.moveHeader{
-  color:var(--orange);
-}
+.ticketHeader{color:var(--blue)}
+.moneyHeader{color:var(--purple)}
+.bookHeader{color:var(--orange)}
 
 .gameRow{
-  min-height:86px;
+  min-height:88px;
   border-top:1px solid var(--border);
   cursor:pointer;
-  transition:.15s;
 }
 
 .gameRow:hover{
-  background:
-    linear-gradient(
-      90deg,
-      rgba(85,170,255,.07),
-      rgba(181,140,255,.025)
-    );
+  background:linear-gradient(90deg,rgba(85,170,255,.07),rgba(181,140,255,.025));
 }
 
 .gameRow.selected{
-  background:
-    linear-gradient(
-      90deg,
-      rgba(39,225,169,.13),
-      rgba(85,170,255,.04),
-      transparent
-    );
+  background:linear-gradient(90deg,rgba(39,225,169,.13),rgba(85,170,255,.04),transparent);
   box-shadow:inset 3px 0 var(--green);
 }
 
 .gameTime{
   color:#59707f;
-  font-size:7px;
-  margin-bottom:5px;
+  font-size:8px;
+  margin-bottom:6px;
 }
 
 .teamLine{
@@ -344,8 +320,8 @@ button{
 }
 
 .teamIcon{
-  width:22px;
-  height:22px;
+  width:23px;
+  height:23px;
   border-radius:5px;
   display:grid;
   place-items:center;
@@ -362,69 +338,23 @@ button{
 }
 
 .spread{
-  color:#f3f7f9;
-  font-size:11px;
-  font-weight:800;
-}
-
-.ticketPercent{
-  color:var(--blue);
-  font-size:12px;
-  font-weight:900;
-}
-
-.moneyPercent{
-  color:var(--purple);
-  font-size:12px;
-  font-weight:900;
-}
-
-.lineMove{
-  color:var(--orange);
-  font-size:10px;
-  font-weight:800;
-}
-
-.signalScore{
-  display:inline-grid;
-  place-items:center;
-  min-width:44px;
-  height:29px;
-  border-radius:6px;
-  font-weight:900;
-  font-size:12px;
-}
-
-.scoreStrong{
   color:var(--green);
-  border:1px solid #236c56;
-  background:var(--green-bg);
-  box-shadow:0 0 13px rgba(39,225,169,.09);
+  font-size:11px;
+  font-weight:900;
 }
 
-.scoreMedium{
-  color:var(--yellow);
-  border:1px solid #65542d;
-  background:var(--yellow-bg);
+.unavailable{
+  color:#4d616d;
+  font-size:13px;
 }
 
-.scoreWeak{
-  color:var(--red);
-  border:1px solid #63333a;
-  background:var(--red-bg);
+.bookName{
+  color:var(--orange);
+  font-size:9px;
+  font-weight:700;
 }
 
-.scoreLabel{
-  display:block;
-  color:#566b78;
-  font-size:6px;
-  letter-spacing:.8px;
-  margin-top:3px;
-}
-
-/* ======================================================
-   MARKET INSIGHT
-====================================================== */
+/* INFO STRIP */
 
 .insight{
   margin-top:14px;
@@ -434,13 +364,12 @@ button{
   padding:14px 16px;
   border:1px solid #25453f;
   border-radius:9px;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(39,225,169,.11),
-      rgba(85,170,255,.055),
-      rgba(181,140,255,.035)
-    );
+  background:linear-gradient(
+    90deg,
+    rgba(39,225,169,.11),
+    rgba(85,170,255,.055),
+    rgba(181,140,255,.035)
+  );
 }
 
 .insightIcon{
@@ -459,19 +388,12 @@ button{
   font-size:9px;
 }
 
-/* ======================================================
-   RIGHT PANEL
-====================================================== */
+/* DETAILS */
 
 .details{
   min-height:100vh;
   border-left:1px solid var(--border);
-  background:
-    linear-gradient(
-      180deg,
-      #09151f,
-      #071019
-    );
+  background:linear-gradient(180deg,#09151f,#071019);
 }
 
 .detailHeader{
@@ -495,387 +417,117 @@ button{
   padding:18px;
 }
 
-.matchTitle{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-}
-
 .matchTitle h2{
   margin:0;
-  font-size:17px;
-  line-height:1.4;
+  font-size:18px;
+  line-height:1.45;
 }
 
 .matchTitle p{
-  margin:5px 0 0;
+  margin:6px 0 0;
   color:#738795;
   font-size:9px;
 }
 
-.bigSignal{
-  min-width:62px;
-  height:56px;
-  border-radius:8px;
-  display:grid;
-  place-items:center;
-  border:1px solid #246c57;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(39,225,169,.19),
-      rgba(39,225,169,.05)
-    );
-  box-shadow:0 0 18px rgba(39,225,169,.08);
-}
-
-.bigSignal strong{
-  display:block;
-  text-align:center;
-  color:var(--green);
-  font-size:22px;
-  line-height:20px;
-}
-
-.bigSignal small{
-  display:block;
-  color:#70a897;
-  font-size:6px;
-  text-align:center;
-  letter-spacing:1px;
-}
-
-/* ======================================================
-   TABS
-====================================================== */
-
-.tabs{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  margin-top:18px;
-  border-bottom:1px solid var(--border);
-}
-
-.tab{
-  border:0;
-  border-bottom:2px solid transparent;
-  background:transparent;
-  color:#637986;
-  padding:10px 1px;
-  font-size:8px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.tab[data-tab="market"].active{
-  color:var(--blue);
-  border-bottom-color:var(--blue);
-}
-
-.tab[data-tab="ats"].active{
-  color:var(--green);
-  border-bottom-color:var(--green);
-}
-
-.tab[data-tab="trends"].active{
-  color:var(--purple);
-  border-bottom-color:var(--purple);
-}
-
-.tab[data-tab="situational"].active{
-  color:var(--orange);
-  border-bottom-color:var(--orange);
-}
-
-.tabContent{
-  display:none;
-}
-
-.tabContent.active{
-  display:block;
-}
-
 .sectionTitle{
-  margin:18px 0 9px;
+  margin:20px 0 9px;
   color:#59707f;
   font-size:7px;
   font-weight:900;
   letter-spacing:1.4px;
 }
 
-/* ======================================================
-   MARKET TAB
-====================================================== */
-
-.marketBox{
-  padding:12px;
+.oddsCard{
   border:1px solid var(--border);
   border-radius:8px;
-  background:
-    linear-gradient(
-      145deg,
-      #0e1b27,
-      #09141d
-    );
+  background:#0c1822;
+  overflow:hidden;
 }
 
-.marketRow{
+.oddsHeader,
+.oddsRow{
   display:grid;
-  grid-template-columns:1.5fr 1fr 1fr;
-  padding:8px 0;
-  border-top:1px solid #192b37;
+  grid-template-columns:1.4fr 1fr 1fr;
+  align-items:center;
+  padding:9px 11px;
+}
+
+.oddsHeader{
+  background:#08131c;
+  color:#627987;
+  font-size:7px;
+  font-weight:900;
+}
+
+.oddsRow{
+  border-top:1px solid #192a35;
   font-size:10px;
 }
 
-.marketRow:first-child{
-  border-top:0;
+.oddsBook{
+  color:var(--orange);
+  font-weight:800;
 }
 
-.marketRow span{
-  color:#7c909d;
+.oddsPoint{
+  color:var(--green);
+  font-weight:900;
 }
 
-.blue{
+.oddsPrice{
   color:var(--blue);
+  font-weight:900;
 }
 
-.purple{
-  color:var(--purple);
-}
-
-.marketAlert{
+.noticeCard{
   margin-top:10px;
-  padding:10px;
-  border-left:2px solid var(--yellow);
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255,209,102,.11),
-      rgba(255,209,102,.015)
-    );
-  color:#b7a878;
+  padding:11px;
+  border-left:2px solid var(--purple);
+  background:var(--purplebg);
+  color:#a893c6;
   font-size:9px;
-  line-height:1.5;
+  line-height:1.55;
 }
 
-.chart{
-  position:relative;
-  height:105px;
-  margin:17px 5px 8px;
-  border-left:1px solid #203542;
-  border-bottom:1px solid #203542;
-  background:
-    linear-gradient(
-      rgba(85,170,255,.025) 1px,
-      transparent 1px
-    );
-  background-size:100% 25px;
-}
-
-.chartLine{
-  position:absolute;
-  left:5%;
-  top:65%;
-  width:90%;
-  height:2px;
-  background:linear-gradient(
-    90deg,
-    var(--blue),
-    var(--purple),
-    var(--orange)
-  );
-  transform:rotate(-11deg);
-  transform-origin:left center;
-  box-shadow:0 0 8px rgba(85,170,255,.4);
-}
-
-.point{
-  position:absolute;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-}
-
-.p1{left:5%;top:62%;background:var(--blue)}
-.p2{left:28%;top:53%;background:var(--blue)}
-.p3{left:52%;top:45%;background:var(--purple)}
-.p4{left:75%;top:35%;background:var(--purple)}
-.p5{left:92%;top:27%;background:var(--orange)}
-
-.chartLabels{
-  display:flex;
-  justify-content:space-between;
-  color:#506672;
-  font-size:6px;
-}
-
-.movementAlert{
-  margin-top:12px;
-  padding:10px;
-  border-left:2px solid var(--orange);
-  background:var(--orange-bg);
-  color:#c89d6a;
-  font-size:9px;
-  line-height:1.5;
-}
-
-/* ======================================================
-   ATS
-====================================================== */
-
-.atsGrid{
+.dataGrid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:9px;
 }
 
-.statCard{
+.dataCard{
+  padding:12px;
   border:1px solid var(--border);
   border-radius:8px;
-  padding:12px;
   background:#0c1822;
 }
 
-.statCard:nth-child(1){
-  border-top:2px solid var(--green);
-}
-
-.statCard:nth-child(2){
-  border-top:2px solid var(--blue);
-}
-
-.statCard:nth-child(3){
-  border-top:2px solid var(--purple);
-}
-
-.statCard:nth-child(4){
-  border-top:2px solid var(--orange);
-}
-
-.statCard span{
+.dataCard span{
   display:block;
   color:#687e8c;
   font-size:7px;
 }
 
-.statCard strong{
+.dataCard strong{
   display:block;
-  margin-top:5px;
-  font-size:18px;
+  margin-top:6px;
+  font-size:16px;
 }
 
-.greenText{color:var(--green)}
-.redText{color:var(--red)}
 .blueText{color:var(--blue)}
 .purpleText{color:var(--purple)}
+.orangeText{color:var(--orange)}
+.greenText{color:var(--green)}
 
-/* ======================================================
-   TREND CARDS
-====================================================== */
-
-.trendCard{
-  margin-bottom:9px;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  background:#0c1822;
+.loadingRows{
+  padding:35px;
+  text-align:center;
+  color:#6f8491;
 }
 
-.trendCard strong{
-  display:block;
-  font-size:10px;
-}
-
-.trendCard p{
-  margin:6px 0 0;
-  color:#7b909c;
-  font-size:9px;
-  line-height:1.5;
-}
-
-.tag{
-  display:inline-block;
-  margin-bottom:7px;
-  padding:4px 7px;
-  border-radius:4px;
-  font-size:6px;
-  font-weight:900;
-  letter-spacing:.7px;
-}
-
-.greenTag{
-  color:var(--green);
-  background:var(--green-bg);
-}
-
-.blueTag{
-  color:var(--blue);
-  background:var(--blue-bg);
-}
-
-.purpleTag{
-  color:var(--purple);
-  background:var(--purple-bg);
-}
-
-.orangeTag{
-  color:var(--orange);
-  background:var(--orange-bg);
-}
-
-.redTag{
-  color:var(--red);
-  background:var(--red-bg);
-}
-
-/* ======================================================
-   SIGNAL BREAKDOWN
-====================================================== */
-
-.signalBreakdown{
-  margin-top:15px;
-  padding:13px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  background:#09151e;
-}
-
-.signalLine{
-  display:grid;
-  grid-template-columns:1fr auto;
-  align-items:center;
-  padding:7px 0;
-  border-top:1px solid #182a35;
-  font-size:9px;
-}
-
-.signalLine:first-child{
-  border-top:0;
-}
-
-.signalLine span:first-child{
-  color:#778c98;
-}
-
-.signalPositive{
-  color:var(--green);
-}
-
-.signalModerate{
-  color:var(--yellow);
-}
-
-.signalConflict{
-  color:var(--red);
-}
-
-/* ======================================================
-   MOBILE
-====================================================== */
+/* MOBILE */
 
 @media(max-width:1100px){
-
   .app{
     grid-template-columns:190px 1fr;
   }
@@ -886,16 +538,13 @@ button{
 }
 
 @media(max-width:730px){
-
-  .app{
-    display:block;
-  }
+  .app{display:block}
 
   .sidebar{
     min-height:auto;
-    padding:12px;
     border-right:0;
     border-bottom:1px solid var(--border);
+    padding:12px;
   }
 
   .logoWrap{
@@ -903,8 +552,7 @@ button{
     padding-bottom:12px;
   }
 
-  .navLabel,
-  .filter{
+  .navLabel,.navInfo{
     display:none;
   }
 
@@ -923,20 +571,15 @@ button{
     padding:14px 8px;
   }
 
-  .legend{
-    display:none;
-  }
-
   .gameTable{
     overflow-x:auto;
   }
 
   .tableHeader,
   .gameRow{
-    min-width:700px;
+    min-width:650px;
   }
 }
-
 </style>
 </head>
 
@@ -983,39 +626,18 @@ button{
     <span class="sportDot"></span>NCAAB
   </button>
 
-  <div class="navLabel">SIGNAL FILTERS</div>
+  <div class="navLabel">DATA STATUS</div>
 
-  <div class="filter">
-
-    <label>
-      Strong signals
-      <input id="strongFilter" type="checkbox">
-    </label>
-
-    <label>
-      Reverse movement
-      <input type="checkbox">
-    </label>
-
-    <label>
-      Money divergence
-      <input type="checkbox">
-    </label>
-
-  </div>
-
-  <div class="navLabel">DATA SOURCES</div>
-
-  <div class="filter">
-    <label>ATS Splits <span class="greenText">●</span></label>
-    <label>Ticket Share <span class="blueText">●</span></label>
-    <label>Money Share <span class="purpleText">●</span></label>
-    <label>Line Movement <span style="color:var(--orange)">●</span></label>
+  <div class="navInfo">
+    <span class="liveDot">●</span> NFL Odds — LIVE<br>
+    <span style="color:#586d79">●</span> Ticket % — Not connected<br>
+    <span style="color:#586d79">●</span> Money % — Not connected<br>
+    <span style="color:#586d79">●</span> ATS — Not connected
   </div>
 
 </aside>
 
-<!-- MAIN -->
+<!-- CENTER -->
 
 <main class="center">
 
@@ -1026,8 +648,8 @@ button{
       <span>MARKET SIGNAL DASHBOARD</span>
     </div>
 
-    <div class="sampleBadge">
-      ● PROTOTYPE • SAMPLE DATA
+    <div class="liveBadge" id="liveBadge">
+      ● LIVE ODDS
     </div>
 
   </header>
@@ -1037,34 +659,33 @@ button{
     <div class="boardHead">
 
       <div>
-        <h1 id="boardTitle">NFL Signal Board</h1>
-        <p>
-          Ticket share • money share • line movement • ATS • situational intelligence
-        </p>
+        <h1 id="boardTitle">NFL Live Odds</h1>
+        <p>Current sportsbook spreads via the MarketSignal data feed</p>
       </div>
 
-      <div class="legend">
-        <span class="lgGreen">Strong</span>
-        <span class="lgYellow">Notable</span>
-        <span class="lgRed">Watch</span>
-      </div>
+      <button class="refreshBtn" id="refreshBtn">
+        ↻ Refresh Odds
+      </button>
 
+    </div>
+
+    <div id="status" class="status loading">
+      Connecting to MarketSignal live NFL feed...
     </div>
 
     <div class="gameTable">
 
       <div class="tableHeader">
-
         <div>MATCHUP</div>
         <div>SPREAD</div>
         <div class="ticketHeader">TICKETS</div>
         <div class="moneyHeader">MONEY</div>
-        <div class="moveHeader">LINE MOVE</div>
-        <div>SIGNAL</div>
-
+        <div class="bookHeader">SOURCE</div>
       </div>
 
-      <div id="gameRows"></div>
+      <div id="gameRows">
+        <div class="loadingRows">Loading live NFL odds...</div>
+      </div>
 
     </div>
 
@@ -1073,15 +694,13 @@ button{
       <div class="insightIcon">⚡</div>
 
       <div>
+        <strong>Phase 1 Live Data</strong>
 
-        <strong id="insightTitle">
-          Strong market signal detected
-        </strong>
-
-        <p id="insightText">
-          Money/ticket divergence and line movement are creating an unusual market profile.
+        <p>
+          NFL games and spreads are now being pulled from a live betting-odds feed.
+          Ticket share, money share, ATS trends and MarketSignal scores will remain
+          unavailable until their respective data sources are connected.
         </p>
-
       </div>
 
     </div>
@@ -1095,342 +714,72 @@ button{
 <aside class="details">
 
   <div class="detailHeader">
-
     <strong>GAME DETAILS</strong>
-
-    <span>
-      Market intelligence & matchup analysis
-    </span>
-
+    <span>Live sportsbook spread comparison</span>
   </div>
 
   <div class="detailBody">
 
     <div class="matchTitle">
+      <h2 id="detailTeams">
+        Select a live NFL matchup
+      </h2>
 
-      <div>
+      <p id="detailTime">
+        Live data will appear here.
+      </p>
+    </div>
 
-        <h2 id="detailTeams">
-          Cincinnati Bengals<br>
-          @ Baltimore Ravens
-        </h2>
+    <div class="sectionTitle">
+      SPORTSBOOK SPREADS
+    </div>
 
-        <p id="detailLine">
-          Opening CIN +4.5 → Current CIN +3
-        </p>
+    <div class="oddsCard">
 
+      <div class="oddsHeader">
+        <div>SPORTSBOOK</div>
+        <div>AWAY</div>
+        <div>HOME</div>
       </div>
 
-      <div class="bigSignal">
-
-        <div>
-
-          <strong id="detailScore">86</strong>
-
-          <small>SIGNAL</small>
-
-        </div>
-
+      <div id="bookRows">
+        <div class="loadingRows">Select a matchup</div>
       </div>
 
     </div>
 
-    <div class="tabs">
-
-      <button class="tab active" data-tab="market">
-        MARKET
-      </button>
-
-      <button class="tab" data-tab="ats">
-        ATS
-      </button>
-
-      <button class="tab" data-tab="trends">
-        TRENDS
-      </button>
-
-      <button class="tab" data-tab="situational">
-        SITUATIONAL
-      </button>
-
+    <div class="sectionTitle">
+      MARKET DATA
     </div>
 
-    <!-- MARKET -->
+    <div class="dataGrid">
 
-    <div class="tabContent active" id="market">
-
-      <div class="sectionTitle">
-        BETTING DISTRIBUTION
+      <div class="dataCard">
+        <span>TICKET SHARE</span>
+        <strong class="blueText">—</strong>
       </div>
 
-      <div class="marketBox">
-
-        <div class="marketRow">
-          <span></span>
-          <strong class="blue">TICKETS</strong>
-          <strong class="purple">MONEY</strong>
-        </div>
-
-        <div class="marketRow">
-          <span id="marketAway">Cincinnati</span>
-          <strong class="blue" id="awayTickets">34%</strong>
-          <strong class="purple" id="awayMoney">61%</strong>
-        </div>
-
-        <div class="marketRow">
-          <span id="marketHome">Baltimore</span>
-          <strong class="blue" id="homeTickets">66%</strong>
-          <strong class="purple" id="homeMoney">39%</strong>
-        </div>
-
+      <div class="dataCard">
+        <span>MONEY SHARE</span>
+        <strong class="purpleText">—</strong>
       </div>
 
-      <div class="marketAlert" id="divergenceAlert">
-        27-point ticket/money divergence detected.
+      <div class="dataCard">
+        <span>LINE HISTORY</span>
+        <strong class="orangeText">—</strong>
       </div>
 
-      <div class="sectionTitle">
-        LINE MOVEMENT
-      </div>
-
-      <div class="chart">
-
-        <div class="chartLine"></div>
-
-        <div class="point p1"></div>
-        <div class="point p2"></div>
-        <div class="point p3"></div>
-        <div class="point p4"></div>
-        <div class="point p5"></div>
-
-      </div>
-
-      <div class="chartLabels">
-        <span>OPEN</span>
-        <span>24H</span>
-        <span>12H</span>
-        <span>6H</span>
-        <span>NOW</span>
-      </div>
-
-      <div class="movementAlert" id="movementAlert">
-        Spread moved 1.5 points toward Cincinnati.
-      </div>
-
-      <div class="sectionTitle">
-        SIGNAL BREAKDOWN
-      </div>
-
-      <div class="signalBreakdown">
-
-        <div class="signalLine">
-          <span>Money / ticket divergence</span>
-          <strong class="signalPositive">STRONG</strong>
-        </div>
-
-        <div class="signalLine">
-          <span>Reverse line movement</span>
-          <strong class="signalPositive">DETECTED</strong>
-        </div>
-
-        <div class="signalLine">
-          <span>ATS context</span>
-          <strong class="signalModerate">SUPPORTIVE</strong>
-        </div>
-
-        <div class="signalLine">
-          <span>Situational context</span>
-          <strong class="signalModerate">NOTABLE</strong>
-        </div>
-
+      <div class="dataCard">
+        <span>SIGNAL SCORE</span>
+        <strong class="greenText">—</strong>
       </div>
 
     </div>
 
-    <!-- ATS -->
-
-    <div class="tabContent" id="ats">
-
-      <div class="sectionTitle">
-        AGAINST THE SPREAD
-      </div>
-
-      <div class="atsGrid">
-
-        <div class="statCard">
-          <span id="awayATSLabel">CINCINNATI ROAD ATS</span>
-          <strong class="greenText">7-3</strong>
-        </div>
-
-        <div class="statCard">
-          <span id="homeATSLabel">BALTIMORE HOME ATS</span>
-          <strong class="blueText">4-6</strong>
-        </div>
-
-        <div class="statCard">
-          <span>ROAD LAST 5 ATS</span>
-          <strong class="purpleText">4-1</strong>
-        </div>
-
-        <div class="statCard">
-          <span>HOME LAST 5 ATS</span>
-          <strong style="color:var(--orange)">2-3</strong>
-        </div>
-
-      </div>
-
-      <div class="sectionTitle">
-        ATS CONTEXT
-      </div>
-
-      <div class="trendCard">
-
-        <span class="tag greenTag">
-          ROAD SPLIT
-        </span>
-
-        <strong>
-          Road ATS profile currently stronger
-        </strong>
-
-        <p>
-          MarketSignal compares location-specific ATS performance rather than relying only on overall season records.
-        </p>
-
-      </div>
-
-      <div class="trendCard">
-
-        <span class="tag blueTag">
-          RECENT FORM
-        </span>
-
-        <strong>
-          Recent ATS performance
-        </strong>
-
-        <p>
-          Short-term performance is shown separately so users can compare recent form with the larger season sample.
-        </p>
-
-      </div>
-
-    </div>
-
-    <!-- TRENDS -->
-
-    <div class="tabContent" id="trends">
-
-      <div class="sectionTitle">
-        MATCHUP INTELLIGENCE
-      </div>
-
-      <div class="trendCard">
-
-        <span class="tag purpleTag">
-          MARKET
-        </span>
-
-        <strong>
-          Minority-ticket line movement
-        </strong>
-
-        <p>
-          The market moved toward a side receiving fewer tickets, producing a reverse-line-movement signal.
-        </p>
-
-      </div>
-
-      <div class="trendCard">
-
-        <span class="tag greenTag">
-          ATS
-        </span>
-
-        <strong>
-          Road covering trend
-        </strong>
-
-        <p>
-          The selected road team has performed well in recent qualifying road ATS situations in this sample dataset.
-        </p>
-
-      </div>
-
-      <div class="trendCard">
-
-        <span class="tag redTag">
-          CONFLICT
-        </span>
-
-        <strong>
-          Conflicting evidence matters
-        </strong>
-
-        <p>
-          MarketSignal will also surface trends that disagree with the primary signal rather than hiding contradictory evidence.
-        </p>
-
-      </div>
-
-    </div>
-
-    <!-- SITUATIONAL -->
-
-    <div class="tabContent" id="situational">
-
-      <div class="sectionTitle">
-        OBSCURE DATA
-      </div>
-
-      <div class="trendCard">
-
-        <span class="tag orangeTag">
-          REST
-        </span>
-
-        <strong>
-          Rest differential
-        </strong>
-
-        <p>
-          Days of rest and recovery differences can be incorporated into the matchup profile.
-        </p>
-
-      </div>
-
-      <div class="trendCard">
-
-        <span class="tag blueTag">
-          TRAVEL
-        </span>
-
-        <strong>
-          Travel environment
-        </strong>
-
-        <p>
-          Travel distance, time-zone changes and previous-game location can identify unusual scheduling situations.
-        </p>
-
-      </div>
-
-      <div class="trendCard">
-
-        <span class="tag purpleTag">
-          MATCHUP
-        </span>
-
-        <strong>
-          Sport-specific context
-        </strong>
-
-        <p>
-          Weather, back-to-backs, starting personnel, bullpen usage, goalie status, short weeks and other league-specific variables can be surfaced here.
-        </p>
-
-      </div>
-
+    <div class="noticeCard">
+      These fields are intentionally blank. MarketSignal will not display simulated
+      betting percentages or signal scores alongside live odds. We'll populate each
+      field only after connecting a real data source or calculating it from real data.
     </div>
 
   </div>
@@ -1441,334 +790,381 @@ button{
 
 <script>
 
-const data={
+/* =============================================
+   YOUR CLOUDFLARE WORKER
+============================================= */
 
-NFL:[
-{
-away:"Cincinnati Bengals",
-home:"Baltimore Ravens",
-awayShort:"Cincinnati",
-homeShort:"Baltimore",
-spread:"CIN +3",
-open:"CIN +4.5",
-tickets:34,
-money:61,
-move:"1.5 → CIN",
-score:86,
-text:"Money/ticket divergence combined with reverse line movement creates a strong market signal."
-},
-{
-away:"Green Bay Packers",
-home:"Chicago Bears",
-awayShort:"Green Bay",
-homeShort:"Chicago",
-spread:"CHI +1",
-open:"CHI +2.5",
-tickets:63,
-money:45,
-move:"1.5 → CHI",
-score:91,
-text:"Majority tickets are on Green Bay while the market is moving toward Chicago."
-},
-{
-away:"Buffalo Bills",
-home:"Miami Dolphins",
-awayShort:"Buffalo",
-homeShort:"Miami",
-spread:"BUF -2.5",
-open:"BUF -1",
-tickets:71,
-money:76,
-move:"1.5 → BUF",
-score:68,
-text:"Ticket share, money share and line movement are largely aligned."
-},
-{
-away:"Dallas Cowboys",
-home:"Philadelphia Eagles",
-awayShort:"Dallas",
-homeShort:"Philadelphia",
-spread:"PHI -5",
-open:"PHI -4",
-tickets:42,
-money:38,
-move:"1 → PHI",
-score:58,
-text:"The current market profile shows limited divergence."
-},
-{
-away:"Kansas City Chiefs",
-home:"Denver Broncos",
-awayShort:"Kansas City",
-homeShort:"Denver",
-spread:"KC -3",
-open:"KC -2",
-tickets:74,
-money:59,
-move:"1 → KC",
-score:64,
-text:"Ticket concentration is stronger than money concentration."
-}
-],
+const WORKER_URL =
+  "https://market-signal-api.kidflipz13.workers.dev/";
 
-NBA:[
-{
-away:"Boston Celtics",
-home:"New York Knicks",
-awayShort:"Boston",
-homeShort:"New York",
-spread:"BOS -2",
-open:"BOS -1",
-tickets:62,
-money:73,
-move:"1 → BOS",
-score:74,
-text:"Money concentration exceeds ticket share while the market moves toward Boston."
-},
-{
-away:"Phoenix Suns",
-home:"Los Angeles Lakers",
-awayShort:"Phoenix",
-homeShort:"LA Lakers",
-spread:"LAL -1",
-open:"PHX -1",
-tickets:58,
-money:39,
-move:"2 → LAL",
-score:88,
-text:"The market reversed toward Los Angeles despite Phoenix receiving more tickets."
-},
-{
-away:"Denver Nuggets",
-home:"Dallas Mavericks",
-awayShort:"Denver",
-homeShort:"Dallas",
-spread:"DEN -3",
-open:"DEN -2.5",
-tickets:55,
-money:58,
-move:".5 → DEN",
-score:61,
-text:"Betting distribution and market movement are mostly aligned."
-}
-],
+/* =============================================
+   STATE
+============================================= */
 
-MLB:[
-{
-away:"New York Yankees",
-home:"Boston Red Sox",
-awayShort:"NY Yankees",
-homeShort:"Boston",
-spread:"NYY -125",
-open:"NYY -110",
-tickets:68,
-money:76,
-move:"15¢ → NYY",
-score:69,
-text:"Money concentration is supporting the favorite's market movement."
-},
-{
-away:"Chicago Cubs",
-home:"St. Louis Cardinals",
-awayShort:"Chicago",
-homeShort:"St. Louis",
-spread:"STL -105",
-open:"CHC -115",
-tickets:61,
-money:43,
-move:"20¢ → STL",
-score:87,
-text:"Ticket distribution conflicts with a significant market reversal toward St. Louis."
-}
-],
+let games = [];
+let selectedGame = null;
 
-NHL:[
-{
-away:"Toronto Maple Leafs",
-home:"Detroit Red Wings",
-awayShort:"Toronto",
-homeShort:"Detroit",
-spread:"TOR -120",
-open:"TOR -105",
-tickets:57,
-money:71,
-move:"15¢ → TOR",
-score:72,
-text:"Toronto's money share exceeds its ticket share."
-},
-{
-away:"Colorado Avalanche",
-home:"Dallas Stars",
-awayShort:"Colorado",
-homeShort:"Dallas",
-spread:"DAL -115",
-open:"COL -110",
-tickets:64,
-money:41,
-move:"25¢ → DAL",
-score:89,
-text:"Market movement is strongly opposing majority Colorado ticket volume."
-}
-],
+/* =============================================
+   LOAD LIVE NFL ODDS
+============================================= */
 
-NCAAF:[
-{
-away:"Ohio State",
-home:"Michigan",
-awayShort:"Ohio State",
-homeShort:"Michigan",
-spread:"OSU -4",
-open:"OSU -2.5",
-tickets:72,
-money:64,
-move:"1.5 → OSU",
-score:67,
-text:"Public support is heavy while money concentration is somewhat lower."
-},
-{
-away:"Georgia",
-home:"Alabama",
-awayShort:"Georgia",
-homeShort:"Alabama",
-spread:"ALA +1",
-open:"ALA +3",
-tickets:69,
-money:44,
-move:"2 → ALA",
-score:93,
-text:"Strong reverse movement appears against majority Georgia tickets."
-}
-],
+async function loadNFL(){
 
-NCAAB:[
-{
-away:"Duke",
-home:"North Carolina",
-awayShort:"Duke",
-homeShort:"North Carolina",
-spread:"UNC +2",
-open:"UNC +4",
-tickets:67,
-money:42,
-move:"2 → UNC",
-score:92,
-text:"The market is moving toward North Carolina despite majority Duke tickets."
-},
-{
-away:"Kansas",
-home:"Baylor",
-awayShort:"Kansas",
-homeShort:"Baylor",
-spread:"KAN -1",
-open:"PK",
-tickets:52,
-money:64,
-move:"1 → KAN",
-score:71,
-text:"Money concentration exceeds ticket share on Kansas."
-}
-]
+  const status =
+    document.getElementById("status");
 
-};
-
-let league="NFL";
-let selected=0;
-
-function scoreClass(score){
-
-  if(score>=80) return "scoreStrong";
-
-  if(score>=65) return "scoreMedium";
-
-  return "scoreWeak";
-}
-
-function render(){
-
-  const games=data[league];
-
-  const strongOnly=
-    document.getElementById("strongFilter").checked;
-
-  const container=
+  const rows =
     document.getElementById("gameRows");
 
-  container.innerHTML="";
+  status.className =
+    "status loading";
+
+  status.textContent =
+    "Connecting to MarketSignal live NFL feed...";
+
+  rows.innerHTML =
+    '<div class="loadingRows">Loading live NFL odds...</div>';
+
+  try{
+
+    const response =
+      await fetch(WORKER_URL + "?t=" + Date.now());
+
+    if(!response.ok){
+      throw new Error(
+        "Feed returned HTTP " + response.status
+      );
+    }
+
+    const data =
+      await response.json();
+
+    if(!data.success){
+      throw new Error(
+        data.error || "Odds feed returned an error."
+      );
+    }
+
+    games =
+      data.games || [];
+
+    status.className =
+      "status success";
+
+    status.textContent =
+      "● LIVE — " +
+      games.length +
+      " upcoming NFL games loaded.";
+
+    renderGames();
+
+    if(games.length > 0){
+      selectGame(0);
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    status.className =
+      "status error";
+
+    status.textContent =
+      "Unable to load live odds: " +
+      error.message;
+
+    rows.innerHTML =
+      '<div class="loadingRows">Live odds unavailable.</div>';
+  }
+}
+
+/* =============================================
+   FIND DISPLAY SPREAD
+============================================= */
+
+function getPrimaryBook(game){
+
+  if(!game.bookmakers ||
+     game.bookmakers.length === 0){
+
+    return null;
+  }
+
+  return game.bookmakers.find(
+    book => book.spreads &&
+            book.spreads.length > 0
+  ) || null;
+}
+
+function findTeamSpread(book,team){
+
+  if(!book ||
+     !book.spreads){
+
+    return null;
+  }
+
+  return book.spreads.find(
+    spread => spread.team === team
+  ) || null;
+}
+
+function formatSpread(point){
+
+  if(point === undefined ||
+     point === null){
+
+    return "—";
+  }
+
+  if(point > 0){
+    return "+" + point;
+  }
+
+  return String(point);
+}
+
+/* =============================================
+   RENDER GAME BOARD
+============================================= */
+
+function renderGames(){
+
+  const rows =
+    document.getElementById("gameRows");
+
+  rows.innerHTML = "";
+
+  if(games.length === 0){
+
+    rows.innerHTML =
+      '<div class="loadingRows">No upcoming NFL games returned by the feed.</div>';
+
+    return;
+  }
 
   games.forEach((game,index)=>{
 
-    if(strongOnly && game.score<80) return;
+    const book =
+      getPrimaryBook(game);
 
-    const row=document.createElement("div");
+    const awaySpread =
+      findTeamSpread(
+        book,
+        game.awayTeam
+      );
 
-    row.className=
-      "gameRow "+(selected===index?"selected":"");
+    const row =
+      document.createElement("div");
 
-    row.onclick=()=>{
+    row.className =
+      "gameRow " +
+      (selectedGame === index
+        ? "selected"
+        : "");
 
-      selected=index;
+    row.onclick = () =>
+      selectGame(index);
 
-      render();
+    const start =
+      new Date(game.startTime);
 
-      updateDetails();
-    };
+    const formattedTime =
+      start.toLocaleString(
+        [],
+        {
+          weekday:"short",
+          month:"short",
+          day:"numeric",
+          hour:"numeric",
+          minute:"2-digit"
+        }
+      );
 
-    row.innerHTML=`
+    const awayInitials =
+      makeInitials(game.awayTeam);
+
+    const homeInitials =
+      makeInitials(game.homeTeam);
+
+    row.innerHTML = `
 
       <div>
 
         <div class="gameTime">
-          ${index%2===0 ? "7:00 PM ET" : "8:20 PM ET"}
+          ${formattedTime}
         </div>
 
         <div class="teamLine">
           <div class="teamIcon">
-            ${game.awayShort.substring(0,2).toUpperCase()}
+            ${awayInitials}
           </div>
 
           <div class="teamName">
-            ${game.away}
+            ${game.awayTeam}
           </div>
         </div>
 
         <div class="teamLine">
           <div class="teamIcon">
-            ${game.homeShort.substring(0,2).toUpperCase()}
+            ${homeInitials}
           </div>
 
           <div class="teamName">
-            ${game.home}
+            ${game.homeTeam}
           </div>
         </div>
 
       </div>
 
       <div class="spread">
-        ${game.spread}
+        ${
+          awaySpread
+            ? formatSpread(awaySpread.point)
+            : "—"
+        }
       </div>
 
-      <div class="ticketPercent">
-        ${game.tickets}%
+      <div class="unavailable">—</div>
+
+      <div class="unavailable">—</div>
+
+      <div class="bookName">
+        ${
+          book
+            ? book.bookmaker
+            : "—"
+        }
+      </div>
+    `;
+
+    rows.appendChild(row);
+  });
+}
+
+/* =============================================
+   SELECT GAME
+============================================= */
+
+function selectGame(index){
+
+  selectedGame = index;
+
+  renderGames();
+
+  const game =
+    games[index];
+
+  document.getElementById(
+    "detailTeams"
+  ).innerHTML =
+    game.awayTeam +
+    "<br>@ " +
+    game.homeTeam;
+
+  const start =
+    new Date(game.startTime);
+
+  document.getElementById(
+    "detailTime"
+  ).textContent =
+    start.toLocaleString();
+
+  renderBooks(game);
+}
+
+/* =============================================
+   SPORTSBOOK COMPARISON
+============================================= */
+
+function renderBooks(game){
+
+  const container =
+    document.getElementById("bookRows");
+
+  container.innerHTML = "";
+
+  const books =
+    (game.bookmakers || [])
+    .filter(
+      book =>
+        book.spreads &&
+        book.spreads.length
+    );
+
+  if(books.length === 0){
+
+    container.innerHTML =
+      '<div class="loadingRows">No spread data available.</div>';
+
+    return;
+  }
+
+  books.forEach(book=>{
+
+    const away =
+      findTeamSpread(
+        book,
+        game.awayTeam
+      );
+
+    const home =
+      findTeamSpread(
+        book,
+        game.homeTeam
+      );
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "oddsRow";
+
+    row.innerHTML = `
+
+      <div class="oddsBook">
+        ${book.bookmaker}
       </div>
 
-      <div class="moneyPercent">
-        ${game.money}%
-      </div>
+      <div class="oddsPoint">
+        ${
+          away
+            ? formatSpread(away.point)
+            : "—"
+        }
 
-      <div class="lineMove">
-        ${game.move}
-      </div>
-
-      <div>
-
-        <span class="signalScore ${scoreClass(game.score)}">
-          ${game.score}
+        <span class="oddsPrice">
+          ${
+            away
+              ? " (" +
+                formatAmerican(
+                  away.price
+                ) +
+                ")"
+              : ""
+          }
         </span>
+      </div>
 
-        <span class="scoreLabel">
-          SIGNAL
+      <div class="oddsPoint">
+        ${
+          home
+            ? formatSpread(home.point)
+            : "—"
+        }
+
+        <span class="oddsPrice">
+          ${
+            home
+              ? " (" +
+                formatAmerican(
+                  home.price
+                ) +
+                ")"
+              : ""
+          }
         </span>
-
       </div>
     `;
 
@@ -1776,116 +1172,88 @@ function render(){
   });
 }
 
-function updateDetails(){
+/* =============================================
+   HELPERS
+============================================= */
 
-  const game=data[league][selected];
+function formatAmerican(price){
 
-  document.getElementById("detailTeams").innerHTML=
-    `${game.away}<br>@ ${game.home}`;
+  if(price === undefined ||
+     price === null){
 
-  document.getElementById("detailLine").textContent=
-    `Opening ${game.open} → Current ${game.spread}`;
+    return "";
+  }
 
-  document.getElementById("detailScore").textContent=
-    game.score;
-
-  document.getElementById("marketAway").textContent=
-    game.awayShort;
-
-  document.getElementById("marketHome").textContent=
-    game.homeShort;
-
-  document.getElementById("awayTickets").textContent=
-    game.tickets+"%";
-
-  document.getElementById("homeTickets").textContent=
-    (100-game.tickets)+"%";
-
-  document.getElementById("awayMoney").textContent=
-    game.money+"%";
-
-  document.getElementById("homeMoney").textContent=
-    (100-game.money)+"%";
-
-  const difference=
-    Math.abs(game.money-game.tickets);
-
-  document.getElementById("divergenceAlert").textContent=
-    `${difference}-point difference between ticket share and money share detected.`;
-
-  document.getElementById("movementAlert").textContent=
-    `Market moved from ${game.open} to ${game.spread}.`;
-
-  document.getElementById("insightTitle").textContent=
-    game.score>=80
-      ? "Strong market signal detected"
-      : game.score>=65
-      ? "Notable market behavior"
-      : "Market watch";
-
-  document.getElementById("insightText").textContent=
-    game.text;
-
-  document.getElementById("awayATSLabel").textContent=
-    game.awayShort.toUpperCase()+" ROAD ATS";
-
-  document.getElementById("homeATSLabel").textContent=
-    game.homeShort.toUpperCase()+" HOME ATS";
+  return price > 0
+    ? "+" + price
+    : String(price);
 }
 
-document.querySelectorAll(".sportBtn")
-.forEach(button=>{
+function makeInitials(team){
 
-  button.addEventListener("click",()=>{
+  return team
+    .split(" ")
+    .map(word=>word[0])
+    .slice(-2)
+    .join("")
+    .toUpperCase();
+}
 
-    document.querySelectorAll(".sportBtn")
-    .forEach(btn=>btn.classList.remove("active"));
+/* =============================================
+   REFRESH
+============================================= */
 
-    button.classList.add("active");
+document.getElementById(
+  "refreshBtn"
+).addEventListener(
+  "click",
+  loadNFL
+);
 
-    league=button.dataset.sport;
+/* =============================================
+   OTHER SPORTS
+============================================= */
 
-    selected=0;
+document.querySelectorAll(
+  ".sportBtn"
+).forEach(button=>{
 
-    document.getElementById("topLeague").textContent=
-      league;
+  button.addEventListener(
+    "click",
+    ()=>{
 
-    document.getElementById("boardTitle").textContent=
-      league+" Signal Board";
+      if(button.dataset.sport !== "NFL"){
 
-    render();
+        alert(
+          button.dataset.sport +
+          " live odds will be connected after we confirm the NFL feed is working correctly."
+        );
 
-    updateDetails();
-  });
+        return;
+      }
+
+      document.querySelectorAll(
+        ".sportBtn"
+      ).forEach(
+        btn =>
+          btn.classList.remove(
+            "active"
+          )
+      );
+
+      button.classList.add(
+        "active"
+      );
+    }
+  );
 
 });
 
-document.querySelectorAll(".tab")
-.forEach(button=>{
+/* =============================================
+   START
+============================================= */
 
-  button.addEventListener("click",()=>{
-
-    document.querySelectorAll(".tab")
-    .forEach(tab=>tab.classList.remove("active"));
-
-    document.querySelectorAll(".tabContent")
-    .forEach(content=>content.classList.remove("active"));
-
-    button.classList.add("active");
-
-    document
-    .getElementById(button.dataset.tab)
-    .classList.add("active");
-  });
-
-});
-
-document
-.getElementById("strongFilter")
-.addEventListener("change",render);
-
-render();
-updateDetails();
+loadNFL();
 
 </script>
 
