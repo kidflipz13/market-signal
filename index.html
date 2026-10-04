@@ -1,298 +1,1896 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<title>MarketSignal — Sports Betting Intelligence</title>
 
-  <title>Market Signal</title>
+<style>
+:root{
+  --bg:#06101d;
+  --panel:#0d1929;
+  --panel2:#111f32;
+  --border:#203149;
+  --text:#f4f7fb;
+  --muted:#8fa2ba;
 
-  <style>
-    body {
-      margin: 0;
-      background: #07111f;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-    }
+  --green:#35e58a;
+  --blue:#52a8ff;
+  --purple:#ad7cff;
+  --orange:#ff9f43;
+  --yellow:#ffd166;
+  --red:#ff6474;
+  --cyan:#4de2e8;
+}
 
-    .wrap {
-      max-width: 1100px;
-      margin: auto;
-      padding: 40px 20px;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    h1 {
-      margin-bottom: 5px;
-    }
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 70% 0%,rgba(82,168,255,.09),transparent 32%),
+    radial-gradient(circle at 0% 40%,rgba(173,124,255,.06),transparent 25%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+}
 
-    .green {
-      color: #39e58c;
-    }
+button{
+  font:inherit;
+}
 
-    .status {
-      margin-top: 30px;
-      padding: 20px;
-      background: #101d30;
-      border-radius: 12px;
-    }
+.app{
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr);
+  min-height:100vh;
+}
 
-    .game {
-      background: #101d30;
-      margin-top: 15px;
-      padding: 18px;
-      border-radius: 12px;
-      border-left: 4px solid #39e58c;
-    }
+/* SIDEBAR */
 
-    .teams {
-      font-size: 18px;
-      font-weight: bold;
-    }
+.sidebar{
+  border-right:1px solid var(--border);
+  background:rgba(7,17,30,.94);
+  padding:24px 18px;
+}
 
-    .time {
-      margin-top: 8px;
-      color: #9fb0c5;
-    }
+.logo{
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:-1px;
+  margin-bottom:4px;
+}
 
-    .books {
-      margin-top: 8px;
-      color: #67a9ff;
-    }
+.logo span{
+  color:var(--green);
+}
 
-    .error {
-      color: #ff6767;
-    }
-  </style>
+.logo-sub{
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:30px;
+}
+
+.side-label{
+  font-size:11px;
+  color:#647b96;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  margin:22px 0 10px;
+}
+
+.league{
+  width:100%;
+  text-align:left;
+  padding:11px 12px;
+  margin:5px 0;
+  border:1px solid transparent;
+  border-radius:9px;
+  background:transparent;
+  color:#aebdd0;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.league.active{
+  background:rgba(53,229,138,.10);
+  color:var(--green);
+  border-color:rgba(53,229,138,.25);
+}
+
+.league:not(.active):hover{
+  background:#101e30;
+}
+
+.legend{
+  margin-top:26px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:#0b1726;
+  border-radius:12px;
+}
+
+.legend-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:var(--muted);
+  margin:8px 0;
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+}
+
+/* MAIN */
+
+.main{
+  min-width:0;
+}
+
+.topbar{
+  min-height:74px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:14px 24px;
+  background:rgba(7,17,30,.75);
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(12px);
+}
+
+.page-title{
+  font-size:19px;
+  font-weight:800;
+}
+
+.page-subtitle{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.live{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--green);
+  font-size:12px;
+  font-weight:800;
+}
+
+.live-dot{
+  width:8px;
+  height:8px;
+  background:var(--green);
+  border-radius:50%;
+  box-shadow:0 0 10px var(--green);
+}
+
+.refresh{
+  border:1px solid #315174;
+  color:#dfeeff;
+  background:#10243a;
+  padding:9px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.refresh:hover{
+  background:#16304c;
+}
+
+.content{
+  padding:20px 24px 40px;
+}
+
+.status{
+  padding:12px 15px;
+  border:1px solid var(--border);
+  background:#0c1928;
+  border-radius:10px;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:18px;
+}
+
+.status.good{
+  color:var(--green);
+  border-color:rgba(53,229,138,.25);
+}
+
+.status.bad{
+  color:var(--red);
+  border-color:rgba(255,100,116,.30);
+}
+
+/* DASHBOARD */
+
+.dashboard{
+  display:grid;
+  grid-template-columns:minmax(480px,1.15fr) minmax(380px,.85fr);
+  gap:18px;
+}
+
+.panel{
+  background:linear-gradient(180deg,#0e1b2c,#0a1624);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 17px;
+  border-bottom:1px solid var(--border);
+}
+
+.panel-title{
+  font-weight:800;
+}
+
+.panel-meta{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* GAME BOARD */
+
+.game-list{
+  max-height:calc(100vh - 165px);
+  overflow:auto;
+}
+
+.game{
+  padding:15px 16px;
+  border-bottom:1px solid #182a40;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.game:hover{
+  background:#102036;
+}
+
+.game.active{
+  background:
+    linear-gradient(90deg,rgba(82,168,255,.11),rgba(173,124,255,.04));
+  box-shadow:inset 3px 0 var(--blue);
+}
+
+.game-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.game-time{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.book-source{
+  color:var(--orange);
+  font-size:11px;
+  font-weight:800;
+}
+
+.team-row{
+  display:grid;
+  grid-template-columns:minmax(145px,1fr) 76px 80px;
+  gap:10px;
+  align-items:center;
+  min-height:32px;
+}
+
+.team-name{
+  font-weight:800;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.badge{
+  display:inline-block;
+  font-size:9px;
+  font-weight:900;
+  margin-left:7px;
+  padding:3px 5px;
+  border-radius:4px;
+  vertical-align:2px;
+}
+
+.fav{
+  background:rgba(53,229,138,.12);
+  color:var(--green);
+}
+
+.dog{
+  background:rgba(255,159,67,.12);
+  color:var(--orange);
+}
+
+.pk{
+  background:rgba(255,209,102,.12);
+  color:var(--yellow);
+}
+
+.spread{
+  color:var(--green);
+  font-weight:900;
+  text-align:right;
+}
+
+.ml{
+  color:var(--blue);
+  font-weight:800;
+  text-align:right;
+}
+
+.game-bottom{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  padding-top:9px;
+  border-top:1px dashed #1d3048;
+  font-size:11px;
+}
+
+.total{
+  color:var(--purple);
+  font-weight:800;
+}
+
+.market-placeholder{
+  color:#62768e;
+}
+
+/* DETAILS */
+
+.details{
+  padding:17px;
+}
+
+.matchup-head{
+  margin-bottom:17px;
+}
+
+.matchup-label{
+  color:var(--blue);
+  text-transform:uppercase;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.matchup-title{
+  font-size:23px;
+  font-weight:900;
+  margin:5px 0;
+}
+
+.matchup-time{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.market-strip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-bottom:17px;
+}
+
+.metric{
+  background:#101e30;
+  border:1px solid #21344d;
+  border-radius:10px;
+  padding:12px;
+}
+
+.metric-label{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+  font-weight:800;
+  letter-spacing:.7px;
+}
+
+.metric-value{
+  margin-top:6px;
+  font-size:18px;
+  font-weight:900;
+}
+
+.blue{color:var(--blue);}
+.purple{color:var(--purple);}
+.green{color:var(--green);}
+.orange{color:var(--orange);}
+.yellow{color:var(--yellow);}
+.red{color:var(--red);}
+.cyan{color:var(--cyan);}
+
+.section{
+  margin-top:14px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  overflow:hidden;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:11px 12px;
+  background:#101d2e;
+  border-bottom:1px solid var(--border);
+}
+
+.section-title{
+  font-size:12px;
+  font-weight:900;
+}
+
+.coming{
+  font-size:9px;
+  text-transform:uppercase;
+  color:var(--yellow);
+  background:rgba(255,209,102,.09);
+  padding:4px 6px;
+  border-radius:5px;
+}
+
+.section-body{
+  padding:12px;
+}
+
+.empty{
+  color:#70859e;
+  font-size:12px;
+  line-height:1.55;
+}
+
+/* SPORTSBOOK TABLE */
+
+.book-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+}
+
+.book-table th{
+  color:#70859e;
+  text-align:right;
+  padding:7px 5px;
+  border-bottom:1px solid #1b2c42;
+}
+
+.book-table th:first-child,
+.book-table td:first-child{
+  text-align:left;
+}
+
+.book-table td{
+  padding:8px 5px;
+  text-align:right;
+  border-bottom:1px solid #14243a;
+}
+
+.book-table tr:last-child td{
+  border-bottom:0;
+}
+
+.book-name{
+  color:var(--orange);
+  font-weight:800;
+}
+
+.no-game{
+  padding:35px 20px;
+  color:var(--muted);
+  text-align:center;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+  .app{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    display:none;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+
+  .game-list{
+    max-height:none;
+  }
+}
+
+@media(max-width:600px){
+  .content{
+    padding:14px;
+  }
+
+  .topbar{
+    padding:12px 14px;
+  }
+
+  .page-subtitle{
+    display:none;
+  }
+
+  .team-row{
+    grid-template-columns:minmax(120px,1fr) 62px 66px;
+    gap:5px;
+    font-size:12px;
+  }
+
+  .market-strip{
+    grid-template-columns:1fr;
+  }
+
+  .matchup-title{
+    font-size:19px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="wrap">
+<div class="app">
 
-    <h1>
-      MARKET <span class="green">SIGNAL</span>
-    </h1>
+  <aside class="sidebar">
 
-    <div>
-      NFL Market Intelligence
+    <div class="logo">
+      MARKET<span>SIGNAL</span>
     </div>
 
-    <div
-      id="status"
-      class="status"
-    >
-      Connecting to live NFL odds...
+    <div class="logo-sub">
+      Betting Intelligence
     </div>
 
-    <div id="games"></div>
+    <div class="side-label">Leagues</div>
 
-  </div>
+    <button class="league active">
+      NFL
+    </button>
+
+    <button class="league future">
+      NBA
+    </button>
+
+    <button class="league future">
+      MLB
+    </button>
+
+    <button class="league future">
+      NHL
+    </button>
+
+    <button class="league future">
+      NCAAF
+    </button>
+
+    <button class="league future">
+      NCAAB
+    </button>
+
+    <div class="side-label">
+      Signal Guide
+    </div>
+
+    <div class="legend">
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--green)"></span>
+        Spread / positive signal
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--blue)"></span>
+        Moneyline / public data
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--purple)"></span>
+        Totals / money data
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--orange)"></span>
+        Sportsbook / movement
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--yellow)"></span>
+        Situational signal
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--red)"></span>
+        Conflict / warning
+      </div>
+
+    </div>
+
+  </aside>
 
 
-  <script>
+  <main class="main">
 
-    const API =
-      "https://market-signal-api.kidflipz13.workers.dev/";
+    <header class="topbar">
 
-    async function loadOdds() {
+      <div>
+        <div class="page-title">
+          NFL Market Board
+        </div>
 
-      const status =
-        document.getElementById("status");
+        <div class="page-subtitle">
+          Live odds • market movement • betting intelligence
+        </div>
+      </div>
 
-      const gamesContainer =
-        document.getElementById("games");
+      <div class="top-actions">
 
-      try {
+        <div class="live">
+          <span class="live-dot"></span>
+          LIVE
+        </div>
 
-        /*
-          Timeout prevents the page from
-          sitting on Loading forever.
-        */
+        <button
+          class="refresh"
+          id="refreshBtn"
+        >
+          Refresh Odds
+        </button>
 
-        const controller =
-          new AbortController();
+      </div>
 
-        const timeout =
-          setTimeout(
-            () => controller.abort(),
-            15000
-          );
-
-
-        const response =
-          await fetch(
-            API,
-            {
-              method: "GET",
-              signal: controller.signal
-            }
-          );
+    </header>
 
 
-        clearTimeout(timeout);
+    <div class="content">
+
+      <div
+        id="status"
+        class="status"
+      >
+        Connecting to live NFL odds...
+      </div>
 
 
-        if (!response.ok) {
+      <div class="dashboard">
 
-          throw new Error(
-            "Worker returned HTTP " +
-            response.status
-          );
+        <section class="panel">
+
+          <div class="panel-head">
+
+            <div class="panel-title">
+              Live Games
+            </div>
+
+            <div
+              class="panel-meta"
+              id="gameCount"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div
+            class="game-list"
+            id="gameList"
+          >
+          </div>
+
+        </section>
+
+
+        <section class="panel">
+
+          <div class="panel-head">
+
+            <div class="panel-title">
+              Matchup Intelligence
+            </div>
+
+            <div class="panel-meta">
+              NFL
+            </div>
+
+          </div>
+
+          <div
+            id="details"
+            class="details"
+          >
+
+            <div class="no-game">
+              Select a game to view its market.
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<script>
+
+const API =
+  "https://market-signal-api.kidflipz13.workers.dev/";
+
+const BOOK_PRIORITY = [
+  "DraftKings",
+  "FanDuel",
+  "BetMGM",
+  "Caesars"
+];
+
+let games = [];
+let selectedGameId = null;
+
+
+/* ------------------------------
+   FETCH LIVE ODDS
+------------------------------ */
+
+async function loadOdds(){
+
+  const status =
+    document.getElementById("status");
+
+  const refreshBtn =
+    document.getElementById("refreshBtn");
+
+  status.className = "status";
+  status.textContent =
+    "Refreshing live NFL markets...";
+
+  refreshBtn.disabled = true;
+  refreshBtn.textContent =
+    "Refreshing...";
+
+  try{
+
+    const controller =
+      new AbortController();
+
+    const timer =
+      setTimeout(
+        () => controller.abort(),
+        15000
+      );
+
+    const response =
+      await fetch(
+        API,
+        {
+          method:"GET",
+          signal:controller.signal
         }
+      );
+
+    clearTimeout(timer);
+
+    if(!response.ok){
+      throw new Error(
+        "Worker returned HTTP " +
+        response.status
+      );
+    }
+
+    const data =
+      await response.json();
+
+    if(!data.success){
+      throw new Error(
+        data.error ||
+        "API returned success false"
+      );
+    }
+
+    /*
+      Current lightweight Worker returns
+      raw Odds API games.
+    */
+
+    games =
+      Array.isArray(data.games)
+        ? data.games
+        : [];
+
+    status.className =
+      "status good";
+
+    status.textContent =
+      "Connected • " +
+      games.length +
+      " NFL games received • " +
+      "Live sportsbook odds";
+
+    document.getElementById(
+      "gameCount"
+    ).textContent =
+      games.length + " games";
+
+    if(
+      !selectedGameId ||
+      !games.some(
+        game =>
+          game.id === selectedGameId
+      )
+    ){
+      selectedGameId =
+        games[0]?.id || null;
+    }
+
+    renderGames();
+    renderDetails();
+
+  }
+
+  catch(error){
+
+    console.error(
+      "MarketSignal error:",
+      error
+    );
+
+    status.className =
+      "status bad";
+
+    status.textContent =
+      error.name === "AbortError"
+        ? "Connection timed out after 15 seconds."
+        : "Connection failed: " +
+          error.message;
+  }
+
+  finally{
+
+    refreshBtn.disabled = false;
+    refreshBtn.textContent =
+      "Refresh Odds";
+  }
+}
 
 
-        const data =
-          await response.json();
+/* ------------------------------
+   PRIMARY SPORTSBOOK
+------------------------------ */
+
+function getPrimaryBook(game){
+
+  const books =
+    game.bookmakers || [];
+
+  for(
+    const preferred
+    of BOOK_PRIORITY
+  ){
+
+    const found =
+      books.find(
+        book =>
+          normalizeBook(book.title) ===
+          normalizeBook(preferred)
+      );
+
+    if(found){
+      return found;
+    }
+  }
+
+  return books[0] || null;
+}
 
 
-        console.log(
-          "MarketSignal API:",
-          data
+function normalizeBook(name){
+
+  return String(name || "")
+    .toLowerCase()
+    .replace(/\s+/g,"");
+}
+
+
+/* ------------------------------
+   MARKETS
+------------------------------ */
+
+function getMarket(book,key){
+
+  return (
+    book?.markets || []
+  ).find(
+    market =>
+      market.key === key
+  ) || null;
+}
+
+
+function getSpread(book,team){
+
+  const market =
+    getMarket(
+      book,
+      "spreads"
+    );
+
+  return (
+    market?.outcomes || []
+  ).find(
+    outcome =>
+      outcome.name === team
+  ) || null;
+}
+
+
+function getMoneyline(book,team){
+
+  const market =
+    getMarket(
+      book,
+      "h2h"
+    );
+
+  return (
+    market?.outcomes || []
+  ).find(
+    outcome =>
+      outcome.name === team
+  ) || null;
+}
+
+
+function getTotal(book){
+
+  const market =
+    getMarket(
+      book,
+      "totals"
+    );
+
+  const outcomes =
+    market?.outcomes || [];
+
+  const over =
+    outcomes.find(
+      outcome =>
+        String(
+          outcome.name
+        ).toLowerCase()
+        === "over"
+    );
+
+  const under =
+    outcomes.find(
+      outcome =>
+        String(
+          outcome.name
+        ).toLowerCase()
+        === "under"
+    );
+
+  return {
+    over,
+    under
+  };
+}
+
+
+/* ------------------------------
+   FORMATTING
+------------------------------ */
+
+function formatSpread(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+    return "—";
+  }
+
+  const n =
+    Number(value);
+
+  if(n > 0){
+    return "+" + n;
+  }
+
+  if(n === 0){
+    return "PK";
+  }
+
+  return String(n);
+}
+
+
+function formatOdds(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+    return "—";
+  }
+
+  const n =
+    Number(value);
+
+  return n > 0
+    ? "+" + n
+    : String(n);
+}
+
+
+function teamType(point){
+
+  if(
+    point === null ||
+    point === undefined
+  ){
+    return "";
+  }
+
+  const n =
+    Number(point);
+
+  if(n < 0){
+    return "FAV";
+  }
+
+  if(n > 0){
+    return "DOG";
+  }
+
+  return "PK";
+}
+
+
+function badge(type){
+
+  if(!type){
+    return "";
+  }
+
+  const cls =
+    type === "FAV"
+      ? "fav"
+      : type === "DOG"
+        ? "dog"
+        : "pk";
+
+  return (
+    '<span class="badge ' +
+    cls +
+    '">' +
+    type +
+    '</span>'
+  );
+}
+
+
+function gameDate(value){
+
+  if(!value){
+    return "Time TBD";
+  }
+
+  const date =
+    new Date(value);
+
+  if(isNaN(date)){
+    return value;
+  }
+
+  return date.toLocaleString(
+    [],
+    {
+      weekday:"short",
+      month:"short",
+      day:"numeric",
+      hour:"numeric",
+      minute:"2-digit"
+    }
+  );
+}
+
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+}
+
+
+/* ------------------------------
+   GAME LIST
+------------------------------ */
+
+function renderGames(){
+
+  const container =
+    document.getElementById(
+      "gameList"
+    );
+
+  if(!games.length){
+
+    container.innerHTML =
+      '<div class="no-game">' +
+      'No NFL games available.' +
+      '</div>';
+
+    return;
+  }
+
+  container.innerHTML =
+    games.map(game => {
+
+      const book =
+        getPrimaryBook(game);
+
+      const away =
+        game.away_team;
+
+      const home =
+        game.home_team;
+
+      const awaySpread =
+        getSpread(
+          book,
+          away
         );
 
+      const homeSpread =
+        getSpread(
+          book,
+          home
+        );
 
-        if (!data.success) {
+      const awayML =
+        getMoneyline(
+          book,
+          away
+        );
 
-          throw new Error(
-            data.error ||
-            "API returned success false"
-          );
-        }
+      const homeML =
+        getMoneyline(
+          book,
+          home
+        );
 
+      const total =
+        getTotal(book);
 
-        /*
-          Temporary Worker currently returns
-          raw Odds API game objects.
-        */
+      const active =
+        game.id ===
+        selectedGameId;
 
-        const games =
-          Array.isArray(data.games)
-            ? data.games
-            : [];
+      return `
+        <div
+          class="game ${active ? "active" : ""}"
+          data-game="${escapeHtml(game.id)}"
+        >
 
+          <div class="game-top">
 
-        status.innerHTML =
-          '<span class="green">' +
-          'CONNECTED ✓' +
-          '</span><br><br>' +
-          games.length +
-          ' live NFL games received.';
+            <div class="game-time">
+              ${escapeHtml(
+                gameDate(
+                  game.commence_time
+                )
+              )}
+            </div>
 
+            <div class="book-source">
+              ${escapeHtml(
+                book?.title ||
+                "No sportsbook"
+              )}
+            </div>
 
-        if (games.length === 0) {
-
-          gamesContainer.innerHTML =
-            '<div class="status">' +
-            'No NFL games returned.' +
-            '</div>';
-
-          return;
-        }
-
-
-        gamesContainer.innerHTML =
-          games.map(game => {
-
-            const away =
-              game.away_team ||
-              game.awayTeam ||
-              "Away Team";
-
-            const home =
-              game.home_team ||
-              game.homeTeam ||
-              "Home Team";
-
-            const start =
-              game.commence_time ||
-              game.startTime ||
-              "";
-
-            const books =
-              Array.isArray(game.bookmakers)
-                ? game.bookmakers.length
-                : 0;
+          </div>
 
 
-            let timeText = start;
+          <div class="team-row">
 
-            if (start) {
+            <div class="team-name">
+              ${escapeHtml(away)}
+              ${badge(
+                teamType(
+                  awaySpread?.point
+                )
+              )}
+            </div>
 
-              const date =
-                new Date(start);
+            <div class="spread">
+              ${formatSpread(
+                awaySpread?.point
+              )}
+            </div>
 
-              if (!isNaN(date)) {
+            <div class="ml">
+              ${formatOdds(
+                awayML?.price
+              )}
+            </div>
 
-                timeText =
-                  date.toLocaleString();
+          </div>
+
+
+          <div class="team-row">
+
+            <div class="team-name">
+              ${escapeHtml(home)}
+              ${badge(
+                teamType(
+                  homeSpread?.point
+                )
+              )}
+            </div>
+
+            <div class="spread">
+              ${formatSpread(
+                homeSpread?.point
+              )}
+            </div>
+
+            <div class="ml">
+              ${formatOdds(
+                homeML?.price
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="game-bottom">
+
+            <div class="total">
+              O/U ${
+                total.over?.point ??
+                total.under?.point ??
+                "—"
               }
-            }
+            </div>
+
+            <div class="market-placeholder">
+              Tickets — &nbsp; Money —
+            </div>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
 
 
-            return `
-              <div class="game">
+  document
+    .querySelectorAll(
+      ".game"
+    )
+    .forEach(card => {
 
-                <div class="teams">
-                  ${escapeHtml(away)}
-                  @
-                  ${escapeHtml(home)}
-                </div>
+      card.addEventListener(
+        "click",
+        () => {
 
-                <div class="time">
-                  ${escapeHtml(timeText)}
-                </div>
+          selectedGameId =
+            card.dataset.game;
 
-                <div class="books">
-                  ${books}
-                  sportsbooks received
-                </div>
+          renderGames();
+          renderDetails();
+        }
+      );
+    });
+}
 
-              </div>
-            `;
 
-          }).join("");
-      }
+/* ------------------------------
+   MATCHUP DETAILS
+------------------------------ */
 
-      catch (error) {
+function renderDetails(){
 
-        console.error(
-          "MarketSignal frontend error:",
-          error
+  const container =
+    document.getElementById(
+      "details"
+    );
+
+  const game =
+    games.find(
+      item =>
+        item.id ===
+        selectedGameId
+    );
+
+  if(!game){
+
+    container.innerHTML =
+      '<div class="no-game">' +
+      'Select a game.' +
+      '</div>';
+
+    return;
+  }
+
+  const book =
+    getPrimaryBook(game);
+
+  const away =
+    game.away_team;
+
+  const home =
+    game.home_team;
+
+  const awaySpread =
+    getSpread(
+      book,
+      away
+    );
+
+  const homeSpread =
+    getSpread(
+      book,
+      home
+    );
+
+  const awayML =
+    getMoneyline(
+      book,
+      away
+    );
+
+  const homeML =
+    getMoneyline(
+      book,
+      home
+    );
+
+  const total =
+    getTotal(book);
+
+
+  container.innerHTML = `
+
+    <div class="matchup-head">
+
+      <div class="matchup-label">
+        Primary Market •
+        ${escapeHtml(
+          book?.title || "—"
+        )}
+      </div>
+
+      <div class="matchup-title">
+        ${escapeHtml(away)}
+        @
+        ${escapeHtml(home)}
+      </div>
+
+      <div class="matchup-time">
+        ${escapeHtml(
+          gameDate(
+            game.commence_time
+          )
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="market-strip">
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Spread
+        </div>
+
+        <div class="metric-value green">
+          ${escapeHtml(away)}
+          ${formatSpread(
+            awaySpread?.point
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Moneyline
+        </div>
+
+        <div class="metric-value blue">
+          ${formatOdds(
+            awayML?.price
+          )}
+          /
+          ${formatOdds(
+            homeML?.price
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Total
+        </div>
+
+        <div class="metric-value purple">
+          O/U ${
+            total.over?.point ??
+            total.under?.point ??
+            "—"
+          }
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title orange">
+          Sportsbook Comparison
+        </div>
+
+        <div class="panel-meta">
+          Live
+        </div>
+
+      </div>
+
+      <div class="section-body">
+        ${buildBookTable(game)}
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title orange">
+          Line Movement
+        </div>
+
+        <div class="coming">
+          History Next
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="empty">
+          Live current lines are connected.
+          Next we'll reconnect the existing
+          D1 history so MarketSignal can show
+          First Tracked → Current, movement
+          amount, direction and sportsbook
+          agreement without slowing down the
+          live dashboard.
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title blue">
+          Betting Market
+        </div>
+
+        <div class="coming">
+          Data Source Needed
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="market-strip">
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Ticket %
+            </div>
+
+            <div class="metric-value blue">
+              —
+            </div>
+
+          </div>
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Money %
+            </div>
+
+            <div class="metric-value purple">
+              —
+            </div>
+
+          </div>
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Market Signal
+            </div>
+
+            <div class="metric-value yellow">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="empty">
+          Money percentage will not automatically
+          be labeled “sharp money.” MarketSignal
+          will evaluate ticket-money divergence
+          together with line movement and other
+          evidence.
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title green">
+          ATS Trends
+        </div>
+
+        <div class="coming">
+          Coming Next
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="empty">
+          Home/away ATS • favorite/underdog ATS •
+          recent ATS form • matchup trends
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title cyan">
+          Referee Signal
+        </div>
+
+        <div class="coming">
+          Planned
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="empty">
+          Referee home/away ATS • favorite/underdog
+          ATS • O/U record • average penalties •
+          penalty-yard differential • sample size
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title yellow">
+          Obscure / Situational Data
+        </div>
+
+        <div class="coming">
+          Planned
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="empty">
+          Rest • travel • time-zone change • weather •
+          short week • early start • divisional matchup •
+          rematch • coaching splits • QB changes and
+          other matchup-specific situations.
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* ------------------------------
+   SPORTSBOOK COMPARISON
+------------------------------ */
+
+function buildBookTable(game){
+
+  const books =
+    game.bookmakers || [];
+
+  if(!books.length){
+
+    return (
+      '<div class="empty">' +
+      'No sportsbook markets available.' +
+      '</div>'
+    );
+  }
+
+  const away =
+    game.away_team;
+
+  const home =
+    game.home_team;
+
+  const rows =
+    books.map(book => {
+
+      const awaySpread =
+        getSpread(
+          book,
+          away
         );
 
+      const homeSpread =
+        getSpread(
+          book,
+          home
+        );
 
-        const message =
-          error.name === "AbortError"
-            ? "Request timed out after 15 seconds."
-            : error.message;
+      const awayML =
+        getMoneyline(
+          book,
+          away
+        );
+
+      const homeML =
+        getMoneyline(
+          book,
+          home
+        );
+
+      const total =
+        getTotal(book);
+
+      return `
+        <tr>
+
+          <td class="book-name">
+            ${escapeHtml(
+              book.title
+            )}
+          </td>
+
+          <td class="green">
+            ${formatSpread(
+              awaySpread?.point
+            )}
+          </td>
+
+          <td class="green">
+            ${formatSpread(
+              homeSpread?.point
+            )}
+          </td>
+
+          <td class="blue">
+            ${formatOdds(
+              awayML?.price
+            )}
+          </td>
+
+          <td class="blue">
+            ${formatOdds(
+              homeML?.price
+            )}
+          </td>
+
+          <td class="purple">
+            ${
+              total.over?.point ??
+              total.under?.point ??
+              "—"
+            }
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
 
 
-        status.innerHTML =
-          '<span class="error">' +
-          'CONNECTION FAILED' +
-          '</span><br><br>' +
-          escapeHtml(message);
+  return `
+    <div style="overflow-x:auto">
+
+      <table class="book-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Book</th>
+
+            <th>
+              ${escapeHtml(
+                shortTeam(away)
+              )}
+            </th>
+
+            <th>
+              ${escapeHtml(
+                shortTeam(home)
+              )}
+            </th>
+
+            <th>
+              ${escapeHtml(
+                shortTeam(away)
+              )} ML
+            </th>
+
+            <th>
+              ${escapeHtml(
+                shortTeam(home)
+              )} ML
+            </th>
+
+            <th>O/U</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+          ${rows}
+        </tbody>
+
+      </table>
+
+    </div>
+  `;
+}
+
+
+function shortTeam(name){
+
+  const words =
+    String(name || "")
+    .split(" ");
+
+  return (
+    words[
+      words.length - 1
+    ] || name
+  );
+}
+
+
+/* ------------------------------
+   BUTTONS
+------------------------------ */
+
+document
+  .getElementById(
+    "refreshBtn"
+  )
+  .addEventListener(
+    "click",
+    loadOdds
+  );
+
+
+document
+  .querySelectorAll(
+    ".league.future"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        alert(
+          button.textContent.trim() +
+          " will be connected after the NFL data layer is completed."
+        );
       }
-    }
+    );
+  });
 
 
-    function escapeHtml(value) {
+/* START */
 
-      return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
+loadOdds();
 
-
-    loadOdds();
-
-  </script>
+</script>
 
 </body>
 </html>
