@@ -1510,22 +1510,22 @@ function renderDetails(){
           Line Movement
         </div>
 
-        <div class="coming">
-          History Next
+        <div
+          class="panel-meta"
+          id="historyStatus"
+        >
+          Loading history...
         </div>
 
       </div>
 
-      <div class="section-body">
+      <div
+        class="section-body"
+        id="lineMovementBody"
+      >
 
         <div class="empty">
-          Live current lines are connected.
-          Next we'll reconnect the existing
-          D1 history so MarketSignal can show
-          First Tracked → Current, movement
-          amount, direction and sportsbook
-          agreement without slowing down the
-          live dashboard.
+          Checking MarketSignal tracking history...
         </div>
 
       </div>
@@ -1682,6 +1682,843 @@ function renderDetails(){
 
     </div>
 
+  `;
+
+
+  /*
+   * Load D1 history separately.
+   * This does NOT slow down the
+   * main live odds request.
+   */
+
+  loadLineHistory(game);
+}
+
+
+/* ------------------------------
+   LINE MOVEMENT HISTORY
+------------------------------ */
+
+async function loadLineHistory(game){
+
+  const body =
+    document.getElementById(
+      "lineMovementBody"
+    );
+
+  const status =
+    document.getElementById(
+      "historyStatus"
+    );
+
+  if(
+    !body ||
+    !status ||
+    !game
+  ){
+    return;
+  }
+
+
+  const requestedGameId =
+    game.id;
+
+
+  try{
+
+    const controller =
+      new AbortController();
+
+    const timer =
+      setTimeout(
+        () => controller.abort(),
+        8000
+      );
+
+
+    const response =
+      await fetch(
+        API +
+        "history?gameId=" +
+        encodeURIComponent(
+          requestedGameId
+        ),
+        {
+          method:"GET",
+          signal:controller.signal
+        }
+      );
+
+
+    clearTimeout(timer);
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "History HTTP " +
+        response.status
+      );
+    }
+
+
+    const data =
+      await response.json();
+
+
+    /*
+     * User may click another game
+     * while this request is loading.
+     * Don't render old history into
+     * the newly selected matchup.
+     */
+
+    if(
+      selectedGameId !==
+      requestedGameId
+    ){
+      return;
+    }
+
+
+    if(!data.success){
+
+      throw new Error(
+        data.error ||
+        "History request failed"
+      );
+    }
+
+
+    if(!data.historyFound){
+
+      status.textContent =
+        "Not tracked yet";
+
+      body.innerHTML = `
+        <div class="empty">
+          No MarketSignal history has been
+          recorded for this matchup yet.
+          Live odds are still available above.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    renderLineHistory(
+      data,
+      body,
+      status
+    );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Line history error:",
+      error
+    );
+
+
+    if(
+      selectedGameId !==
+      requestedGameId
+    ){
+      return;
+    }
+
+
+    status.textContent =
+      "History unavailable";
+
+
+    body.innerHTML = `
+      <div class="empty">
+        ${
+          error.name === "AbortError"
+            ? "Line history request timed out."
+            : "Unable to load line history right now."
+        }
+      </div>
+    `;
+  }
+}
+
+
+/* ------------------------------
+   RENDER LINE HISTORY
+------------------------------ */
+
+function renderLineHistory(
+  data,
+  body,
+  status
+){
+
+  const sportsbooks =
+    Array.isArray(
+      data.sportsbooks
+    )
+      ? data.sportsbooks
+      : [];
+
+
+  const movedBooks =
+    sportsbooks.filter(
+      book =>
+        book.movementTeam &&
+        Number(
+          book.movementAmount
+        ) > 0
+    );
+
+
+  const pressureBooks =
+    sportsbooks.filter(
+      book =>
+        book.pricePressureTeam &&
+        Number(
+          book.pricePressureAmount
+        ) > 0
+    );
+
+
+  status.textContent =
+    data.booksTracked +
+    " books tracked";
+
+
+  /*
+   * No actual spread movement yet.
+   */
+
+  if(!movedBooks.length){
+
+    let pressureHtml = "";
+
+
+    if(pressureBooks.length){
+
+      pressureHtml = `
+        <div
+          style="
+            margin-top:12px;
+            padding-top:12px;
+            border-top:1px solid #1d3048;
+          "
+        >
+
+          <div
+            class="yellow"
+            style="
+              font-size:11px;
+              font-weight:900;
+              margin-bottom:8px;
+              text-transform:uppercase;
+            "
+          >
+            Price Pressure Detected
+          </div>
+
+          ${pressureBooks.map(
+            book =>
+              buildPricePressureRow(
+                book
+              )
+          ).join("")}
+
+        </div>
+      `;
+    }
+
+
+    body.innerHTML = `
+
+      <div class="empty">
+        No spread movement detected since
+        MarketSignal began tracking this game.
+      </div>
+
+      ${pressureHtml}
+    `;
+
+    return;
+  }
+
+
+  /*
+   * Direction / consensus
+   */
+
+  const consensus =
+    data.consensusTeam;
+
+
+  const agreement =
+    data.agreement ||
+    "—";
+
+
+  const consensusCount =
+    consensus ===
+    data.awayTeam
+      ? data.awayMoveBooks
+      : consensus ===
+        data.homeTeam
+          ? data.homeMoveBooks
+          : 0;
+
+
+  /*
+   * Largest movement
+   */
+
+  let largestBook = null;
+
+
+  if(data.largestMove){
+
+    largestBook =
+      movedBooks.find(
+        book =>
+          book.bookmaker ===
+          data.largestMove.bookmaker
+      ) || null;
+  }
+
+
+  const movementRows =
+    movedBooks.map(
+      book =>
+        buildMovementRow(
+          book,
+          data
+        )
+    ).join("");
+
+
+  const pressureRows =
+    pressureBooks.map(
+      book =>
+        buildPricePressureRow(
+          book
+        )
+    ).join("");
+
+
+  body.innerHTML = `
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:
+          repeat(3,minmax(0,1fr));
+        gap:9px;
+        margin-bottom:14px;
+      "
+    >
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Direction
+        </div>
+
+        <div
+          class="metric-value green"
+          style="font-size:15px"
+        >
+          ${
+            consensus
+              ? "→ " +
+                escapeHtml(
+                  consensus
+                )
+              : "Mixed"
+          }
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Agreement
+        </div>
+
+        <div
+          class="metric-value orange"
+          style="font-size:15px"
+        >
+          ${escapeHtml(
+            agreement
+          )}
+        </div>
+
+        <div
+          class="empty"
+          style="
+            margin-top:5px;
+            font-size:10px;
+          "
+        >
+          ${
+            consensus
+              ? consensusCount +
+                " of " +
+                movedBooks.length +
+                " moving books"
+              : movedBooks.length +
+                " moving books"
+          }
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Largest Move
+        </div>
+
+        <div
+          class="metric-value yellow"
+          style="font-size:15px"
+        >
+          ${
+            data.largestMove
+              ? escapeHtml(
+                  data.largestMove
+                    .movementAmount
+                ) +
+                " pt"
+              : "—"
+          }
+        </div>
+
+        <div
+          class="empty"
+          style="
+            margin-top:5px;
+            font-size:10px;
+          "
+        >
+          ${
+            data.largestMove
+              ? escapeHtml(
+                  data.largestMove
+                    .bookmaker
+                )
+              : ""
+          }
+        </div>
+
+      </div>
+
+    </div>
+
+
+    ${
+      largestBook
+        ? buildLargestMove(
+            largestBook,
+            data
+          )
+        : ""
+    }
+
+
+    <div
+      style="
+        margin-top:14px;
+        font-size:10px;
+        color:#70859e;
+        text-transform:uppercase;
+        font-weight:900;
+        letter-spacing:.7px;
+      "
+    >
+      Sportsbook Movement
+    </div>
+
+
+    <div style="margin-top:7px">
+
+      ${movementRows}
+
+    </div>
+
+
+    ${
+      pressureRows
+        ? `
+          <div
+            style="
+              margin-top:14px;
+              padding-top:12px;
+              border-top:1px solid #1d3048;
+            "
+          >
+
+            <div
+              class="yellow"
+              style="
+                font-size:10px;
+                text-transform:uppercase;
+                font-weight:900;
+                letter-spacing:.7px;
+                margin-bottom:7px;
+              "
+            >
+              Price Pressure
+            </div>
+
+            ${pressureRows}
+
+          </div>
+        `
+        : ""
+    }
+
+
+    <div
+      class="empty"
+      style="
+        margin-top:13px;
+        padding-top:11px;
+        border-top:1px dashed #1d3048;
+        font-size:10px;
+      "
+    >
+      First Tracked is the first line captured
+      by MarketSignal. It is not necessarily
+      the sportsbook's opening line.
+    </div>
+  `;
+}
+
+
+/* ------------------------------
+   LARGEST MOVE
+------------------------------ */
+
+function buildLargestMove(
+  book,
+  data
+){
+
+  const team =
+    book.movementTeam;
+
+
+  const side =
+    team === data.awayTeam
+      ? book.away
+      : book.home;
+
+
+  if(!side){
+    return "";
+  }
+
+
+  return `
+
+    <div
+      style="
+        background:
+          linear-gradient(
+            90deg,
+            rgba(53,229,138,.08),
+            rgba(255,159,67,.05)
+          );
+        border:1px solid
+          rgba(53,229,138,.20);
+        border-radius:9px;
+        padding:11px 12px;
+      "
+    >
+
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          gap:10px;
+          align-items:center;
+        "
+      >
+
+        <div>
+
+          <div
+            class="green"
+            style="
+              font-size:11px;
+              font-weight:900;
+            "
+          >
+            Largest Tracked Move
+          </div>
+
+          <div
+            style="
+              margin-top:5px;
+              font-size:13px;
+              font-weight:800;
+            "
+          >
+            ${escapeHtml(
+              book.bookmaker
+            )}
+            •
+            ${escapeHtml(team)}
+          </div>
+
+        </div>
+
+        <div
+          class="orange"
+          style="
+            font-size:17px;
+            font-weight:900;
+          "
+        >
+          ${escapeHtml(
+            book.movementAmount
+          )} pt
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          margin-top:8px;
+          color:#aebdd0;
+          font-size:12px;
+        "
+      >
+        First Tracked:
+        <span class="green">
+          ${formatSpread(
+            side.firstSpread
+          )}
+        </span>
+
+        ${formatOdds(
+          side.firstSpreadPrice
+        )}
+
+        &nbsp;→&nbsp;
+
+        Current:
+        <span class="green">
+          ${formatSpread(
+            side.currentSpread
+          )}
+        </span>
+
+        ${formatOdds(
+          side.currentSpreadPrice
+        )}
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* ------------------------------
+   MOVEMENT ROW
+------------------------------ */
+
+function buildMovementRow(
+  book,
+  data
+){
+
+  const team =
+    book.movementTeam;
+
+
+  const side =
+    team === data.awayTeam
+      ? book.away
+      : book.home;
+
+
+  if(!side){
+    return "";
+  }
+
+
+  return `
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:
+          minmax(100px,1fr)
+          minmax(150px,1.4fr)
+          auto;
+        gap:10px;
+        align-items:center;
+        padding:9px 0;
+        border-bottom:1px solid #14243a;
+        font-size:11px;
+      "
+    >
+
+      <div class="book-name">
+        ${escapeHtml(
+          book.bookmaker
+        )}
+      </div>
+
+
+      <div>
+
+        <span class="green">
+          ${escapeHtml(team)}
+        </span>
+
+        &nbsp;
+
+        ${formatSpread(
+          side.firstSpread
+        )}
+
+        ${formatOdds(
+          side.firstSpreadPrice
+        )}
+
+        →
+
+        ${formatSpread(
+          side.currentSpread
+        )}
+
+        ${formatOdds(
+          side.currentSpreadPrice
+        )}
+
+      </div>
+
+
+      <div
+        class="orange"
+        style="
+          font-weight:900;
+          white-space:nowrap;
+        "
+      >
+        ${escapeHtml(
+          book.movementAmount
+        )} pt →
+        ${escapeHtml(
+          shortTeam(team)
+        )}
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* ------------------------------
+   PRICE PRESSURE ROW
+------------------------------ */
+
+function buildPricePressureRow(
+  book
+){
+
+  const team =
+    book.pricePressureTeam;
+
+
+  let side = null;
+
+
+  if(
+    book.away &&
+    book.away.firstSpread ===
+      book.away.currentSpread &&
+    team
+  ){
+
+    /*
+     * The Worker currently identifies
+     * price pressure from the canonical
+     * away-team spread.
+     */
+
+    side =
+      book.away;
+  }
+
+
+  if(!side){
+    return "";
+  }
+
+
+  return `
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:
+          minmax(100px,1fr)
+          minmax(150px,1.5fr);
+        gap:10px;
+        padding:8px 0;
+        border-bottom:1px solid #14243a;
+        font-size:11px;
+      "
+    >
+
+      <div class="book-name">
+        ${escapeHtml(
+          book.bookmaker
+        )}
+      </div>
+
+
+      <div>
+
+        <span class="yellow">
+          ${escapeHtml(team)}
+        </span>
+
+        ${formatSpread(
+          side.currentSpread
+        )}
+
+        unchanged
+
+        &nbsp;•&nbsp;
+
+        Price
+
+        ${formatOdds(
+          side.firstSpreadPrice
+        )}
+
+        →
+
+        ${formatOdds(
+          side.currentSpreadPrice
+        )}
+
+      </div>
+
+    </div>
   `;
 }
 
