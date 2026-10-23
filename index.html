@@ -2,215 +2,2865 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MarketSignal | Sports Betting Intelligence</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MarketSignal — Sports Betting Intelligence</title>
+
 <style>
-:root{--bg:#06101d;--panel:#0d1929;--border:#203149;--text:#f4f7fb;--muted:#8fa2ba;--green:#35e58a;--blue:#52a8ff;--purple:#ad7cff;--orange:#ff9f43;--yellow:#ffd166;--red:#ff6474}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-button,select{font:inherit}button{cursor:pointer}
-.app{display:grid;grid-template-columns:210px minmax(0,1fr);min-height:100vh}
-.sidebar{background:#07111e;border-right:1px solid var(--border);padding:24px 16px}
-.logo{font-size:23px;font-weight:900}.logo span{color:var(--green)}
-.subtitle,.muted{color:var(--muted);font-size:12px}
-.subtitle{margin:6px 0 30px}.side-label{font-size:11px;color:var(--muted);margin:24px 0 10px;text-transform:uppercase}
-.league{display:block;width:100%;text-align:left;padding:11px;border:0;background:none;color:var(--muted);border-radius:8px;font-weight:bold}
-.league.active{color:var(--green);background:#112b29}
-.main{min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:18px 24px;border-bottom:1px solid var(--border);background:#091625}
-h1{font-size:21px;margin:0 0 5px}h2{font-size:17px;margin:0}
-.content{padding:22px}.btn{background:#10243a;border:1px solid #315174;color:#dfeeff;border-radius:8px;padding:10px 14px;font-weight:bold}
-.btn:disabled{opacity:.5}.status{border:1px solid var(--border);border-radius:10px;background:#0c1928;padding:13px;color:var(--muted);margin-bottom:18px;font-size:12px}
-.status.good{color:var(--green)}.status.bad{color:var(--red)}
-.panel{border:1px solid var(--border);border-radius:14px;background:linear-gradient(#0e1b2c,#0a1624);overflow:hidden}
-.panel-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px;border-bottom:1px solid var(--border)}
-.panel-body{padding:16px}.scanner{margin-bottom:20px}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.stat,.metric{background:#101e30;border:1px solid #21344d;border-radius:10px;padding:12px}
-.stat small,.metric small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase}
-.stat strong{display:block;color:var(--green);font-size:25px;margin-top:6px}
-.warning{font-size:11px;color:var(--yellow);line-height:1.6;margin:16px 0}
-.controls{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
-select{background:#101e30;color:var(--text);border:1px solid #315174;padding:10px;border-radius:8px;max-width:100%}
-.signal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.signal-card{border:1px solid var(--border);background:#0b1726;border-radius:11px;padding:15px}
-.matchup{font-size:15px;font-weight:900;margin-bottom:8px}
-.tag{display:inline-block;margin:4px 4px 4px 0;padding:5px 7px;border-radius:5px;font-size:10px;color:var(--blue);background:#122942}
-.tag.warn{color:var(--orange);background:#302316}
-.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
-.metric strong{display:block;margin-top:5px;color:var(--green);font-size:14px;overflow-wrap:anywhere}
-details{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
-summary{color:var(--blue);font-size:12px;cursor:pointer;font-weight:bold}
-.book-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:11px}
-.book-row span{color:var(--orange)}.book-row strong{text-align:right}
-.dashboard{display:grid;grid-template-columns:minmax(320px,1fr) minmax(320px,1fr);gap:18px}
-.game-list{max-height:750px;overflow:auto}
-.game{padding:15px;border-bottom:1px solid var(--border);cursor:pointer}
-.game:hover,.game.active{background:#12243a}.game.active{border-left:3px solid var(--blue)}
-.game-top,.game-bottom{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:11px;margin-bottom:10px}
-.game-bottom{margin:10px 0 0;padding-top:9px;border-top:1px dashed var(--border)}
-.team-row{display:grid;grid-template-columns:minmax(0,1fr) 75px 75px;gap:8px;padding:5px 0;align-items:center}
-.team-row strong{font-size:13px}.spread{text-align:right;color:var(--green);font-weight:bold}.ml{text-align:right;color:var(--blue);font-weight:bold}
-.section{margin-top:15px;border:1px solid var(--border);border-radius:9px;overflow:hidden}
-.section-head{background:#101d2e;padding:12px;font-size:12px;font-weight:bold;border-bottom:1px solid var(--border)}
-.section-body{padding:12px}.empty{color:var(--muted);font-size:12px;line-height:1.6}
-table{width:100%;border-collapse:collapse;font-size:11px}th,td{padding:9px 5px;text-align:right;border-bottom:1px solid var(--border)}
-th:first-child,td:first-child{text-align:left}th{color:var(--muted)}td:first-child{color:var(--orange)}
-@media(max-width:1000px){.dashboard{grid-template-columns:1fr}}
-@media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{display:none}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:13px}.topbar{padding:13px}.signal-grid{grid-template-columns:1fr}}
+:root{
+  --bg:#06101d;
+  --panel:#0d1929;
+  --panel2:#111f32;
+  --border:#203149;
+  --text:#f4f7fb;
+  --muted:#8fa2ba;
+
+  --green:#35e58a;
+  --blue:#52a8ff;
+  --purple:#ad7cff;
+  --orange:#ff9f43;
+  --yellow:#ffd166;
+  --red:#ff6474;
+  --cyan:#4de2e8;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 70% 0%,rgba(82,168,255,.09),transparent 32%),
+    radial-gradient(circle at 0% 40%,rgba(173,124,255,.06),transparent 25%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+}
+
+button{
+  font:inherit;
+}
+
+.app{
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr);
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  border-right:1px solid var(--border);
+  background:rgba(7,17,30,.94);
+  padding:24px 18px;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:-1px;
+  margin-bottom:4px;
+}
+
+.logo span{
+  color:var(--green);
+}
+
+.logo-sub{
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:30px;
+}
+
+.side-label{
+  font-size:11px;
+  color:#647b96;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  margin:22px 0 10px;
+}
+
+.league{
+  width:100%;
+  text-align:left;
+  padding:11px 12px;
+  margin:5px 0;
+  border:1px solid transparent;
+  border-radius:9px;
+  background:transparent;
+  color:#aebdd0;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.league.active{
+  background:rgba(53,229,138,.10);
+  color:var(--green);
+  border-color:rgba(53,229,138,.25);
+}
+
+.league:not(.active):hover{
+  background:#101e30;
+}
+
+.legend{
+  margin-top:26px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:#0b1726;
+  border-radius:12px;
+}
+
+.legend-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:var(--muted);
+  margin:8px 0;
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+}
+
+/* MAIN */
+
+.main{
+  min-width:0;
+}
+
+.topbar{
+  min-height:74px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:14px 24px;
+  background:rgba(7,17,30,.75);
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(12px);
+}
+
+.page-title{
+  font-size:19px;
+  font-weight:800;
+}
+
+.page-subtitle{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.live{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--green);
+  font-size:12px;
+  font-weight:800;
+}
+
+.live-dot{
+  width:8px;
+  height:8px;
+  background:var(--green);
+  border-radius:50%;
+  box-shadow:0 0 10px var(--green);
+}
+
+.refresh{
+  border:1px solid #315174;
+  color:#dfeeff;
+  background:#10243a;
+  padding:9px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.refresh:hover{
+  background:#16304c;
+}
+
+.content{
+  padding:20px 24px 40px;
+}
+
+.status{
+  padding:12px 15px;
+  border:1px solid var(--border);
+  background:#0c1928;
+  border-radius:10px;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:18px;
+}
+
+.status.good{
+  color:var(--green);
+  border-color:rgba(53,229,138,.25);
+}
+
+.status.bad{
+  color:var(--red);
+  border-color:rgba(255,100,116,.30);
+}
+
+/* DASHBOARD */
+
+.dashboard{
+  display:grid;
+  grid-template-columns:minmax(480px,1.15fr) minmax(380px,.85fr);
+  gap:18px;
+}
+
+.panel{
+  background:linear-gradient(180deg,#0e1b2c,#0a1624);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 17px;
+  border-bottom:1px solid var(--border);
+}
+
+.panel-title{
+  font-weight:800;
+}
+
+.panel-meta{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* GAME BOARD */
+
+.game-list{
+  max-height:calc(100vh - 165px);
+  overflow:auto;
+}
+
+.game{
+  padding:15px 16px;
+  border-bottom:1px solid #182a40;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.game:hover{
+  background:#102036;
+}
+
+.game.active{
+  background:
+    linear-gradient(90deg,rgba(82,168,255,.11),rgba(173,124,255,.04));
+  box-shadow:inset 3px 0 var(--blue);
+}
+
+.game-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.game-time{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.book-source{
+  color:var(--orange);
+  font-size:11px;
+  font-weight:800;
+}
+
+.team-row{
+  display:grid;
+  grid-template-columns:minmax(145px,1fr) 76px 80px;
+  gap:10px;
+  align-items:center;
+  min-height:32px;
+}
+
+.team-name{
+  font-weight:800;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.badge{
+  display:inline-block;
+  font-size:9px;
+  font-weight:900;
+  margin-left:7px;
+  padding:3px 5px;
+  border-radius:4px;
+  vertical-align:2px;
+}
+
+.fav{
+  background:rgba(53,229,138,.12);
+  color:var(--green);
+}
+
+.dog{
+  background:rgba(255,159,67,.12);
+  color:var(--orange);
+}
+
+.pk{
+  background:rgba(255,209,102,.12);
+  color:var(--yellow);
+}
+
+.spread{
+  color:var(--green);
+  font-weight:900;
+  text-align:right;
+}
+
+.ml{
+  color:var(--blue);
+  font-weight:800;
+  text-align:right;
+}
+
+.game-bottom{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  padding-top:9px;
+  border-top:1px dashed #1d3048;
+  font-size:11px;
+}
+
+.total{
+  color:var(--purple);
+  font-weight:800;
+}
+
+.market-placeholder{
+  color:#62768e;
+}
+
+/* DETAILS */
+
+.details{
+  padding:17px;
+}
+
+.matchup-head{
+  margin-bottom:17px;
+}
+
+.matchup-label{
+  color:var(--blue);
+  text-transform:uppercase;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.matchup-title{
+  font-size:23px;
+  font-weight:900;
+  margin:5px 0;
+}
+
+.matchup-time{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.market-strip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-bottom:17px;
+}
+
+.metric{
+  background:#101e30;
+  border:1px solid #21344d;
+  border-radius:10px;
+  padding:12px;
+}
+
+.metric-label{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+  font-weight:800;
+  letter-spacing:.7px;
+}
+
+.metric-value{
+  margin-top:6px;
+  font-size:18px;
+  font-weight:900;
+}
+
+.blue{color:var(--blue);}
+.purple{color:var(--purple);}
+.green{color:var(--green);}
+.orange{color:var(--orange);}
+.yellow{color:var(--yellow);}
+.red{color:var(--red);}
+.cyan{color:var(--cyan);}
+
+.section{
+  margin-top:14px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  overflow:hidden;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:11px 12px;
+  background:#101d2e;
+  border-bottom:1px solid var(--border);
+}
+
+.section-title{
+  font-size:12px;
+  font-weight:900;
+}
+
+.coming{
+  font-size:9px;
+  text-transform:uppercase;
+  color:var(--yellow);
+  background:rgba(255,209,102,.09);
+  padding:4px 6px;
+  border-radius:5px;
+}
+
+.section-body{
+  padding:12px;
+}
+
+.empty{
+  color:#70859e;
+  font-size:12px;
+  line-height:1.55;
+}
+
+/* SPORTSBOOK TABLE */
+
+.book-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+}
+
+.book-table th{
+  color:#70859e;
+  text-align:right;
+  padding:7px 5px;
+  border-bottom:1px solid #1b2c42;
+}
+
+.book-table th:first-child,
+.book-table td:first-child{
+  text-align:left;
+}
+
+.book-table td{
+  padding:8px 5px;
+  text-align:right;
+  border-bottom:1px solid #14243a;
+}
+
+.book-table tr:last-child td{
+  border-bottom:0;
+}
+
+.book-name{
+  color:var(--orange);
+  font-weight:800;
+}
+
+.no-game{
+  padding:35px 20px;
+  color:var(--muted);
+  text-align:center;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+  .app{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    display:none;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+
+  .game-list{
+    max-height:none;
+  }
+}
+
+@media(max-width:600px){
+  .content{
+    padding:14px;
+  }
+
+  .topbar{
+    padding:12px 14px;
+  }
+
+  .page-subtitle{
+    display:none;
+  }
+
+  .team-row{
+    grid-template-columns:minmax(120px,1fr) 62px 66px;
+    gap:5px;
+    font-size:12px;
+  }
+
+  .market-strip{
+    grid-template-columns:1fr;
+  }
+
+  .matchup-title{
+    font-size:19px;
+  }
+}
+
+/* SIGNAL SCANNER */
+.signals-panel{margin-bottom:18px}
+.signal-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:13px 16px;border-bottom:1px solid var(--border)}
+.signal-toolbar select{background:#101e30;color:var(--text);border:1px solid #315174;border-radius:8px;padding:9px}
+.signal-summary{color:var(--muted);font-size:12px;margin-left:auto}
+.signal-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;padding:15px}
+.signal-card{background:#101e30;border:1px solid #253a55;border-radius:11px;padding:14px;min-width:0}
+.signal-match{font-size:14px;font-weight:850;line-height:1.4}
+.signal-meta{font-size:11px;color:var(--muted);margin-top:5px}
+.signal-tags{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0}
+.signal-tag{border:1px solid #3a4d64;color:var(--cyan);border-radius:5px;padding:4px 6px;font-size:10px;font-weight:800}
+.signal-tag.warn{color:var(--red);border-color:rgba(255,100,116,.5)}
+.signal-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.signal-metric{background:#0b1726;border-radius:7px;padding:9px 6px}
+.signal-metric b{display:block;font-size:15px;margin-top:4px;overflow-wrap:anywhere}
+.signal-metric small{font-size:10px;color:var(--muted)}
+.signal-details{margin-top:10px;color:var(--muted);font-size:11px}
+.signal-details summary{cursor:pointer;color:var(--blue);font-weight:700}
+.signal-details table{width:100%;margin-top:9px;border-collapse:collapse}
+.signal-details td,.signal-details th{padding:5px;text-align:left;border-bottom:1px solid #24334a}
+.signal-notice{color:var(--muted);font-size:11px;padding:0 16px 13px}
+.signal-empty{padding:20px;color:var(--muted);font-size:13px}
+@media(max-width:600px){.signal-list{grid-template-columns:1fr}.signal-summary{margin-left:0}}
+
 </style>
 </head>
+
 <body>
+
 <div class="app">
-<aside class="sidebar">
-<div class="logo">MARKET<span>SIGNAL</span></div>
-<div class="subtitle">Sports Betting Intelligence</div>
-<div class="side-label">Leagues</div>
-<button class="league active">NFL</button>
-<button class="league future">NBA</button>
-<button class="league future">NCAAF</button>
-<button class="league future">NCAAB</button>
-<button class="league future">MLB</button>
-<button class="league future">NHL</button>
-<div class="side-label">Signal Guide</div>
-<div class="muted">Green: spread movement</div>
-<div class="muted" style="margin-top:10px">Blue: moneyline / signals</div>
-<div class="muted" style="margin-top:10px">Orange: sportsbook differences</div>
-<div class="muted" style="margin-top:10px">Yellow: historical warnings</div>
-</aside>
-<main class="main">
-<header class="topbar">
-<div><h1>MarketSignal Intelligence</h1><div class="muted">Historical signals • NFL markets • sportsbook comparisons</div></div>
-<div><span id="feedLabel" class="muted">CHECKING FEED</span> <button id="refreshOdds" class="btn">Refresh Odds</button></div>
-</header>
-<div class="content">
-<div id="status" class="status">Connecting to MarketSignal...</div>
-<section class="panel scanner">
-<div class="panel-head"><div><h2>MarketSignal Scanner</h2><div class="muted">Cross-book movement and historical anomalies</div></div><button id="refreshSignals" class="btn">Refresh Signals</button></div>
-<div class="panel-body">
-<div class="stats">
-<div class="stat"><small>Games Analyzed</small><strong id="statGames">—</strong></div>
-<div class="stat"><small>Flagged Games</small><strong id="statFlags">—</strong></div>
-<div class="stat"><small>Multi-Book Moves</small><strong id="statMoves">—</strong></div>
-<div class="stat"><small>Book Disagreements</small><strong id="statGaps">—</strong></div>
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      MARKET<span>SIGNAL</span>
+    </div>
+
+    <div class="logo-sub">
+      Betting Intelligence
+    </div>
+
+    <div class="side-label">Leagues</div>
+
+    <button class="league active">
+      NFL
+    </button>
+
+    <button class="league future">
+      NBA
+    </button>
+
+    <button class="league future">
+      MLB
+    </button>
+
+    <button class="league future">
+      NHL
+    </button>
+
+    <button class="league future">
+      NCAAF
+    </button>
+
+    <button class="league future">
+      NCAAB
+    </button>
+
+    <div class="side-label">
+      Signal Guide
+    </div>
+
+    <div class="legend">
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--green)"></span>
+        Spread / positive signal
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--blue)"></span>
+        Moneyline / public data
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--purple)"></span>
+        Totals / money data
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--orange)"></span>
+        Sportsbook / movement
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--yellow)"></span>
+        Situational signal
+      </div>
+
+      <div class="legend-row">
+        <span class="dot" style="background:var(--red)"></span>
+        Conflict / warning
+      </div>
+
+    </div>
+
+  </aside>
+
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div>
+        <div class="page-title">
+          NFL Market Board
+        </div>
+
+        <div class="page-subtitle">
+          Cached odds • historical movement • betting intelligence
+        </div>
+      </div>
+
+      <div class="top-actions">
+
+        <div class="live" id="feedIndicator" style="color:var(--yellow)">
+          <span class="live-dot" style="background:var(--yellow);box-shadow:none"></span>
+          CACHE ONLY
+        </div>
+
+        <button
+          class="refresh"
+          id="refreshBtn"
+        >
+          Refresh Cache
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <div class="content">
+
+      <div
+        id="status"
+        class="status"
+      >
+        Checking saved NFL odds...
+      </div>
+
+
+      <section class="panel signals-panel" aria-label="Historical movement scanner">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">MarketSignal Movement Scanner</div>
+            <div class="panel-meta">Historical D1 data · No Odds API credits</div>
+          </div>
+          <button class="refresh" id="signalsRefreshBtn">Refresh Signals</button>
+        </div>
+        <div class="signal-toolbar">
+          <label for="signalFilter" style="font-size:12px;color:var(--muted)">Show</label>
+          <select id="signalFilter">
+            <option value="all">All tracked games</option>
+            <option value="MULTI_BOOK_MOVE">Multi-book moves</option>
+            <option value="BOOK_DISAGREEMENT">Book disagreements</option>
+            <option value="PRICE_PRESSURE">Price pressure</option>
+            <option value="EXTREME_MOVE_REVIEW">Extreme moves / review</option>
+          </select>
+          <span class="signal-summary" id="signalSummary">Loading historical signals…</span>
+        </div>
+        <div class="signal-list" id="signalList"><div class="signal-empty">Loading…</div></div>
+        <div class="signal-notice">Historical observations, not current betting opportunities. Multiple books moving together does not prove professional betting activity. Extreme moves require verification.</div>
+      </section>
+
+      <div class="dashboard">
+
+        <section class="panel">
+
+          <div class="panel-head">
+
+            <div class="panel-title">
+              Cached Games
+            </div>
+
+            <div
+              class="panel-meta"
+              id="gameCount"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div
+            class="game-list"
+            id="gameList"
+          >
+          </div>
+
+        </section>
+
+
+        <section class="panel">
+
+          <div class="panel-head">
+
+            <div class="panel-title">
+              Matchup Intelligence
+            </div>
+
+            <div class="panel-meta">
+              NFL
+            </div>
+
+          </div>
+
+          <div
+            id="details"
+            class="details"
+          >
+
+            <div class="no-game">
+              Select a game to view its market.
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
 </div>
-<div class="warning">HISTORICAL DATA ONLY. Recorded movements are not current betting lines, confirmed sharp money, or necessarily original opening lines.</div>
-<div class="controls">
-<select id="signalFilter">
-<option value="flagged">Flagged Games</option>
-<option value="all">All Tracked Games</option>
-<option value="MULTI_BOOK_MOVE">Multi-Book Movement</option>
-<option value="BOOK_DISAGREEMENT">Book Disagreement</option>
-<option value="PRICE_PRESSURE">Price Pressure</option>
-<option value="EXTREME_MOVE_REVIEW">Extreme Move Review</option>
-</select>
-<select id="signalSort"><option value="flags">Most Signals</option><option value="movement">Largest Movement</option><option value="recent">Recently Tracked</option></select>
-</div>
-<div id="signalResults" class="signal-grid"><div class="empty">Loading historical signals...</div></div>
-</div></section>
-<div class="dashboard">
-<section class="panel"><div class="panel-head"><h2>NFL Game Board</h2><span id="gameCount" class="muted">—</span></div><div id="gameList" class="game-list"><div class="section-body empty">Checking cached odds...</div></div></section>
-<section class="panel"><div class="panel-head"><h2>Matchup Intelligence</h2><span class="muted">NFL</span></div><div id="details" class="panel-body"><div class="empty">Select a game to view markets and line history.</div></div></section>
-</div>
-</div></main></div>
+
+
 <script>
-"use strict";
-const API="https://market-signal-api.kidflipz13.workers.dev/";
-const $=id=>document.getElementById(id);
-const safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const spread=v=>v==null?"—":Number(v)===0?"PK":Number(v)>0?"+"+Number(v):String(v);
-const odds=v=>v==null?"—":Number(v)>0?"+"+Number(v):String(v);
-const date=v=>{if(!v)return"Unknown";const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleString()};
-const num=v=>v==null?"—":Number(v).toFixed(1);
-const market=(b,k)=>(b?.markets||[]).find(m=>m.key===k);
-const outcome=(b,k,n)=>market(b,k)?.outcomes?.find(o=>o.name===n);
-const total=b=>market(b,"totals")?.outcomes?.find(o=>o.name==="Over"||o.name==="Under")?.point??null;
-const primary=g=>{const b=g.bookmakers||[];return ["DraftKings","FanDuel","BetMGM","Caesars"].map(n=>b.find(x=>(x.title||"").toLowerCase()===n.toLowerCase())).find(Boolean)||b[0]||null};
-let games=[],selectedId=null,signals=[],historyToken=0;
-const names={MULTI_BOOK_MOVE:"Multi-Book Move",BOOK_DISAGREEMENT:"Book Disagreement",PRICE_PRESSURE:"Price Pressure",EXTREME_MOVE_REVIEW:"Extreme Move — Review"};
-function stat(label,value){return '<div class="metric"><small>'+safe(label)+'</small><strong>'+safe(value)+'</strong></div>'}
-function signalCard(g){
- const flags=g.flags||[],moves=g.movements||[];
- const tags=flags.map(f=>'<span class="tag '+(f==="EXTREME_MOVE_REVIEW"?"warn":"")+'">'+safe(names[f]||f)+'</span>').join("");
- const rows=moves.map(m=>'<div class="book-row"><span>'+safe(m.bookmaker)+'</span><strong>'+safe(spread(m.first))+' → '+safe(spread(m.latest))+' ('+safe(m.change)+')</strong></div>').join("");
- return '<article class="signal-card"><div class="matchup">'+safe(g.awayTeam)+' @ '+safe(g.homeTeam)+'</div><div class="muted">Game: '+safe(date(g.startTime))+'</div><div class="muted">Last tracked: '+safe(date(g.lastTrackedAt))+'</div><div>'+tags+'</div><div class="metrics">'+stat("Movement Toward",g.consensusTeam||"Mixed / None")+stat("Agreement",g.agreement==null?"—":Math.round(g.agreement*100)+"%")+stat("Largest Move",num(g.largestMove)+" pts")+stat("Book Spread Gap",g.spreadDisagreement==null?"—":num(g.spreadDisagreement)+" pts")+stat("Moving Books",(g.movedBooks??0)+" / "+(g.booksTracked??0))+stat("Price Pressure Books",g.pricePressureBooks??0)+'</div><details><summary>View '+moves.length+' sportsbook records</summary>'+rows+'</details></article>';
+
+const API =
+  "https://market-signal-api.kidflipz13.workers.dev/";
+
+const BOOK_PRIORITY = [
+  "DraftKings",
+  "FanDuel",
+  "BetMGM",
+  "Caesars"
+];
+
+let games = [];
+let selectedGameId = null;
+
+
+/* ------------------------------
+   FETCH LIVE ODDS
+------------------------------ */
+
+async function loadOdds(){
+
+  const status =
+    document.getElementById("status");
+
+  const refreshBtn =
+    document.getElementById("refreshBtn");
+
+  status.className = "status";
+  status.textContent =
+    "Checking cached NFL markets...";
+
+  refreshBtn.disabled = true;
+  refreshBtn.textContent =
+    "Refreshing...";
+
+  try{
+
+    const controller =
+      new AbortController();
+
+    const timer =
+      setTimeout(
+        () => controller.abort(),
+        15000
+      );
+
+    const response =
+      await fetch(
+        API,
+        {
+          method:"GET",
+          signal:controller.signal
+        }
+      );
+
+    clearTimeout(timer);
+
+    const data = await response.json();
+
+    if(!response.ok && !data.error){
+      throw new Error("Worker returned HTTP " + response.status);
+    }
+
+    if(!data.success){
+      throw new Error(
+        data.error ||
+        "API returned success false"
+      );
+    }
+
+    /*
+      Current lightweight Worker returns
+      raw Odds API games.
+    */
+
+    games =
+      Array.isArray(data.games)
+        ? data.games
+        : [];
+
+    status.className =
+      "status good";
+
+    status.textContent =
+      "Connected • " +
+      games.length +
+      " NFL games received • " +
+      (data.cached ? "Saved odds • Updated " +
+        (data.lastUpdated ? new Date(data.lastUpdated).toLocaleString() : "unknown") :
+        "Provider response");
+
+    document.getElementById(
+      "gameCount"
+    ).textContent =
+      games.length + " games";
+
+    if(
+      !selectedGameId ||
+      !games.some(
+        game =>
+          game.id === selectedGameId
+      )
+    ){
+      selectedGameId =
+        games[0]?.id || null;
+    }
+
+    renderGames();
+    renderDetails();
+
+  }
+
+  catch(error){
+
+    console.error(
+      "MarketSignal error:",
+      error
+    );
+
+    status.className =
+      "status bad";
+
+    status.textContent =
+      error.name === "AbortError"
+        ? "Connection timed out after 15 seconds."
+        : "Connection failed: " +
+          error.message;
+  }
+
+  finally{
+
+    refreshBtn.disabled = false;
+    refreshBtn.textContent =
+      "Refresh Cache";
+  }
+}
+
+
+/* ------------------------------
+   PRIMARY SPORTSBOOK
+------------------------------ */
+
+function getPrimaryBook(game){
+
+  const books =
+    game.bookmakers || [];
+
+  for(
+    const preferred
+    of BOOK_PRIORITY
+  ){
+
+    const found =
+      books.find(
+        book =>
+          normalizeBook(book.title) ===
+          normalizeBook(preferred)
+      );
+
+    if(found){
+      return found;
+    }
+  }
+
+  return books[0] || null;
+}
+
+
+function normalizeBook(name){
+
+  return String(name || "")
+    .toLowerCase()
+    .replace(/\s+/g,"");
+}
+
+
+/* ------------------------------
+   MARKETS
+------------------------------ */
+
+function getMarket(book,key){
+
+  return (
+    book?.markets || []
+  ).find(
+    market =>
+      market.key === key
+  ) || null;
+}
+
+
+function getSpread(book,team){
+
+  const market =
+    getMarket(
+      book,
+      "spreads"
+    );
+
+  return (
+    market?.outcomes || []
+  ).find(
+    outcome =>
+      outcome.name === team
+  ) || null;
+}
+
+
+function getMoneyline(book,team){
+
+  const market =
+    getMarket(
+      book,
+      "h2h"
+    );
+
+  return (
+    market?.outcomes || []
+  ).find(
+    outcome =>
+      outcome.name === team
+  ) || null;
+}
+
+
+function getTotal(book){
+
+  const market =
+    getMarket(
+      book,
+      "totals"
+    );
+
+  const outcomes =
+    market?.outcomes || [];
+
+  const over =
+    outcomes.find(
+      outcome =>
+        String(
+          outcome.name
+        ).toLowerCase()
+        === "over"
+    );
+
+  const under =
+    outcomes.find(
+      outcome =>
+        String(
+          outcome.name
+        ).toLowerCase()
+        === "under"
+    );
+
+  return {
+    over,
+    under
+  };
+}
+
+
+/* ------------------------------
+   FORMATTING
+------------------------------ */
+
+function formatSpread(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+    return "—";
+  }
+
+  const n =
+    Number(value);
+
+  if(n > 0){
+    return "+" + n;
+  }
+
+  if(n === 0){
+    return "PK";
+  }
+
+  return String(n);
+}
+
+
+function formatOdds(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+    return "—";
+  }
+
+  const n =
+    Number(value);
+
+  return n > 0
+    ? "+" + n
+    : String(n);
+}
+
+
+function teamType(point){
+
+  if(
+    point === null ||
+    point === undefined
+  ){
+    return "";
+  }
+
+  const n =
+    Number(point);
+
+  if(n < 0){
+    return "FAV";
+  }
+
+  if(n > 0){
+    return "DOG";
+  }
+
+  return "PK";
+}
+
+
+function badge(type){
+
+  if(!type){
+    return "";
+  }
+
+  const cls =
+    type === "FAV"
+      ? "fav"
+      : type === "DOG"
+        ? "dog"
+        : "pk";
+
+  return (
+    '<span class="badge ' +
+    cls +
+    '">' +
+    type +
+    '</span>'
+  );
+}
+
+
+function gameDate(value){
+
+  if(!value){
+    return "Time TBD";
+  }
+
+  const date =
+    new Date(value);
+
+  if(isNaN(date)){
+    return value;
+  }
+
+  return date.toLocaleString(
+    [],
+    {
+      weekday:"short",
+      month:"short",
+      day:"numeric",
+      hour:"numeric",
+      minute:"2-digit"
+    }
+  );
+}
+
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+}
+
+
+/* ------------------------------
+   GAME LIST
+------------------------------ */
+
+function renderGames(){
+
+  const container =
+    document.getElementById(
+      "gameList"
+    );
+
+  if(!games.length){
+
+    container.innerHTML =
+      '<div class="no-game">' +
+      'No NFL games available.' +
+      '</div>';
+
+    return;
+  }
+
+  container.innerHTML =
+    games.map(game => {
+
+      const book =
+        getPrimaryBook(game);
+
+      const away =
+        game.away_team;
+
+      const home =
+        game.home_team;
+
+      const awaySpread =
+        getSpread(
+          book,
+          away
+        );
+
+      const homeSpread =
+        getSpread(
+          book,
+          home
+        );
+
+      const awayML =
+        getMoneyline(
+          book,
+          away
+        );
+
+      const homeML =
+        getMoneyline(
+          book,
+          home
+        );
+
+      const total =
+        getTotal(book);
+
+      const active =
+        game.id ===
+        selectedGameId;
+
+      return `
+        <div
+          class="game ${active ? "active" : ""}"
+          data-game="${escapeHtml(game.id)}"
+        >
+
+          <div class="game-top">
+
+            <div class="game-time">
+              ${escapeHtml(
+                gameDate(
+                  game.commence_time
+                )
+              )}
+            </div>
+
+            <div class="book-source">
+              ${escapeHtml(
+                book?.title ||
+                "No sportsbook"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="team-row">
+
+            <div class="team-name">
+              ${escapeHtml(away)}
+              ${badge(
+                teamType(
+                  awaySpread?.point
+                )
+              )}
+            </div>
+
+            <div class="spread">
+              ${formatSpread(
+                awaySpread?.point
+              )}
+            </div>
+
+            <div class="ml">
+              ${formatOdds(
+                awayML?.price
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="team-row">
+
+            <div class="team-name">
+              ${escapeHtml(home)}
+              ${badge(
+                teamType(
+                  homeSpread?.point
+                )
+              )}
+            </div>
+
+            <div class="spread">
+              ${formatSpread(
+                homeSpread?.point
+              )}
+            </div>
+
+            <div class="ml">
+              ${formatOdds(
+                homeML?.price
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="game-bottom">
+
+            <div class="total">
+              O/U ${
+                total.over?.point ??
+                total.under?.point ??
+                "—"
+              }
+            </div>
+
+            <div class="market-placeholder">
+              Tickets — &nbsp; Money —
+            </div>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+
+
+  document
+    .querySelectorAll(
+      ".game"
+    )
+    .forEach(card => {
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          selectedGameId =
+            card.dataset.game;
+
+          renderGames();
+          renderDetails();
+        }
+      );
+    });
+}
+
+
+/* ------------------------------
+   MATCHUP DETAILS
+------------------------------ */
+
+function renderDetails(){
+
+  const container =
+    document.getElementById(
+      "details"
+    );
+
+  const game =
+    games.find(
+      item =>
+        item.id ===
+        selectedGameId
+    );
+
+  if(!game){
+
+    container.innerHTML =
+      '<div class="no-game">' +
+      'Select a game.' +
+      '</div>';
+
+    return;
+  }
+
+  const book =
+    getPrimaryBook(game);
+
+  const away =
+    game.away_team;
+
+  const home =
+    game.home_team;
+
+  const awaySpread =
+    getSpread(
+      book,
+      away
+    );
+
+  const homeSpread =
+    getSpread(
+      book,
+      home
+    );
+
+  const awayML =
+    getMoneyline(
+      book,
+      away
+    );
+
+  const homeML =
+    getMoneyline(
+      book,
+      home
+    );
+
+  const total =
+    getTotal(book);
+
+
+  container.innerHTML = `
+
+    <div class="matchup-head">
+
+      <div class="matchup-label">
+        Primary Market •
+        ${escapeHtml(
+          book?.title || "—"
+        )}
+      </div>
+
+      <div class="matchup-title">
+        ${escapeHtml(away)}
+        @
+        ${escapeHtml(home)}
+      </div>
+
+      <div class="matchup-time">
+        ${escapeHtml(
+          gameDate(
+            game.commence_time
+          )
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="market-strip">
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Spread
+        </div>
+
+        <div class="metric-value green">
+          ${escapeHtml(away)}
+          ${formatSpread(
+            awaySpread?.point
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Moneyline
+        </div>
+
+        <div class="metric-value blue">
+          ${formatOdds(
+            awayML?.price
+          )}
+          /
+          ${formatOdds(
+            homeML?.price
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Total
+        </div>
+
+        <div class="metric-value purple">
+          O/U ${
+            total.over?.point ??
+            total.under?.point ??
+            "—"
+          }
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title orange">
+          Sportsbook Comparison
+        </div>
+
+        <div class="panel-meta">
+          Cached
+        </div>
+
+      </div>
+
+      <div class="section-body">
+        ${buildBookTable(game)}
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title orange">
+          Line Movement
+        </div>
+
+        <div
+          class="panel-meta"
+          id="historyStatus"
+        >
+          Loading history...
+        </div>
+
+      </div>
+
+      <div
+        class="section-body"
+        id="lineMovementBody"
+      >
+
+        <div class="empty">
+          Checking MarketSignal tracking history...
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title blue">
+          Betting Market
+        </div>
+
+        <div class="coming">
+          Data Source Needed
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="market-strip">
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Ticket %
+            </div>
+
+            <div class="metric-value blue">
+              —
+            </div>
+
+          </div>
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Money %
+            </div>
+
+            <div class="metric-value purple">
+              —
+            </div>
+
+          </div>
+
+          <div class="metric">
+
+            <div class="metric-label">
+              Market Signal
+            </div>
+
+            <div class="metric-value yellow">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="empty">
+          Money percentage will not automatically
+          be labeled “sharp money.” MarketSignal
+          will evaluate ticket-money divergence
+          together with line movement and other
+          evidence.
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title green">
+          ATS Trends
+        </div>
+
+        <div class="coming">
+          Coming Next
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="empty">
+          Home/away ATS • favorite/underdog ATS •
+          recent ATS form • matchup trends
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title cyan">
+          Referee Signal
+        </div>
+
+        <div class="coming">
+          Planned
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="empty">
+          Referee home/away ATS • favorite/underdog
+          ATS • O/U record • average penalties •
+          penalty-yard differential • sample size
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <div class="section-title yellow">
+          Obscure / Situational Data
+        </div>
+
+        <div class="coming">
+          Planned
+        </div>
+
+      </div>
+
+      <div class="section-body">
+
+        <div class="empty">
+          Rest • travel • time-zone change • weather •
+          short week • early start • divisional matchup •
+          rematch • coaching splits • QB changes and
+          other matchup-specific situations.
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  /*
+   * Load D1 history separately.
+   * This does NOT slow down the
+   * main live odds request.
+   */
+
+  loadLineHistory(game);
+}
+
+
+/* ------------------------------
+   LINE MOVEMENT HISTORY
+------------------------------ */
+
+async function loadLineHistory(game){
+
+  const body =
+    document.getElementById(
+      "lineMovementBody"
+    );
+
+  const status =
+    document.getElementById(
+      "historyStatus"
+    );
+
+  if(
+    !body ||
+    !status ||
+    !game
+  ){
+    return;
+  }
+
+
+  const requestedGameId =
+    game.id;
+
+
+  try{
+
+    const controller =
+      new AbortController();
+
+    const timer =
+      setTimeout(
+        () => controller.abort(),
+        8000
+      );
+
+
+    const response =
+      await fetch(
+        API +
+        "history?gameId=" +
+        encodeURIComponent(
+          requestedGameId
+        ),
+        {
+          method:"GET",
+          signal:controller.signal
+        }
+      );
+
+
+    clearTimeout(timer);
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "History HTTP " +
+        response.status
+      );
+    }
+
+
+    const data =
+      await response.json();
+
+
+    /*
+     * User may click another game
+     * while this request is loading.
+     * Don't render old history into
+     * the newly selected matchup.
+     */
+
+    if(
+      selectedGameId !==
+      requestedGameId
+    ){
+      return;
+    }
+
+
+    if(!data.success){
+
+      throw new Error(
+        data.error ||
+        "History request failed"
+      );
+    }
+
+
+    if(!data.historyFound){
+
+      status.textContent =
+        "Not tracked yet";
+
+      body.innerHTML = `
+        <div class="empty">
+          No MarketSignal history has been
+          recorded for this matchup yet.
+          Check the cached odds above when available.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    renderLineHistory(
+      data,
+      body,
+      status
+    );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Line history error:",
+      error
+    );
+
+
+    if(
+      selectedGameId !==
+      requestedGameId
+    ){
+      return;
+    }
+
+
+    status.textContent =
+      "History unavailable";
+
+
+    body.innerHTML = `
+      <div class="empty">
+        ${
+          error.name === "AbortError"
+            ? "Line history request timed out."
+            : "Unable to load line history right now."
+        }
+      </div>
+    `;
+  }
+}
+
+
+/* ------------------------------
+   RENDER LINE HISTORY
+------------------------------ */
+
+function renderLineHistory(
+  data,
+  body,
+  status
+){
+
+  const sportsbooks =
+    Array.isArray(
+      data.sportsbooks
+    )
+      ? data.sportsbooks
+      : [];
+
+
+  const movedBooks =
+    sportsbooks.filter(
+      book =>
+        book.movementTeam &&
+        Number(
+          book.movementAmount
+        ) > 0
+    );
+
+
+  const pressureBooks =
+    sportsbooks.filter(
+      book =>
+        book.pricePressureTeam &&
+        Number(
+          book.pricePressureAmount
+        ) > 0
+    );
+
+
+  status.textContent =
+    data.booksTracked +
+    " books tracked";
+
+
+  /*
+   * No actual spread movement yet.
+   */
+
+  if(!movedBooks.length){
+
+    let pressureHtml = "";
+
+
+    if(pressureBooks.length){
+
+      pressureHtml = `
+        <div
+          style="
+            margin-top:12px;
+            padding-top:12px;
+            border-top:1px solid #1d3048;
+          "
+        >
+
+          <div
+            class="yellow"
+            style="
+              font-size:11px;
+              font-weight:900;
+              margin-bottom:8px;
+              text-transform:uppercase;
+            "
+          >
+            Price Pressure Detected
+          </div>
+
+          ${pressureBooks.map(
+            book =>
+              buildPricePressureRow(
+                book
+              )
+          ).join("")}
+
+        </div>
+      `;
+    }
+
+
+    body.innerHTML = `
+
+      <div class="empty">
+        No spread movement detected since
+        MarketSignal began tracking this game.
+      </div>
+
+      ${pressureHtml}
+    `;
+
+    return;
+  }
+
+
+  /*
+   * Direction / consensus
+   */
+
+  const consensus =
+    data.consensusTeam;
+
+
+  const agreement =
+    data.agreement ||
+    "—";
+
+
+  const consensusCount =
+    consensus ===
+    data.awayTeam
+      ? data.awayMoveBooks
+      : consensus ===
+        data.homeTeam
+          ? data.homeMoveBooks
+          : 0;
+
+
+  /*
+   * Largest movement
+   */
+
+  let largestBook = null;
+
+
+  if(data.largestMove){
+
+    largestBook =
+      movedBooks.find(
+        book =>
+          book.bookmaker ===
+          data.largestMove.bookmaker
+      ) || null;
+  }
+
+
+  const movementRows =
+    movedBooks.map(
+      book =>
+        buildMovementRow(
+          book,
+          data
+        )
+    ).join("");
+
+
+  const pressureRows =
+    pressureBooks.map(
+      book =>
+        buildPricePressureRow(
+          book
+        )
+    ).join("");
+
+
+  body.innerHTML = `
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:
+          repeat(3,minmax(0,1fr));
+        gap:9px;
+        margin-bottom:14px;
+      "
+    >
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Direction
+        </div>
+
+        <div
+          class="metric-value green"
+          style="font-size:15px"
+        >
+          ${
+            consensus
+              ? "→ " +
+                escapeHtml(
+                  consensus
+                )
+              : "Mixed"
+          }
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Agreement
+        </div>
+
+        <div
+          class="metric-value orange"
+          style="font-size:15px"
+        >
+          ${escapeHtml(
+            agreement
+          )}
+        </div>
+
+        <div
+          class="empty"
+          style="
+            margin-top:5px;
+            font-size:10px;
+          "
+        >
+          ${
+            consensus
+              ? consensusCount +
+                " of " +
+                movedBooks.length +
+                " moving books"
+              : movedBooks.length +
+                " moving books"
+          }
+        </div>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-label">
+          Largest Move
+        </div>
+
+        <div
+          class="metric-value yellow"
+          style="font-size:15px"
+        >
+          ${
+            data.largestMove
+              ? escapeHtml(
+                  data.largestMove
+                    .movementAmount
+                ) +
+                " pt"
+              : "—"
+          }
+        </div>
+
+        <div
+          class="empty"
+          style="
+            margin-top:5px;
+            font-size:10px;
+          "
+        >
+          ${
+            data.largestMove
+              ? escapeHtml(
+                  data.largestMove
+                    .bookmaker
+                )
+              : ""
+          }
+        </div>
+
+      </div>
+
+    </div>
+
+
+    ${
+      largestBook
+        ? buildLargestMove(
+            largestBook,
+            data
+          )
+        : ""
+    }
+
+
+    <div
+      style="
+        margin-top:14px;
+        font-size:10px;
+        color:#70859e;
+        text-transform:uppercase;
+        font-weight:900;
+        letter-spacing:.7px;
+      "
+    >
+      Sportsbook Movement
+    </div>
+
+
+    <div style="margin-top:7px">
+
+      ${movementRows}
+
+    </div>
+
+
+    ${
+      pressureRows
+        ? `
+          <div
+            style="
+              margin-top:14px;
+              padding-top:12px;
+              border-top:1px solid #1d3048;
+            "
+          >
+
+            <div
+              class="yellow"
+              style="
+                font-size:10px;
+                text-transform:uppercase;
+                font-weight:900;
+                letter-spacing:.7px;
+                margin-bottom:7px;
+              "
+            >
+              Price Pressure
+            </div>
+
+            ${pressureRows}
+
+          </div>
+        `
+        : ""
+    }
+
+
+    <div
+      class="empty"
+      style="
+        margin-top:13px;
+        padding-top:11px;
+        border-top:1px dashed #1d3048;
+        font-size:10px;
+      "
+    >
+      First Tracked is the first line captured
+      by MarketSignal. It is not necessarily
+      the sportsbook's opening line.
+    </div>
+  `;
+}
+
+
+/* ------------------------------
+   LARGEST MOVE
+------------------------------ */
+
+function buildLargestMove(
+  book,
+  data
+){
+
+  const team =
+    book.movementTeam;
+
+
+  const side =
+    team === data.awayTeam
+      ? book.away
+      : book.home;
+
+
+  if(!side){
+    return "";
+  }
+
+
+  return `
+
+    <div
+      style="
+        background:
+          linear-gradient(
+            90deg,
+            rgba(53,229,138,.08),
+            rgba(255,159,67,.05)
+          );
+        border:1px solid
+          rgba(53,229,138,.20);
+        border-radius:9px;
+        padding:11px 12px;
+      "
+    >
+
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          gap:10px;
+          align-items:center;
+        "
+      >
+
+        <div>
+
+          <div
+            class="green"
+            style="
+              font-size:11px;
+              font-weight:900;
+            "
+          >
+            Largest Tracked Move
+          </div>
+
+          <div
+            style="
+              margin-top:5px;
+              font-size:13px;
+              font-weight:800;
+            "
+          >
+            ${escapeHtml(
+              book.bookmaker
+            )}
+            •
+            ${escapeHtml(team)}
+          </div>
+
+        </div>
+
+        <div
+          class="orange"
+          style="
+            font-size:17px;
+            font-weight:900;
+          "
+        >
+          ${escapeHtml(
+            book.movementAmount
+          )} pt
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          margin-top:8px;
+          color:#aebdd0;
+          font-size:12px;
+        "
+      >
+        First Tracked:
+        <span class="green">
+          ${formatSpread(
+            side.firstSpread
+          )}
+        </span>
+
+        ${formatOdds(
+          side.firstSpreadPrice
+        )}
+
+        &nbsp;→&nbsp;
+
+        Current:
+        <span class="green">
+          ${formatSpread(
+            side.currentSpread
+          )}
+        </span>
+
+        ${formatOdds(
+          side.currentSpreadPrice
+        )}
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* ------------------------------
+   MOVEMENT ROW
+------------------------------ */
+
+function buildMovementRow(
+  book,
+  data
+){
+
+  const team =
+    book.movementTeam;
+
+
+  const side =
+    team === data.awayTeam
+      ? book.away
+      : book.home;
+
+
+  if(!side){
+    return "";
+  }
+
+
+  return `
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:
+          minmax(100px,1fr)
+          minmax(150px,1.4fr)
+          auto;
+        gap:10px;
+        align-items:center;
+        padding:9px 0;
+        border-bottom:1px solid #14243a;
+        font-size:11px;
+      "
+    >
+
+      <div class="book-name">
+        ${escapeHtml(
+          book.bookmaker
+        )}
+      </div>
+
+
+      <div>
+
+        <span class="green">
+          ${escapeHtml(team)}
+        </span>
+
+        &nbsp;
+
+        ${formatSpread(
+          side.firstSpread
+        )}
+
+        ${formatOdds(
+          side.firstSpreadPrice
+        )}
+
+        →
+
+        ${formatSpread(
+          side.currentSpread
+        )}
+
+        ${formatOdds(
+          side.currentSpreadPrice
+        )}
+
+      </div>
+
+
+      <div
+        class="orange"
+        style="
+          font-weight:900;
+          white-space:nowrap;
+        "
+      >
+        ${escapeHtml(
+          book.movementAmount
+        )} pt →
+        ${escapeHtml(
+          shortTeam(team)
+        )}
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* ------------------------------
+   PRICE PRESSURE ROW
+------------------------------ */
+
+function buildPricePressureRow(
+  book
+){
+
+  const team =
+    book.pricePressureTeam;
+
+
+  let side = null;
+
+
+  if(
+    book.away &&
+    book.away.firstSpread ===
+      book.away.currentSpread &&
+    team
+  ){
+
+    /*
+     * The Worker currently identifies
+     * price pressure from the canonical
+     * away-team spread.
+     */
+
+    side =
+      book.away;
+  }
+
+
+  if(!side){
+    return "";
+  }
+
+
+  return `
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:
+          minmax(100px,1fr)
+          minmax(150px,1.5fr);
+        gap:10px;
+        padding:8px 0;
+        border-bottom:1px solid #14243a;
+        font-size:11px;
+      "
+    >
+
+      <div class="book-name">
+        ${escapeHtml(
+          book.bookmaker
+        )}
+      </div>
+
+
+      <div>
+
+        <span class="yellow">
+          ${escapeHtml(team)}
+        </span>
+
+        ${formatSpread(
+          side.currentSpread
+        )}
+
+        unchanged
+
+        &nbsp;•&nbsp;
+
+        Price
+
+        ${formatOdds(
+          side.firstSpreadPrice
+        )}
+
+        →
+
+        ${formatOdds(
+          side.currentSpreadPrice
+        )}
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* ------------------------------
+   SPORTSBOOK COMPARISON
+------------------------------ */
+
+function buildBookTable(game){
+
+  const books =
+    game.bookmakers || [];
+
+  if(!books.length){
+
+    return (
+      '<div class="empty">' +
+      'No sportsbook markets available.' +
+      '</div>'
+    );
+  }
+
+  const away =
+    game.away_team;
+
+  const home =
+    game.home_team;
+
+  const rows =
+    books.map(book => {
+
+      const awaySpread =
+        getSpread(
+          book,
+          away
+        );
+
+      const homeSpread =
+        getSpread(
+          book,
+          home
+        );
+
+      const awayML =
+        getMoneyline(
+          book,
+          away
+        );
+
+      const homeML =
+        getMoneyline(
+          book,
+          home
+        );
+
+      const total =
+        getTotal(book);
+
+      return `
+        <tr>
+
+          <td class="book-name">
+            ${escapeHtml(
+              book.title
+            )}
+          </td>
+
+          <td class="green">
+            ${formatSpread(
+              awaySpread?.point
+            )}
+          </td>
+
+          <td class="green">
+            ${formatSpread(
+              homeSpread?.point
+            )}
+          </td>
+
+          <td class="blue">
+            ${formatOdds(
+              awayML?.price
+            )}
+          </td>
+
+          <td class="blue">
+            ${formatOdds(
+              homeML?.price
+            )}
+          </td>
+
+          <td class="purple">
+            ${
+              total.over?.point ??
+              total.under?.point ??
+              "—"
+            }
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
+
+
+  return `
+    <div style="overflow-x:auto">
+
+      <table class="book-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Book</th>
+
+            <th>
+              ${escapeHtml(
+                shortTeam(away)
+              )}
+            </th>
+
+            <th>
+              ${escapeHtml(
+                shortTeam(home)
+              )}
+            </th>
+
+            <th>
+              ${escapeHtml(
+                shortTeam(away)
+              )} ML
+            </th>
+
+            <th>
+              ${escapeHtml(
+                shortTeam(home)
+              )} ML
+            </th>
+
+            <th>O/U</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+          ${rows}
+        </tbody>
+
+      </table>
+
+    </div>
+  `;
+}
+
+
+function shortTeam(name){
+
+  const words =
+    String(name || "")
+    .split(" ");
+
+  return (
+    words[
+      words.length - 1
+    ] || name
+  );
+}
+
+
+/* ------------------------------
+   BUTTONS
+------------------------------ */
+
+document
+  .getElementById(
+    "refreshBtn"
+  )
+  .addEventListener(
+    "click",
+    loadOdds
+  );
+
+
+document
+  .querySelectorAll(
+    ".league.future"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        alert(
+          button.textContent.trim() +
+          " will be connected after the NFL data layer is completed."
+        );
+      }
+    );
+  });
+
+
+
+/* HISTORICAL SIGNAL SCANNER: independent of odds cache */
+let historicalSignals = [];
+
+function safeSignalDate(value){
+  if(!value) return "Date unavailable";
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? String(value) : d.toLocaleString();
+}
+function signalNumber(value, digits=1){
+  return typeof value === "number" && Number.isFinite(value)
+    ? value.toFixed(digits).replace(/\.0$/, "") : "—";
 }
 function renderSignals(){
- const f=$("signalFilter").value,s=$("signalSort").value;
- let a=signals.filter(g=>f==="all"||f==="flagged"?(f==="all"||(g.flags||[]).length>0):(g.flags||[]).includes(f));
- a.sort((x,y)=>s==="movement"?(y.largestMove||0)-(x.largestMove||0):s==="recent"?(Date.parse(y.lastTrackedAt)||0)-(Date.parse(x.lastTrackedAt)||0):(y.flags?.length||0)-(x.flags?.length||0));
- $("signalResults").innerHTML=a.length?a.map(signalCard).join(""):'<div class="empty">No games match this filter.</div>';
+  const filter = document.getElementById("signalFilter").value;
+  const list = document.getElementById("signalList");
+  const visible = historicalSignals.filter(item =>
+    filter === "all" || (item.flags || []).includes(filter)
+  );
+  document.getElementById("signalSummary").textContent =
+    `${visible.length} shown / ${historicalSignals.length} tracked games`;
+  if(!visible.length){
+    list.innerHTML = '<div class="signal-empty">No games match this filter.</div>';
+    return;
+  }
+  const names = {
+    MULTI_BOOK_MOVE:"Multi-book move",
+    BOOK_DISAGREEMENT:"Book disagreement",
+    PRICE_PRESSURE:"Price pressure",
+    EXTREME_MOVE_REVIEW:"Extreme move · verify"
+  };
+  list.innerHTML = visible.map(item => {
+    const flags = (item.flags || []).map(flag =>
+      `<span class="signal-tag ${flag === "EXTREME_MOVE_REVIEW" ? "warn" : ""}">${escapeHtml(names[flag] || flag)}</span>`
+    ).join("") || '<span class="signal-tag">Tracked history</span>';
+    const movements = (item.movements || []).slice().sort((a,b) =>
+      Math.abs(b.change || 0) - Math.abs(a.change || 0)
+    );
+    const rows = movements.map(m => `<tr>
+      <td>${escapeHtml(m.bookmaker)}</td>
+      <td>${escapeHtml(formatSpread(m.first))}</td>
+      <td>${escapeHtml(formatSpread(m.latest))}</td>
+      <td>${escapeHtml(signalNumber(m.change))}</td>
+    </tr>`).join("");
+    const agreement = typeof item.agreement === "number"
+      ? Math.round(item.agreement * 100) + "%" : "—";
+    return `<article class="signal-card">
+      <div class="signal-match">${escapeHtml(item.awayTeam)} @ ${escapeHtml(item.homeTeam)}</div>
+      <div class="signal-meta">${escapeHtml(safeSignalDate(item.startTime))} · Last tracked ${escapeHtml(safeSignalDate(item.lastTrackedAt))}</div>
+      <div class="signal-tags">${flags}</div>
+      <div class="signal-metrics">
+        <div class="signal-metric"><small>Moving books</small><b>${escapeHtml(item.movedBooks ?? 0)} / ${escapeHtml(item.booksTracked ?? 0)}</b></div>
+        <div class="signal-metric"><small>Agreement</small><b>${escapeHtml(agreement)}</b></div>
+        <div class="signal-metric"><small>Largest move</small><b>${escapeHtml(signalNumber(item.largestMove))} pt</b></div>
+      </div>
+      <div class="signal-meta" style="margin-top:10px">Direction: ${escapeHtml(item.consensusTeam || "Mixed / none")} · Spread gap: ${escapeHtml(signalNumber(item.spreadDisagreement))} pt · Price pressure: ${escapeHtml(item.pricePressureBooks ?? 0)} books</div>
+      <details class="signal-details"><summary>View sportsbook movements</summary>
+        <div style="overflow-x:auto"><table><thead><tr><th>Book</th><th>First</th><th>Latest</th><th>Change</th></tr></thead><tbody>${rows}</tbody></table></div>
+      </details>
+    </article>`;
+  }).join("");
 }
 async function loadSignals(){
- const b=$("refreshSignals");b.disabled=true;b.textContent="Loading...";
- try{
-  const r=await fetch(API+"signals",{cache:"no-store"}),d=await r.json();
-  if(!r.ok||!d.success)throw Error(d.error||"Scanner unavailable");
-  signals=Array.isArray(d.signals)?d.signals:[];
-  $("statGames").textContent=d.gamesAnalyzed??signals.length;
-  $("statFlags").textContent=signals.filter(g=>g.flags?.length).length;
-  $("statMoves").textContent=signals.filter(g=>g.flags?.includes("MULTI_BOOK_MOVE")).length;
-  $("statGaps").textContent=signals.filter(g=>g.flags?.includes("BOOK_DISAGREEMENT")).length;
-  renderSignals();
- }catch(e){$("signalResults").innerHTML='<div class="empty">Scanner error: '+safe(e.message)+'</div>'}
- finally{b.disabled=false;b.textContent="Refresh Signals"}
+  const btn = document.getElementById("signalsRefreshBtn");
+  const list = document.getElementById("signalList");
+  btn.disabled = true;
+  btn.textContent = "Loading…";
+  try{
+    const response = await fetch(API + "signals", {cache:"no-store"});
+    const data = await response.json();
+    if(!response.ok || !data.success){
+      throw new Error(data.error || `HTTP ${response.status}`);
+    }
+    historicalSignals = Array.isArray(data.signals) ? data.signals : [];
+    renderSignals();
+  }catch(error){
+    list.innerHTML = `<div class="signal-empty">Unable to load historical signals: ${escapeHtml(error.message)}</div>`;
+    document.getElementById("signalSummary").textContent = "Scanner unavailable";
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "Refresh Signals";
+  }
 }
-async function loadOdds(){
- const b=$("refreshOdds");b.disabled=true;b.textContent="Refreshing...";
- try{
-  const r=await fetch(API,{cache:"no-store"}),d=await r.json();
-  if(!r.ok||!d.success)throw Error(d.error||"Odds unavailable");
-  games=Array.isArray(d.games)?d.games:[];
-  if(!games.some(g=>g.id===selectedId))selectedId=games[0]?.id||null;
-  $("feedLabel").textContent=d.cached?"CACHED ODDS":"ODDS FEED";
-  $("status").className="status good";
-  $("status").textContent=games.length+" NFL games • Last collection: "+date(d.fetchedAt||d.lastUpdated);
- }catch(e){
-  games=[];selectedId=null;
-  $("feedLabel").textContent="ODDS UNAVAILABLE";
-  $("status").className="status bad";
-  $("status").textContent="Odds unavailable: "+e.message+". Historical scanner remains available.";
- }
- renderGames();renderDetails();b.disabled=false;b.textContent="Refresh Odds";
-}
-function renderGames(){
- $("gameCount").textContent=games.length+" games";
- if(!games.length){$("gameList").innerHTML='<div class="section-body empty">No cached NFL odds yet. The historical scanner above still works.</div>';return}
- $("gameList").innerHTML=games.map(g=>{
-  const b=primary(g),a=g.away_team,h=g.home_team;
-  return '<div class="game '+(g.id===selectedId?"active":"")+'" data-id="'+safe(g.id)+'"><div class="game-top"><span>'+safe(date(g.commence_time))+'</span><span>'+safe(b?.title||"No book")+'</span></div><div class="team-row"><strong>'+safe(a)+'</strong><span class="spread">'+safe(spread(outcome(b,"spreads",a)?.point))+'</span><span class="ml">'+safe(odds(outcome(b,"h2h",a)?.price))+'</span></div><div class="team-row"><strong>'+safe(h)+'</strong><span class="spread">'+safe(spread(outcome(b,"spreads",h)?.point))+'</span><span class="ml">'+safe(odds(outcome(b,"h2h",h)?.price))+'</span></div><div class="game-bottom"><span>O/U '+safe(total(b)??"—")+'</span><span>Tickets — | Money —</span></div></div>';
- }).join("");
- document.querySelectorAll(".game").forEach(el=>el.addEventListener("click",()=>{selectedId=el.dataset.id;renderGames();renderDetails()}));
-}
-function bookTable(g){
- const a=g.away_team,h=g.home_team,books=g.bookmakers||[];
- if(!books.length)return'<div class="empty">No sportsbook markets.</div>';
- return '<div style="overflow-x:auto"><table><thead><tr><th>Book</th><th>Away</th><th>Home</th><th>Away ML</th><th>Home ML</th><th>O/U</th></tr></thead><tbody>'+books.map(b=>'<tr><td>'+safe(b.title)+'</td><td>'+safe(spread(outcome(b,"spreads",a)?.point))+'</td><td>'+safe(spread(outcome(b,"spreads",h)?.point))+'</td><td>'+safe(odds(outcome(b,"h2h",a)?.price))+'</td><td>'+safe(odds(outcome(b,"h2h",h)?.price))+'</td><td>'+safe(total(b)??"—")+'</td></tr>').join("")+'</tbody></table></div>';
-}
-function renderDetails(){
- const token=++historyToken,g=games.find(x=>x.id===selectedId);
- if(!g){$("details").innerHTML='<div class="empty">Select a game when cached NFL odds are available.</div>';return}
- const b=primary(g),a=g.away_team,h=g.home_team;
- $("details").innerHTML='<div class="muted">PRIMARY MARKET • '+safe(b?.title||"—")+'</div><h2 style="margin:10px 0">'+safe(a)+' @ '+safe(h)+'</h2><div class="muted">'+safe(date(g.commence_time))+'</div><div class="metrics">'+stat("Away Spread",spread(outcome(b,"spreads",a)?.point))+stat("Moneyline",odds(outcome(b,"h2h",a)?.price)+" / "+odds(outcome(b,"h2h",h)?.price))+stat("Total",total(b)??"—")+'</div><div class="section"><div class="section-head">Sportsbook Comparison • Cached</div><div class="section-body">'+bookTable(g)+'</div></div><div class="section"><div class="section-head">Line Movement <span id="historyStatus" class="muted">Loading...</span></div><div id="historyBody" class="section-body empty">Checking historical records...</div></div><div class="section"><div class="section-head">Public vs Money • Data Source Needed</div><div class="section-body"><div class="metrics">'+stat("Ticket %","—")+stat("Money %","—")+stat("Divergence","—")+'</div><p class="empty">Requires licensed betting splits. Money percentage alone is not proof of sharp action.</p></div></div><div class="section"><div class="section-head">ATS / Referee / Situational Trends • Planned</div><div class="section-body empty">Rest, travel, weather, coaching splits, referee tendencies and overlooked usage data.</div></div>';
- loadHistory(g.id,token);
-}
-async function loadHistory(id,token){
- try{
-  const r=await fetch(API+"history?gameId="+encodeURIComponent(id)),d=await r.json();
-  if(token!==historyToken)return;
-  if(!r.ok||!d.success)throw Error(d.error||"History unavailable");
-  if(!d.historyFound){$("historyStatus").textContent="Not tracked";$("historyBody").textContent="No history recorded for this matchup.";return}
-  const books=d.sportsbooks||[],moved=books.filter(b=>b.movementTeam&&Number(b.movementAmount)>0);
-  $("historyStatus").textContent=books.length+" books tracked";
-  const rows=moved.map(b=>{const s=b.movementTeam===d.awayTeam?b.away:b.home;return '<div class="book-row"><span>'+safe(b.bookmaker)+'</span><strong>'+safe(b.movementTeam)+' '+safe(spread(s?.firstSpread))+' → '+safe(spread(s?.currentSpread))+' ('+safe(b.movementAmount)+' pts)</strong></div>'}).join("");
-  $("historyBody").innerHTML='<div class="metrics">'+stat("Direction",d.consensusTeam||"Mixed")+stat("Agreement",d.agreement||"—")+stat("Largest Move",d.largestMove?d.largestMove.movementAmount+" pts":"—")+'</div><div style="margin-top:12px">'+(rows||'<div class="empty">No spread movement tracked.</div>')+'</div><p class="empty">First tracked is not necessarily the original opening line.</p>';
- }catch(e){if(token===historyToken){$("historyStatus").textContent="Unavailable";$("historyBody").textContent=e.message}}
-}
-$("refreshSignals").addEventListener("click",loadSignals);
-$("refreshOdds").addEventListener("click",loadOdds);
-$("signalFilter").addEventListener("change",renderSignals);
-$("signalSort").addEventListener("change",renderSignals);
-document.querySelectorAll(".league.future").forEach(b=>b.addEventListener("click",()=>alert(b.textContent.trim()+" is planned for a future update.")));
+document.getElementById("signalsRefreshBtn").addEventListener("click",loadSignals);
+document.getElementById("signalFilter").addEventListener("change",renderSignals);
 loadSignals();
+
+/* START */
+
 loadOdds();
+
 </script>
+
 </body>
 </html>
