@@ -723,6 +723,7 @@ button{
         <div class="signal-toolbar">
           <label for="signalFilter" style="font-size:12px;color:var(--muted)">Show</label>
           <select id="signalFilter">
+            <option value="flagged" selected>Flagged games</option>
             <option value="all">All tracked games</option>
             <option value="MULTI_BOOK_MOVE">Multi-book moves</option>
             <option value="BOOK_DISAGREEMENT">Book disagreements</option>
@@ -731,6 +732,7 @@ button{
           </select>
           <span class="signal-summary" id="signalSummary">Loading historical signals…</span>
         </div>
+        <div id="signalStats" class="signal-toolbar" style="justify-content:space-between;color:var(--green);font-size:12px;font-weight:800">Waiting for historical scan…</div>
         <div class="signal-list" id="signalList"><div class="signal-empty">Loading…</div></div>
         <div class="signal-notice">Historical observations, not current betting opportunities. Multiple books moving together does not prove professional betting activity. Extreme moves require verification.</div>
       </section>
@@ -2786,7 +2788,7 @@ function renderSignals(){
   const filter = document.getElementById("signalFilter").value;
   const list = document.getElementById("signalList");
   const visible = historicalSignals.filter(item =>
-    filter === "all" || (item.flags || []).includes(filter)
+    filter === "all" || (filter === "flagged" ? (item.flags || []).length > 0 : (item.flags || []).includes(filter))
   );
   document.getElementById("signalSummary").textContent =
     `${visible.length} shown / ${historicalSignals.length} tracked games`;
@@ -2843,10 +2845,16 @@ async function loadSignals(){
       throw new Error(data.error || `HTTP ${response.status}`);
     }
     historicalSignals = Array.isArray(data.signals) ? data.signals : [];
+    const flagged = historicalSignals.filter(g => (g.flags || []).length > 0).length;
+    const multi = historicalSignals.filter(g => (g.flags || []).includes("MULTI_BOOK_MOVE")).length;
+    const gaps = historicalSignals.filter(g => (g.flags || []).includes("BOOK_DISAGREEMENT")).length;
+    document.getElementById("signalStats").textContent =
+      `${data.gamesAnalyzed ?? historicalSignals.length} games analyzed  ·  ${flagged} flagged  ·  ${multi} multi-book moves  ·  ${gaps} book disagreements`;
     renderSignals();
   }catch(error){
     list.innerHTML = `<div class="signal-empty">Unable to load historical signals: ${escapeHtml(error.message)}</div>`;
     document.getElementById("signalSummary").textContent = "Scanner unavailable";
+    document.getElementById("signalStats").textContent = "Historical signal data unavailable";
   }finally{
     btn.disabled = false;
     btn.textContent = "Refresh Signals";
