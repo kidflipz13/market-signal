@@ -1616,6 +1616,15 @@ function renderDetails(){
         ${buildObscureComparisons(game)}
       </div>
     </div>
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title cyan">Team &amp; Player Usage Mismatches</div>
+        <div class="panel-meta">Weekly statistics • source labeled</div>
+      </div>
+      <div class="section-body" id="statMatchupBody">
+        <div class="empty">Checking stored matchup statistics...</div>
+      </div>
+    </div>
 
     <div class="section">
 
@@ -1807,6 +1816,7 @@ function renderDetails(){
    */
 
   loadLineHistory(game);
+  loadStatMatchup(game);
 }
 
 
@@ -2930,6 +2940,33 @@ async function loadSignals(){
 document.getElementById("signalsRefreshBtn").addEventListener("click",loadSignals);
 document.getElementById("signalFilter").addEventListener("change",renderSignals);
 loadSignals();
+
+
+/* V4: Weekly matchup comparisons. Only reads our D1 cache through Worker. */
+let matchupStatRequest=0;
+async function loadStatMatchup(game){
+  const node=document.getElementById('statMatchupBody');
+  if(!node)return;
+  const token=++matchupStatRequest;
+  try{
+    const url=API+'matchup?away='+encodeURIComponent(game.away_team)+'&home='+encodeURIComponent(game.home_team);
+    const response=await fetch(url,{cache:'no-store'});
+    const data=await response.json();
+    if(token!==matchupStatRequest)return;
+    if(!response.ok||!data.success)throw Error(data.error||'Statistics service unavailable');
+    if(!data.available){
+      node.innerHTML='<div class="empty">Statistics not imported yet for '+escapeHtml((data.missing||[]).join(' and '))+'. Market comparisons above remain available. Connect a permitted weekly data feed to activate this section.</div>';
+      return;
+    }
+    const meta=data.data||{};
+    const info=[meta.away,meta.home].filter(Boolean).map(s=>escapeHtml(s.source)+' • '+escapeHtml(s.season)+' W'+escapeHtml(s.week)+' • '+escapeHtml(s.sampleGames)+' games').join(' | ');
+    const cards=(data.comparisons||[]).map(c=>{
+      const val=n=>Number.isFinite(Number(n))?Number(n).toFixed(3):'—';
+      return '<div class="signal-metric"><small>'+escapeHtml(c.title)+'</small><b>'+escapeHtml(c.side)+'</b><div class="signal-meta" style="margin-top:7px">'+escapeHtml(c.offenseMetric)+': '+val(c.offenseValue)+(c.opponentMetric?' • Opponent '+escapeHtml(c.opponentMetric)+': '+val(c.opponentValue):'')+'</div><div class="signal-meta">Sample: '+escapeHtml(c.sampleGames)+' games</div></div>';
+    }).join('');
+    node.innerHTML='<div class="signal-notice">'+info+(data.sameWeek?'':' • WARNING: different reporting weeks')+'. Descriptive matchup comparisons, not proven betting edges or probability projections.</div>'+(cards?'<div class="signal-metrics">'+cards+'</div>':'<div class="empty">No overlapping metrics imported.</div>');
+  }catch(error){if(token===matchupStatRequest)node.innerHTML='<div class="empty">Weekly stats unavailable: '+escapeHtml(error.message)+'</div>'}
+}
 
 /* START */
 
