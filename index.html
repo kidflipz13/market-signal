@@ -1384,6 +1384,63 @@ function renderGames(){
    MATCHUP DETAILS
 ------------------------------ */
 
+
+/* Market-derived obscure comparisons. No extra API calls or invented stats. */
+function buildObscureComparisons(game){
+  const books=game.bookmakers||[];
+  const away=game.away_team,home=game.home_team;
+  const valid=n=>n!==null&&n!==undefined&&Number.isFinite(Number(n));
+  const implied=price=>{
+    const n=Number(price);
+    return n<0?(-n)/((-n)+100):100/(n+100);
+  };
+  const rows=books.map(book=>{
+    const a=getSpread(book,away),h=getSpread(book,home);
+    const am=getMoneyline(book,away),hm=getMoneyline(book,home);
+    const t=getTotal(book);
+    const line=valid(a?.point)?Number(a.point):null;
+    const totalPoint=valid(t.over?.point)?Number(t.over.point):valid(t.under?.point)?Number(t.under.point):null;
+    const prob=valid(am?.price)&&valid(hm?.price)?[implied(am.price),implied(hm.price)]:null;
+    const noVig=prob?(prob[0]/(prob[0]+prob[1])):null;
+    const hold=prob?prob[0]+prob[1]-1:null;
+    return {book:book.title||book.key,line,totalPoint,noVig,hold};
+  });
+  const collect=key=>rows.filter(r=>Number.isFinite(r[key]));
+  const ranges=(key,unit,decimals=1)=>{
+    const values=collect(key);
+    if(values.length<2)return null;
+    const sorted=[...values].sort((a,b)=>a[key]-b[key]);
+    const lo=sorted[0],hi=sorted.at(-1);
+    return {range:(hi[key]-lo[key]).toFixed(decimals),low:lo,high:hi,unit};
+  };
+  const spreadGap=ranges('line','points');
+  const totalGap=ranges('totalPoint','points');
+  const probabilityGap=ranges('noVig','percentage points',3);
+  const holds=collect('hold').sort((a,b)=>a.hold-b.hold);
+  const cards=[];
+  function add(title,value,detail){
+    cards.push('<div class="signal-metric"><small>'+escapeHtml(title)+'</small><b>'+escapeHtml(value)+'</b><div class="signal-meta" style="margin-top:7px">'+escapeHtml(detail)+'</div></div>');
+  }
+  if(spreadGap)add('Away spread disagreement',spreadGap.range+' pts',spreadGap.low.book+' '+formatSpread(spreadGap.low.line)+' vs '+spreadGap.high.book+' '+formatSpread(spreadGap.high.line));
+  if(totalGap)add('Total disagreement',totalGap.range+' pts',totalGap.low.book+' O/U '+totalGap.low.totalPoint+' vs '+totalGap.high.book+' O/U '+totalGap.high.totalPoint);
+  if(probabilityGap)add('No-vig away win probability gap',(Number(probabilityGap.range)*100).toFixed(1)+' pp',probabilityGap.low.book+' '+(probabilityGap.low.noVig*100).toFixed(1)+'% vs '+probabilityGap.high.book+' '+(probabilityGap.high.noVig*100).toFixed(1)+'%');
+  if(holds.length)add('Lowest 2-way ML margin',(holds[0].hold*100).toFixed(2)+'%',holds[0].book+' • derived from displayed moneylines');
+  const prices=books.map(b=>({book:b.title||b.key,away:getMoneyline(b,away)?.price,home:getMoneyline(b,home)?.price}));
+  for(const [side,key] of [['Away','away'],['Home','home']]){
+    const validPrices=prices.filter(r=>valid(r[key]));
+    if(validPrices.length){
+      const best=validPrices.reduce((a,b)=>Number(a[key])>Number(b[key])?a:b);
+      add('Best '+side.toLowerCase()+' moneyline',formatOdds(best[key]),best.book+' • '+(side==='Away'?away:home));
+    }
+  }
+  const notices=[];
+  if(spreadGap&&Number(spreadGap.range)>=1.5)notices.push('Spread gap warrants checking timestamps and rules before interpreting as value.');
+  if(totalGap&&Number(totalGap.range)>=2)notices.push('Totals vary materially between tracked books.');
+  const intro='<div class="signal-notice">Derived only from currently cached sportsbook markets. No extra paid API requests. Differences can reflect stale quotes, market rules, or update timing; they are not proven betting edges.</div>';
+  const body=cards.length?'<div class="signal-metrics">'+cards.join('')+'</div>':'<div class="empty">Not enough overlapping sportsbook quotes to calculate comparisons.</div>';
+  return intro+body+(notices.length?'<div class="signal-notice">'+notices.map(escapeHtml).join(' ')+'</div>':'');
+}
+
 function renderDetails(){
 
   const container =
@@ -1549,6 +1606,16 @@ function renderDetails(){
 
     </div>
 
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title cyan">Obscure Matchup Intelligence</div>
+        <div class="panel-meta">Cross-book analytics</div>
+      </div>
+      <div class="section-body">
+        ${buildObscureComparisons(game)}
+      </div>
+    </div>
 
     <div class="section">
 
