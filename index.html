@@ -2960,11 +2960,22 @@ async function loadStatMatchup(game){
     }
     const meta=data.data||{};
     const info=[meta.away,meta.home].filter(Boolean).map(s=>escapeHtml(s.source)+' • '+escapeHtml(s.season)+' W'+escapeHtml(s.week)+' • '+escapeHtml(s.sampleGames)+' games').join(' | ');
+    const currentYear=new Date().getUTCFullYear();
+    const qualityNotes=[];
+    const samples=[meta.away?.sampleGames,meta.home?.sampleGames].map(Number).filter(Number.isFinite);
+    const smallestSample=samples.length?Math.min(...samples):null;
+    if(smallestSample!==null&&smallestSample<4)qualityNotes.push('SMALL SAMPLE: fewer than four games');
+    if(data.sameWeek===false)qualityNotes.push('MISMATCHED REPORTING WEEKS');
+    const seasons=[meta.away?.season,meta.home?.season].map(Number).filter(Number.isFinite);
+    if(seasons.some(y=>y<currentYear-1))qualityNotes.push('OLDER SEASON DATA');
+    const qualityHtml=qualityNotes.length
+      ?'<div class="signal-notice" style="color:var(--yellow)">Data quality: '+qualityNotes.map(escapeHtml).join(' • ')+'</div>'
+      :'<div class="signal-notice" style="color:var(--green)">Data quality: reporting weeks aligned; check sample sizes and source below.</div>';
     const cards=(data.comparisons||[]).map(c=>{
       const val=n=>Number.isFinite(Number(n))?Number(n).toFixed(3):'—';
       return '<div class="signal-metric"><small>'+escapeHtml(c.title)+'</small><b>'+escapeHtml(c.side)+'</b><div class="signal-meta" style="margin-top:7px">'+escapeHtml(c.offenseMetric)+': '+val(c.offenseValue)+(c.opponentMetric?' • Opponent '+escapeHtml(c.opponentMetric)+': '+val(c.opponentValue):'')+'</div><div class="signal-meta">Sample: '+escapeHtml(c.sampleGames)+' games</div></div>';
     }).join('');
-    node.innerHTML='<div class="signal-notice">'+info+(data.sameWeek?'':' • WARNING: different reporting weeks')+'. Descriptive matchup comparisons, not proven betting edges or probability projections.</div>'+(cards?'<div class="signal-metrics">'+cards+'</div>':'<div class="empty">No overlapping metrics imported.</div>');
+    node.innerHTML=qualityHtml+'<div class="signal-notice">'+info+'. Descriptive matchup comparisons, not proven betting edges or probability projections.</div>'+(cards?'<div class="signal-metrics">'+cards+'</div>':'<div class="empty">No overlapping metrics imported.</div>');
   }catch(error){if(token===matchupStatRequest)node.innerHTML='<div class="empty">Weekly stats unavailable: '+escapeHtml(error.message)+'</div>'}
 }
 
